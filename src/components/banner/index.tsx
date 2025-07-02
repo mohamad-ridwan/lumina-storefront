@@ -34,7 +34,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({ banners }) => {
   }
 
   return (
-    <div className="w-full max-w-6xl mx-auto">
+    <div className="w-full mx-auto">
       {" "}
       {/* Container responsif */}
       <Carousel plugins={[Autoplay({ delay: 2000 })]} className="w-full">
@@ -46,9 +46,9 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({ banners }) => {
                   <Image
                     src={banner.image}
                     alt={`Banner ${index + 1}`}
-                    height={250}
+                    height={400}
                     width={768}
-                    className="w-full h-auto max-h-[350px] object-cover rounded-lg shadow-lg"
+                    className="w-full h-auto max-h-[400px] object-cover rounded-lg shadow-lg"
                     style={{ aspectRatio: "16/9" }}
                   />
                 </div>

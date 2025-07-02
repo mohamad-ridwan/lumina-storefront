@@ -1,8 +1,10 @@
 import BannerCarousel from "@/components/banner";
+import ContainerPage from "@/container/ContainerPage";
+import PopularCategories from "@/sections/home/popular-categories";
 import { Banner } from "@/types/banner";
 
 // Main App component for the storefront application
-const Home = () => {
+const Home = async () => {
   // Mock banner data
   const bannerData: Banner[] = [
     {
@@ -20,15 +22,13 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background font-sans text-foreground">
-      {/* Main Content Area */}
-      <main className="container mx-auto px-6 py-12">
-        {/* Banner Carousel Section */}
-        <section className="mb-16">
-          <BannerCarousel banners={bannerData} />
-        </section>
-      </main>
-    </div>
+    <ContainerPage>
+      {/* Banner Carousel Section */}
+      <section>
+        <BannerCarousel banners={bannerData} />
+      </section>
+      <PopularCategories />
+    </ContainerPage>
   );
 };
 
