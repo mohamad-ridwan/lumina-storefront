@@ -47,7 +47,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({ banners }) => {
                     src={banner.image}
                     alt={`Banner ${index + 1}`}
                     height={400}
-                    width={768}
+                    width={1024}
                     className="w-full h-auto max-h-[400px] object-cover rounded-lg shadow-lg"
                     style={{ aspectRatio: "16/9" }}
                   />
