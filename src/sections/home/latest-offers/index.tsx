@@ -27,7 +27,7 @@ const LatestOffers = async () => {
             wrapperImgClassName="rounded-lg w-full"
             imgHeight={280}
             imgWidth={280}
-            imageClassName="h-[150px] md:h-[200px] w-full rounded-lg object-cover"
+            imageClassName="h-full w-full rounded-lg object-cover"
           />
         ))}
       </div>
