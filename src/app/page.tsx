@@ -1,10 +1,11 @@
 import BannerCarousel from "@/components/banner";
 import ContainerPage from "@/container/ContainerPage";
+import LatestOffers from "@/sections/home/latest-offers";
 import PopularCategories from "@/sections/home/popular-categories";
 import { Banner } from "@/types/banner";
 
 // Main App component for the storefront application
-const Home = async () => {
+const Home = () => {
   // Mock banner data
   const bannerData: Banner[] = [
     {
@@ -28,6 +29,7 @@ const Home = async () => {
         <BannerCarousel banners={bannerData} />
       </section>
       <PopularCategories />
+      <LatestOffers />
     </ContainerPage>
   );
 };

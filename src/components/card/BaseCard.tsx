@@ -18,6 +18,8 @@ interface BaseCardProps {
   imageClassName?: string;
   wrapperImgClassName?: string;
   wrapperCard?: string;
+  titleClassName?: string;
+  descriptionClassName?: string;
 }
 
 // Komponen DynamicCard
@@ -30,6 +32,8 @@ const BaseCard: React.FC<BaseCardProps> = ({
   imageClassName = "w-full h-48 object-cover",
   wrapperImgClassName,
   wrapperCard,
+  titleClassName = "text-sm font-semibold text-foreground",
+  descriptionClassName = "text-sm text-muted-foreground",
 }) => {
   return (
     <div
@@ -49,16 +53,15 @@ const BaseCard: React.FC<BaseCardProps> = ({
       )}
 
       {/* Konten teks (judul dan deskripsi) */}
-      <div>
+      <div className="flex flex-col gap-1">
         {" "}
         {/* Sedikit padding untuk konten teks */}
-        {title && (
-          <h3 className="text-sm font-semibold text-foreground mb-1">
-            {title}
-          </h3>
-        )}
+        {title && <h3 className={titleClassName}>{title}</h3>}
         {description && (
-          <p className="text-sm text-muted-foreground">{description}</p>
+          <div
+            className={descriptionClassName}
+            dangerouslySetInnerHTML={{ __html: description }}
+          ></div>
         )}
       </div>
     </div>

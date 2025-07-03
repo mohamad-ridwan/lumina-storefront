@@ -10,7 +10,7 @@ const PopularCategories = async () => {
   }
   return (
     <WrapperSection title="Popular categories">
-      <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-7 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-6">
         {categories.map((ctg, key) => (
           <BaseCard
             key={key}
