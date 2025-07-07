@@ -7,6 +7,7 @@ interface ShoeQuery {
   limit?: number;
   id?: number;
   slug?: string;
+  offerId?: string;
 }
 
 export async function getShoe({
@@ -14,6 +15,7 @@ export async function getShoe({
   limit = 0,
   id,
   slug,
+  offerId,
 }: ShoeQuery): Promise<Shoe[]> {
   try {
     // Menggunakan fetchData dengan tipe respons CategoryResponse
@@ -26,6 +28,9 @@ export async function getShoe({
     }
     if (slug) {
       query = `slug/${slug}`;
+    }
+    if (offerId) {
+      query = `offerId=${offerId}`;
     }
     const responseData = await fetchData<ShoesResponse>(
       `${clientAPI}/shoes?limit=${limit}&${query}`,

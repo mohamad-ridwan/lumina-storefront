@@ -4,15 +4,21 @@ import { clientAPI } from "../clientAPI";
 
 interface ReqLatestOffers {
   limit?: number;
+  slug?: string;
 }
 
 export async function getLatestOffers({
   limit = 2,
+  slug,
 }: ReqLatestOffers): Promise<LatestOffer[]> {
   try {
     // Menggunakan fetchData dengan tipe respons LatestOffersResponse
+    let query: string = "";
+    if (slug) {
+      query += `&slug=${slug}`;
+    }
     const responseData = await fetchData<LatestOffersResponse>(
-      `${clientAPI}/latest-offers?limit=${limit}`,
+      `${clientAPI}/latest-offers?limit=${limit}${query}`,
       "GET"
     );
 

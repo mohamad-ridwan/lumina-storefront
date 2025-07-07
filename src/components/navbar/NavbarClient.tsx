@@ -21,6 +21,7 @@ import {
 } from "lucide-react"; // Menggunakan Lucide React untuk ikon
 import { cn } from "@/lib/utils"; // Asumsi Anda memiliki utilitas cn (classnames) dari Shadcn
 import { Category } from "@/types/categories";
+import Link from "next/link";
 
 // Komponen ListItem untuk NavigationMenuContent
 // Ini adalah helper component untuk item dalam NavigationMenuContent
@@ -89,12 +90,12 @@ const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
         {/* Bagian Kiri: Logo, Tombol Kategori (Desktop), Search Bar (Desktop) */}
         <div className="flex items-center space-x-4">
           {/* Logo / Nama Toko */}
-          <a
-            href="#"
+          <Link
+            href="/"
             className="text-2xl font-bold text-foreground whitespace-nowrap"
           >
             Toko <span className="text-custom-blue">Anda</span>
-          </a>
+          </Link>
 
           {/* Tombol Kategori Menu (Hanya Tampil di Desktop) */}
           {/* Menggunakan Shadcn NavigationMenu untuk kategori */}
