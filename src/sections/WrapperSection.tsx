@@ -11,7 +11,7 @@ const WrapperSection = ({ title, children, rightHeader }: Props) => {
     <section className="flex flex-col gap-5 py-8">
       {title && (
         <div className="flex justify-between items-center w-full">
-          <h1 className="text-lg text-black font-bold">{title}</h1>
+          <h1 className="text-lg text-black font-semibold">{title}</h1>
           {rightHeader ? (
             <div className="flex items-center">{rightHeader}</div>
           ) : null}
