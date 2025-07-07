@@ -13,11 +13,19 @@ import { clientAPI } from "../clientAPI";
  * @returns {Promise<Category[]>} Promise yang akan me-resolve dengan array objek Category.
  * @throws {ApiError} Jika permintaan API gagal.
  */
-export async function fetchCategories(): Promise<Category[]> {
+
+interface CategoryQuery {
+  limit?: number;
+}
+
+export async function fetchCategories({
+  limit,
+}: CategoryQuery): Promise<Category[]> {
   try {
     // Menggunakan fetchData dengan tipe respons CategoryResponse
+    const query: string = "" as const;
     const responseData = await fetchData<CategoryResponse>(
-      `${clientAPI}/categories`,
+      `${clientAPI}/categories?limit=${limit}&${query}`,
       "GET"
     );
 

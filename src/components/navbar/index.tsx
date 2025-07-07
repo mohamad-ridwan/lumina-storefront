@@ -3,7 +3,7 @@ import NavbarClient from "./NavbarClient";
 import { fetchCategories } from "@/services/api/categories/getCategories";
 
 const Navbar = async () => {
-  const categories: Category[] = await fetchCategories();
+  const categories: Category[] = await fetchCategories({});
   return <NavbarClient categories={categories} />;
 };
 

@@ -4,13 +4,13 @@ import { fetchCategories } from "@/services/api/categories/getCategories";
 import { Category } from "@/types/categories";
 
 const PopularCategories = async () => {
-  const categories: Category[] = await fetchCategories();
+  const categories: Category[] = await fetchCategories({ limit: 6 });
   if (!categories?.length) {
     return null;
   }
   return (
     <WrapperSection title="Popular categories">
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-6">
+      <div className="grid grid-cols-2 min-[400px]:grid-cols-3 lg:grid-cols-6 gap-6">
         {categories.map((ctg, key) => (
           <BaseCard
             key={key}
