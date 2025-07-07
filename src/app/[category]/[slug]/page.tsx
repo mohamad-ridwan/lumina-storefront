@@ -38,6 +38,7 @@ const CategoryPage = async ({
 
   const breadcrumbItems = [
     { href: "/", label: "Beranda" },
+    { href: "/categories", label: "Category" },
     {
       href: `/${category}/${slug}`,
       label: categoryData.name,
@@ -45,7 +46,7 @@ const CategoryPage = async ({
     },
   ];
   if (category === "c2") {
-    breadcrumbItems.splice(1, 0, {
+    breadcrumbItems.splice(2, 0, {
       href: `/c1/${(categoryData.parentCategory as ParentCategory).slug}`,
       label: (categoryData.parentCategory as ParentCategory).name,
     });
