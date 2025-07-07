@@ -1,15 +1,17 @@
+"use client";
+
 import { Shoe } from "@/types/shoes";
 import WrapperSection from "../WrapperSection";
 import BaseCard from "@/components/card/BaseCard";
 
-interface ProductListsProps {
+interface Props {
+  title: string;
   shoes: Shoe[];
-  label: string;
 }
 
-const ProductLists = ({ shoes, label }: ProductListsProps) => {
+const CategoryClient = ({ title, shoes }: Props) => {
   return (
-    <WrapperSection title={label}>
+    <WrapperSection title={title}>
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {shoes.map((shoe, key) => (
           <BaseCard
@@ -35,4 +37,4 @@ const ProductLists = ({ shoes, label }: ProductListsProps) => {
   );
 };
 
-export default ProductLists;
+export default CategoryClient;

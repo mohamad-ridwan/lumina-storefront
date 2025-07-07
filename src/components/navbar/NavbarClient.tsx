@@ -111,7 +111,7 @@ const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
                       {initialCategories.map((cat) => (
                         <ListItem
                           key={cat._id}
-                          href={`/categories/${cat.slug}`}
+                          href={`/c1/${cat.slug}`}
                           title={cat.name}
                         >
                           {cat.description}
@@ -230,20 +230,20 @@ const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
               <ul className="space-y-2">
                 {initialCategories.map((cat) => (
                   <li key={cat._id}>
-                    <a
+                    <Link
                       href={`/categories/${cat.slug}`} // Contoh link ke halaman kategori
                       className="block w-full px-2 py-2 text-foreground hover:text-custom-blue hover:bg-muted rounded-md transition-colors duration-200"
                       onClick={toggleMobileMenu} // Tutup menu setelah klik
                     >
                       {cat.name}
-                    </a>
+                    </Link>
                     {/* Tampilkan sub-kategori jika ada */}
-                    {cat.subCategories && cat.subCategories.length > 0 && (
+                    {cat.collections && cat.collections.length > 0 && (
                       <ul className="ml-4 mt-1 space-y-1 border-l border-border pl-2">
-                        {cat.subCategories.map((subCat) => (
+                        {cat.collections.map((subCat) => (
                           <li key={subCat._id}>
                             <a
-                              href={`/categories/${cat.slug}/${subCat.slug}`} // Contoh link ke halaman sub-kategori
+                              href={`/c2/${subCat.slug}`} // Contoh link ke halaman sub-kategori
                               className="block w-full px-2 py-1 text-muted-foreground hover:text-custom-blue hover:bg-muted rounded-md transition-colors duration-200 text-sm"
                               onClick={toggleMobileMenu}
                             >

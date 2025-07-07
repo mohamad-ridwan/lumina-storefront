@@ -4,22 +4,34 @@ import { clientAPI } from "../clientAPI";
 
 interface CategoryQuery {
   limit?: number;
+  slug?: string;
+  level?: "0" | "1";
 }
 
 export async function fetchCategories({
-  limit,
-}: CategoryQuery): Promise<Category[]> {
+  limit = 0,
+  slug,
+  level,
+}: CategoryQuery): Promise<Category[] | Category> {
   try {
     // Menggunakan fetchData dengan tipe respons CategoryResponse
-    const query: string = "" as const;
+    let query: string = "";
+    if (slug) {
+      query += `&slug=${slug}`;
+    }
+    if (level) {
+      query += `&level=${level}`;
+    }
     const responseData = await fetchData<CategoryResponse>(
-      `${clientAPI}/categories?limit=${limit}&${query}`,
+      `${clientAPI}/categories?limit=${limit}${query}`,
       "GET"
     );
 
     // Memastikan respons sukses dan mengembalikan array kategori
-    if (responseData.success) {
+    if (responseData.success && responseData?.categories) {
       return responseData.categories;
+    } else if (responseData.success && responseData?.category) {
+      return responseData.category;
     } else {
       // Jika 'success' adalah false, lempar error dengan pesan dari API
       throw new Error(responseData.message || "Gagal mengambil kategori.");

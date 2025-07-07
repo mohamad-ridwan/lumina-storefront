@@ -8,6 +8,7 @@ interface ShoeQuery {
   id?: number;
   slug?: string;
   offerId?: string;
+  categoryId?: string;
 }
 
 export async function getShoe({
@@ -16,10 +17,12 @@ export async function getShoe({
   id,
   slug,
   offerId,
+  categoryId,
 }: ShoeQuery): Promise<Shoe[]> {
   try {
     // Menggunakan fetchData dengan tipe respons CategoryResponse
     let query: string = "";
+    let params: string = "";
     if (newArrival) {
       query = "newArrival=true";
     }
@@ -32,8 +35,11 @@ export async function getShoe({
     if (offerId) {
       query = `offerId=${offerId}`;
     }
+    if (categoryId) {
+      params += `/category/${categoryId}`;
+    }
     const responseData = await fetchData<ShoesResponse>(
-      `${clientAPI}/shoes?limit=${limit}&${query}`,
+      `${clientAPI}/shoes${params}?limit=${limit}&${query}`,
       "GET"
     );
 

@@ -4,7 +4,9 @@ import { fetchCategories } from "@/services/api/categories/getCategories";
 import { Category } from "@/types/categories";
 
 const PopularCategories = async () => {
-  const categories: Category[] = await fetchCategories({ limit: 6 });
+  const categories: Category[] = (await fetchCategories({
+    limit: 6,
+  })) as Category[];
   if (!categories?.length) {
     return null;
   }

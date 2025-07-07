@@ -1,14 +1,4 @@
-/**
- * @fileoverview Type Definitions for Category Data
- * These interfaces define the structure for category and sub-category data
- * fetched from the API.
- */
-
-/**
- * Interface untuk Sub-Kategori.
- * Sub-kategori memiliki struktur yang mirip dengan kategori utama tetapi tidak memiliki sub-kategori lagi.
- */
-export interface SubCategory {
+export interface Collections {
   _id: string;
   name: string;
   slug: string;
@@ -20,13 +10,20 @@ export interface SubCategory {
  * Interface untuk Kategori Utama.
  * Kategori utama dapat memiliki array sub-kategori.
  */
+export interface ParentCategory {
+  _id: string;
+  name: string;
+  slug: string;
+}
+
 export interface Category {
   _id: string;
   name: string;
   slug: string;
   description: string;
   imageUrl: string;
-  subCategories: SubCategory[]; // Array dari SubCategory
+  collections: Collections[];
+  parentCategory?: ParentCategory;
 }
 
 /**
@@ -36,5 +33,6 @@ export interface Category {
 export interface CategoryResponse {
   success: boolean;
   message: string;
-  categories: Category[]; // Array dari Category
+  categories?: Category[]; // Array dari Category
+  category?: Category;
 }

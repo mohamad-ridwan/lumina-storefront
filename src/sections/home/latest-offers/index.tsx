@@ -35,7 +35,7 @@ const LatestOffers = async () => {
                 ? `<small>Rp</small>${shoe.price.toLocaleString("id-ID")}`
                 : "Harga tidak tersedia"
             }
-            wrapperImgClassName="rounded-lg w-full"
+            wrapperImgClassName="rounded-lg w-full sm:h-[200px] lg:h-[150px] xl:h-[180px]"
             imgHeight={280}
             imgWidth={280}
             imageClassName="h-full w-full rounded-lg object-cover"
