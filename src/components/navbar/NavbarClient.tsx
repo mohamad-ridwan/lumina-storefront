@@ -23,39 +23,6 @@ import { cn } from "@/lib/utils"; // Asumsi Anda memiliki utilitas cn (classname
 import { Category } from "@/types/categories";
 import Link from "next/link";
 
-// Komponen ListItem untuk NavigationMenuContent
-// Ini adalah helper component untuk item dalam NavigationMenuContent
-interface ListItemProps extends React.ComponentPropsWithoutRef<"a"> {
-  title: string;
-}
-
-const ListItem = React.forwardRef<React.ElementRef<"a">, ListItemProps>(
-  ({ className, title, children, ...props }, ref) => {
-    return (
-      <li>
-        <NavigationMenuLink asChild>
-          <a
-            ref={ref}
-            className={cn(
-              "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-              className
-            )}
-            {...props}
-          >
-            <div className="text-sm font-medium leading-none">{title}</div>
-            {children && (
-              <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                {children}
-              </p>
-            )}
-          </a>
-        </NavigationMenuLink>
-      </li>
-    );
-  }
-);
-ListItem.displayName = "ListItem";
-
 type Props = {
   categories: Category[]; // Mengubah nama prop dari 'category' menjadi 'categories' agar lebih jelas
 };
@@ -108,15 +75,29 @@ const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
                   <NavigationMenuTrigger>Kategori</NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-4 lg:w-[768px]">
-                      {initialCategories.map((cat) => (
-                        <ListItem
-                          key={cat._id}
-                          href={`/c1/${cat.slug}`}
-                          title={cat.name}
-                        >
-                          {cat.description}
-                        </ListItem>
-                      ))}
+                      {initialCategories.map((cat) => {
+                        return (
+                          <li key={cat._id}>
+                            <NavigationMenuLink asChild>
+                              <Link
+                                href={`/c1/${cat.slug}`}
+                                className={cn(
+                                  "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                                )}
+                              >
+                                <div className="text-sm font-medium leading-none">
+                                  {cat.name}
+                                </div>
+                                {cat.description && (
+                                  <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                                    {cat.description}
+                                  </p>
+                                )}
+                              </Link>
+                            </NavigationMenuLink>
+                          </li>
+                        );
+                      })}
                     </ul>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
