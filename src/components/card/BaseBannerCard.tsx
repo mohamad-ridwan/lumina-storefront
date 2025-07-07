@@ -18,7 +18,7 @@ const BaseBannerCard: React.FC<BaseBannerCardProps> = ({
   label = "WHAT'S NEW?",
   title = "Autumn is here!",
   description = "Cozy furniture for cold days",
-  btnName = "Explore More",
+  btnName = "Lebih Lanjut",
   imageUrl = "https://images.unsplash.com/photo-1545289414-1c3cb1c06238?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   onButtonClick,
   slug,
