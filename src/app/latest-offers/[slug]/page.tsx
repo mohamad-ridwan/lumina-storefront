@@ -1,6 +1,6 @@
 import ContainerPage from "@/container/ContainerPage";
 import Header from "@/sections/latest-offers/Header";
-import ProductLists from "@/sections/latest-offers/ProductLists";
+import ProductContent from "@/sections/latest-offers/ProductContent";
 import { getLatestOffers } from "@/services/api/latestOffers/getLatestOffers";
 import { getShoe } from "@/services/api/shoes/getShoe";
 import { LatestOffer } from "@/types/latestOffers";
@@ -20,7 +20,7 @@ const LatestOffers = async ({
   return (
     <ContainerPage>
       <Header offers={latestOffers[0]} />
-      <ProductLists shoes={shoes} label={latestOffers[0].label} />
+      <ProductContent shoes={shoes} label={latestOffers[0].label} />
     </ContainerPage>
   );
 };

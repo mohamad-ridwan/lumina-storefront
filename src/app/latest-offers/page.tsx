@@ -1,6 +1,6 @@
 import CustomBreadcrumb from "@/components/breadcrumbs/CustomBreadcrumb";
 import ContainerPage from "@/container/ContainerPage";
-import ProductLists from "@/sections/latest-offers/ProductLists";
+import ProductContent from "@/sections/latest-offers/ProductContent";
 import { getShoe } from "@/services/api/shoes/getShoe";
 import { Shoe } from "@/types/shoes";
 
@@ -14,7 +14,7 @@ const LatestOffers = async () => {
   return (
     <ContainerPage>
       <CustomBreadcrumb items={breadcrumbItems} />
-      <ProductLists shoes={shoes} label={breadcrumbItems[1].label} />
+      <ProductContent shoes={shoes} label={breadcrumbItems[1].label} />
     </ContainerPage>
   );
 };
