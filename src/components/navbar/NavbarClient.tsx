@@ -231,7 +231,7 @@ const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
                 {initialCategories.map((cat) => (
                   <li key={cat._id}>
                     <Link
-                      href={`/categories/${cat.slug}`} // Contoh link ke halaman kategori
+                      href={`/c1/${cat.slug}`} // Contoh link ke halaman kategori
                       className="block w-full px-2 py-2 text-foreground hover:text-custom-blue hover:bg-muted rounded-md transition-colors duration-200"
                       onClick={toggleMobileMenu} // Tutup menu setelah klik
                     >
@@ -242,13 +242,13 @@ const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
                       <ul className="ml-4 mt-1 space-y-1 border-l border-border pl-2">
                         {cat.collections.map((subCat) => (
                           <li key={subCat._id}>
-                            <a
+                            <Link
                               href={`/c2/${subCat.slug}`} // Contoh link ke halaman sub-kategori
                               className="block w-full px-2 py-1 text-muted-foreground hover:text-custom-blue hover:bg-muted rounded-md transition-colors duration-200 text-sm"
                               onClick={toggleMobileMenu}
                             >
                               {subCat.name}
-                            </a>
+                            </Link>
                           </li>
                         ))}
                       </ul>
