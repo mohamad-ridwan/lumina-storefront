@@ -1,5 +1,6 @@
 import BaseBannerCard from "@/components/card/BaseBannerCard";
 import BaseCard from "@/components/card/BaseCard";
+import RightHeaderSingleBtnNav from "@/components/sections/RightHeaderSingleBtnNav";
 import WrapperSection from "@/sections/WrapperSection";
 import { getLatestOffers } from "@/services/api/latestOffers/getLatestOffers";
 import { getShoe } from "@/services/api/shoes/getShoe";
@@ -12,8 +13,14 @@ const LatestOffers = async () => {
   if (!shoes?.length) {
     return null;
   }
+
   return (
-    <WrapperSection title="Latest offers">
+    <WrapperSection
+      title="Latest offers"
+      rightHeader={
+        <RightHeaderSingleBtnNav slug="/latest-offers" name="Lihat Semua" />
+      }
+    >
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {shoes.map((shoe, key) => (
           <BaseCard
