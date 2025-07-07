@@ -1,10 +1,14 @@
+import BaseBannerCard from "@/components/card/BaseBannerCard";
 import BaseCard from "@/components/card/BaseCard";
 import WrapperSection from "@/sections/WrapperSection";
+import { getLatestOffers } from "@/services/api/latestOffers/getLatestOffers";
 import { getShoe } from "@/services/api/shoes/getShoe";
+import { LatestOffer } from "@/types/latestOffers";
 import { Shoe } from "@/types/shoes";
 
 const LatestOffers = async () => {
   const shoes: Shoe[] = await getShoe({ limit: 4, newArrival: true });
+  const latestOffers: LatestOffer[] = await getLatestOffers({});
   if (!shoes?.length) {
     return null;
   }
@@ -31,6 +35,20 @@ const LatestOffers = async () => {
           />
         ))}
       </div>
+      {latestOffers.length > 0 && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-12">
+          {latestOffers.map((offers, i) => (
+            <BaseBannerCard
+              key={i}
+              label={offers.label}
+              title={offers.title}
+              description={offers.description}
+              imageUrl={offers.imageUrl}
+              slug={`latest-offers/${offers.slug}`}
+            />
+          ))}
+        </div>
+      )}
     </WrapperSection>
   );
 };

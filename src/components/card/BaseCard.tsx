@@ -41,7 +41,7 @@ const BaseCard: React.FC<BaseCardProps> = ({
     >
       {/* Container untuk gambar dengan background abu-abu terang dan shadow */}
       {image && (
-        <div className={`shadow-sm overflow-hidden ${wrapperImgClassName}`}>
+        <div className={`shadow-xs overflow-hidden ${wrapperImgClassName}`}>
           <Image
             src={image}
             height={imgHeight}
