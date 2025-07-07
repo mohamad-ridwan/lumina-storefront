@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button"; // Asumsi path komponen Shadcn Button
 import { Input } from "@/components/ui/input"; // Asumsi path komponen Shadcn Input
 import {
@@ -17,10 +17,9 @@ import {
   Search, // Ikon untuk search bar
   ShoppingBag, // Ikon untuk keranjang belanja
   UserCircle, // Ikon untuk avatar pengguna
-  // ChevronRight, // Tidak lagi diperlukan untuk NavigationMenu default
 } from "lucide-react"; // Menggunakan Lucide React untuk ikon
 import { cn } from "@/lib/utils"; // Asumsi Anda memiliki utilitas cn (classnames) dari Shadcn
-import { Category } from "@/types/categories";
+import { Category } from "@/types/categories"; // Pastikan Anda mengimpor tipe Category dan Collection
 import Link from "next/link";
 
 type Props = {
@@ -29,11 +28,19 @@ type Props = {
 
 // Komponen Navbar Responsif
 const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
-  // Menggunakan initialCategories untuk menghindari konflik nama
   // State untuk mengelola visibilitas menu mobile (hamburger)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   // State untuk mengelola input pencarian
   const [searchQuery, setSearchQuery] = useState("");
+  // State untuk menyimpan kategori yang sedang di-hover di menu desktop
+  const [hoveredCategory, setHoveredCategory] = useState<Category | null>(null);
+
+  // Set kategori yang di-hover pertama kali saat komponen dimuat atau kategori berubah
+  useEffect(() => {
+    if (initialCategories.length > 0 && !hoveredCategory) {
+      setHoveredCategory(initialCategories[0]);
+    }
+  }, [initialCategories, hoveredCategory]);
 
   // Fungsi untuk mengubah status menu mobile
   const toggleMobileMenu = () => {
@@ -74,31 +81,80 @@ const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
                 <NavigationMenuItem>
                   <NavigationMenuTrigger>Kategori</NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-4 lg:w-[768px]">
-                      {initialCategories.map((cat) => {
-                        return (
-                          <li key={cat._id}>
-                            <NavigationMenuLink asChild>
-                              <Link
-                                href={`/c1/${cat.slug}`}
-                                className={cn(
-                                  "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                                )}
-                              >
-                                <div className="text-sm font-medium leading-none">
+                    <div className="flex w-[700px] h-[350px] p-2">
+                      {" "}
+                      {/* Menyesuaikan ukuran keseluruhan dropdown */}
+                      {/* Section Kiri: Kategori Utama */}
+                      <ul className="w-1/3 border-r pr-4 overflow-y-auto">
+                        {initialCategories.map((cat) => (
+                          <li
+                            key={cat._id}
+                            onMouseEnter={() => setHoveredCategory(cat)}
+                            className={cn(
+                              "cursor-pointer rounded-md transition-colors duration-200",
+                              hoveredCategory?._id === cat._id
+                                ? "bg-accent text-accent-foreground" // Gaya saat di-hover/aktif
+                                : "hover:bg-accent hover:text-accent-foreground"
+                            )}
+                          >
+                            <Link href={`/c1/${cat.slug}`} passHref>
+                              <NavigationMenuLink asChild>
+                                <span className="text-sm font-medium">
                                   {cat.name}
-                                </div>
-                                {cat.description && (
-                                  <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                                    {cat.description}
-                                  </p>
-                                )}
-                              </Link>
-                            </NavigationMenuLink>
+                                </span>
+                              </NavigationMenuLink>
+                            </Link>
                           </li>
-                        );
-                      })}
-                    </ul>
+                        ))}
+                      </ul>
+                      {/* Section Kanan: Koleksi dari Kategori yang Di-hover */}
+                      <div className="w-2/3 pl-6 overflow-y-auto">
+                        {hoveredCategory ? (
+                          <>
+                            <h4 className="text-lg font-semibold text-foreground mb-3">
+                              Koleksi {hoveredCategory.name}
+                            </h4>
+                            {hoveredCategory.collections &&
+                            hoveredCategory.collections.length > 0 ? (
+                              <ul className="grid grid-cols-2 gap-x-4 gap-y-2">
+                                {hoveredCategory.collections.map(
+                                  (collection) => (
+                                    <li key={collection._id}>
+                                      <Link
+                                        href={`/c2/${collection.slug}`}
+                                        passHref
+                                      >
+                                        <NavigationMenuLink asChild>
+                                          <span className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                                            <div className="text-sm font-medium leading-none">
+                                              {collection.name}
+                                            </div>
+                                            {/* Anda bisa menambahkan deskripsi koleksi jika ada di tipe Collection */}
+                                            {/* {collection.description && (
+                                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                                              {collection.description}
+                                            </p>
+                                          )} */}
+                                          </span>
+                                        </NavigationMenuLink>
+                                      </Link>
+                                    </li>
+                                  )
+                                )}
+                              </ul>
+                            ) : (
+                              <p className="text-muted-foreground text-sm">
+                                Tidak ada koleksi untuk kategori ini.
+                              </p>
+                            )}
+                          </>
+                        ) : (
+                          <p className="text-muted-foreground text-sm">
+                            Arahkan mouse ke kategori untuk melihat koleksinya.
+                          </p>
+                        )}
+                      </div>
+                    </div>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
                 {/* Anda bisa menambahkan item navigasi lain di sini jika diperlukan, misalnya "Produk Terbaru" */}
@@ -221,14 +277,14 @@ const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
                     {/* Tampilkan sub-kategori jika ada */}
                     {cat.collections && cat.collections.length > 0 && (
                       <ul className="ml-4 mt-1 space-y-1 border-l border-border pl-2">
-                        {cat.collections.map((subCat) => (
-                          <li key={subCat._id}>
+                        {cat.collections.map((collection) => (
+                          <li key={collection._id}>
                             <Link
-                              href={`/c2/${subCat.slug}`} // Contoh link ke halaman sub-kategori
+                              href={`/c2/${collection.slug}`} // Contoh link ke halaman sub-kategori
                               className="block w-full px-2 py-1 text-muted-foreground hover:text-custom-blue hover:bg-muted rounded-md transition-colors duration-200 text-sm"
                               onClick={toggleMobileMenu}
                             >
-                              {subCat.name}
+                              {collection.name}
                             </Link>
                           </li>
                         ))}
