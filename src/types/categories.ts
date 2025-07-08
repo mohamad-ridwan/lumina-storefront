@@ -24,6 +24,7 @@ export interface Category {
   imageUrl: string;
   collections: Collections[];
   parentCategory?: ParentCategory;
+  level: 0 | 1;
 }
 
 /**

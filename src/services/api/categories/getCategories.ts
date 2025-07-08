@@ -6,12 +6,14 @@ interface CategoryQuery {
   limit?: number;
   slug?: string;
   level?: "0" | "1";
+  isPopular?: boolean;
 }
 
 export async function fetchCategories({
   limit = 0,
   slug,
   level,
+  isPopular,
 }: CategoryQuery): Promise<Category[] | Category> {
   try {
     // Menggunakan fetchData dengan tipe respons CategoryResponse
@@ -21,6 +23,9 @@ export async function fetchCategories({
     }
     if (level) {
       query += `&level=${level}`;
+    }
+    if (isPopular) {
+      query += `&isPopular=${isPopular}`;
     }
     const responseData = await fetchData<CategoryResponse>(
       `${clientAPI}/categories?limit=${limit}${query}`,
