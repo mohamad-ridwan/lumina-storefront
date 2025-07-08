@@ -76,5 +76,7 @@ export interface ShoesResponse {
   message: string;
   total: number;
   limit: number;
+  currentPage: number;
+  totalPages: number;
   shoes: Shoe[]; // Array dari objek Shoe
 }

@@ -1,4 +1,6 @@
-import { Shoe, ShoesResponse } from "@/types/shoes";
+"use server";
+
+import { ShoesResponse } from "@/types/shoes";
 import fetchData from "../fetchData";
 import { clientAPI } from "../clientAPI";
 
@@ -9,6 +11,7 @@ interface ShoeQuery {
   slug?: string;
   offerId?: string;
   categoryId?: string;
+  page?: number;
 }
 
 export async function getShoe({
@@ -18,7 +21,8 @@ export async function getShoe({
   slug,
   offerId,
   categoryId,
-}: ShoeQuery): Promise<Shoe[]> {
+  page,
+}: ShoeQuery): Promise<ShoesResponse> {
   try {
     // Menggunakan fetchData dengan tipe respons CategoryResponse
     let query: string = "";
@@ -39,13 +43,13 @@ export async function getShoe({
       params += `/category/${categoryId}`;
     }
     const responseData = await fetchData<ShoesResponse>(
-      `${clientAPI}/shoes${params}?limit=${limit}&${query}`,
+      `${clientAPI}/shoes${params}?limit=${limit}&page=${page}&${query}`,
       "GET"
     );
 
     // Memastikan respons sukses dan mengembalikan array kategori
     if (responseData.success) {
-      return responseData.shoes;
+      return responseData;
     } else {
       // Jika 'success' adalah false, lempar error dengan pesan dari API
       throw new Error(responseData.message || "Gagal mengambil sepatu.");

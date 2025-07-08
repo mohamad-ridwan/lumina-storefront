@@ -4,14 +4,18 @@ import CategoryClient from "@/sections/category";
 import { fetchCategories } from "@/services/api/categories/getCategories";
 import { getShoe } from "@/services/api/shoes/getShoe";
 import { Category, ParentCategory } from "@/types/categories";
-import { Shoe } from "@/types/shoes";
+import { Shoe, ShoesResponse } from "@/types/shoes";
 
 const CategoryPage = async ({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string; category: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
   const { category, slug } = await params;
+  const { page } = await searchParams;
+
   let isValidParams: boolean = true;
   let levelCategory: "0" | "1" | undefined;
   const paramsCurrently: string[] = ["c1", "c2"];
@@ -34,7 +38,12 @@ const CategoryPage = async ({
     return null;
   }
 
-  const shoes: Shoe[] = await getShoe({ categoryId: categoryData._id });
+  const shoeData: ShoesResponse = await getShoe({
+    categoryId: categoryData._id,
+    limit: 20,
+    page: page ? Number(page) : undefined,
+  });
+  const shoes: Shoe[] = shoeData.shoes;
 
   const breadcrumbItems = [
     { href: "/", label: "Beranda" },
@@ -54,7 +63,16 @@ const CategoryPage = async ({
   return (
     <ContainerPage>
       <CustomBreadcrumb items={breadcrumbItems} />
-      <CategoryClient title={categoryData.name} shoes={shoes} />
+      <CategoryClient
+        title={categoryData.name}
+        shoes={shoes}
+        pagination={{
+          limit: shoeData.limit,
+          total: shoeData.total,
+          totalPages: shoeData.totalPages,
+          currentPage: shoeData.currentPage,
+        }}
+      />
     </ContainerPage>
   );
 };

@@ -5,10 +5,11 @@ import WrapperSection from "@/sections/WrapperSection";
 import { getLatestOffers } from "@/services/api/latestOffers/getLatestOffers";
 import { getShoe } from "@/services/api/shoes/getShoe";
 import { LatestOffer } from "@/types/latestOffers";
-import { Shoe } from "@/types/shoes";
+import { Shoe, ShoesResponse } from "@/types/shoes";
 
 const LatestOffers = async () => {
-  const shoes: Shoe[] = await getShoe({ limit: 4, newArrival: true });
+  const shoeData: ShoesResponse = await getShoe({ limit: 4, newArrival: true });
+  const shoes: Shoe[] = shoeData.shoes;
   const latestOffers: LatestOffer[] = await getLatestOffers({});
   if (!shoes?.length) {
     return null;
