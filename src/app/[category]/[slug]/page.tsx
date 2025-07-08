@@ -14,7 +14,7 @@ const CategoryPage = async ({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
   const { category, slug } = await params;
-  const { page } = await searchParams;
+  const { page, sort } = await searchParams;
 
   let isValidParams: boolean = true;
   let levelCategory: "0" | "1" | undefined;
@@ -42,6 +42,7 @@ const CategoryPage = async ({
     categoryId: categoryData._id,
     limit: 20,
     page: page ? Number(page) : undefined,
+    sort: (sort as "termahal") ?? undefined,
   });
   const shoes: Shoe[] = shoeData.shoes;
 
@@ -66,6 +67,7 @@ const CategoryPage = async ({
       <CategoryClient
         title={categoryData.name}
         shoes={shoes}
+        sortParams={sort as string}
         pagination={{
           limit: shoeData.limit,
           total: shoeData.total,

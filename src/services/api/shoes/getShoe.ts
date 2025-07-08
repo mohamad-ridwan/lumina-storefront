@@ -12,6 +12,7 @@ interface ShoeQuery {
   offerId?: string;
   categoryId?: string;
   page?: number;
+  sort?: "terbaru" | "termahal" | "termurah";
 }
 
 export async function getShoe({
@@ -22,6 +23,7 @@ export async function getShoe({
   offerId,
   categoryId,
   page,
+  sort,
 }: ShoeQuery): Promise<ShoesResponse> {
   try {
     // Menggunakan fetchData dengan tipe respons CategoryResponse
@@ -43,7 +45,7 @@ export async function getShoe({
       params += `/category/${categoryId}`;
     }
     const responseData = await fetchData<ShoesResponse>(
-      `${clientAPI}/shoes${params}?limit=${limit}&page=${page}&${query}`,
+      `${clientAPI}/shoes${params}?limit=${limit}&page=${page}&sort=${sort}&${query}`,
       "GET"
     );
 

@@ -78,5 +78,6 @@ export interface ShoesResponse {
   limit: number;
   currentPage: number;
   totalPages: number;
+  sort?: "termurah" | "termahal" | "terbaru";
   shoes: Shoe[]; // Array dari objek Shoe
 }

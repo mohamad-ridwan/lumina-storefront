@@ -9,7 +9,7 @@ const LatestOffers = async ({
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
-  const { page } = await searchParams;
+  const { page, sort } = await searchParams;
   const breadcrumbItems = [
     { href: "/", label: "Beranda" },
     { href: "/latest-offers", label: "Latest Offers", isCurrent: true },
@@ -18,6 +18,7 @@ const LatestOffers = async ({
     newArrival: true,
     limit: 20,
     page: page ? Number(page) : undefined,
+    sort: (sort as "termahal") ?? undefined,
   });
   const shoes: Shoe[] = shoeData.shoes;
 
@@ -27,6 +28,7 @@ const LatestOffers = async ({
       <ProductContent
         shoes={shoes}
         label={breadcrumbItems[1].label}
+        sortParams={sort as string}
         pagination={{
           limit: shoeData.limit,
           totalPages: shoeData.totalPages,

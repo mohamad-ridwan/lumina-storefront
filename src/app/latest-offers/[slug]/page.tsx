@@ -14,7 +14,7 @@ const LatestOffers = async ({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
   const { slug } = await params;
-  const { page } = await searchParams;
+  const { page, sort } = await searchParams;
   const latestOffers: LatestOffer[] = await getLatestOffers({ slug });
   const shoeData: ShoesResponse = await getShoe({
     offerId: latestOffers[0]._id,
@@ -32,6 +32,7 @@ const LatestOffers = async ({
       <ProductContent
         shoes={shoes}
         label={latestOffers[0].label}
+        sortParams={sort as string}
         pagination={{
           limit: shoeData.limit,
           total: shoeData.total,
