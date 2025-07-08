@@ -1,6 +1,6 @@
 import CustomBreadcrumb from "@/components/breadcrumbs/CustomBreadcrumb";
+import ProductContent from "@/components/ProductContent";
 import ContainerPage from "@/container/ContainerPage";
-import CategoryClient from "@/sections/category";
 import { fetchCategories } from "@/services/api/categories/getCategories";
 import { getShoe } from "@/services/api/shoes/getShoe";
 import { Category, ParentCategory } from "@/types/categories";
@@ -64,14 +64,14 @@ const CategoryPage = async ({
   return (
     <ContainerPage>
       <CustomBreadcrumb items={breadcrumbItems} />
-      <CategoryClient
-        title={categoryData.name}
+      <ProductContent
         shoes={shoes}
+        label={categoryData.name}
         sortParams={sort as string}
         pagination={{
           limit: shoeData.limit,
-          total: shoeData.total,
           totalPages: shoeData.totalPages,
+          total: shoeData.total,
           currentPage: shoeData.currentPage,
         }}
       />

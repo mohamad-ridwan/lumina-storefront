@@ -1,6 +1,6 @@
 import CustomBreadcrumb from "@/components/breadcrumbs/CustomBreadcrumb";
 import ContainerPage from "@/container/ContainerPage";
-import ProductContent from "@/sections/latest-offers/ProductContent";
+import ProductContent from "@/components/ProductContent";
 import { getShoe } from "@/services/api/shoes/getShoe";
 import { Shoe, ShoesResponse } from "@/types/shoes";
 

@@ -1,42 +1,42 @@
-import ContainerPage from "@/container/ContainerPage";
-import Header from "@/sections/latest-offers/Header";
+import CustomBreadcrumb from "@/components/breadcrumbs/CustomBreadcrumb";
 import ProductContent from "@/components/ProductContent";
-import { getLatestOffers } from "@/services/api/latestOffers/getLatestOffers";
+import ContainerPage from "@/container/ContainerPage";
 import { getShoe } from "@/services/api/shoes/getShoe";
-import { LatestOffer } from "@/types/latestOffers";
 import { Shoe, ShoesResponse } from "@/types/shoes";
 
-const LatestOffers = async ({
+const SearchPage = async ({
   params,
   searchParams,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ keywords: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
-  const { slug } = await params;
+  const { keywords } = await params;
   const { page, sort } = await searchParams;
-  const latestOffers: LatestOffer[] = await getLatestOffers({ slug });
+
+  const breadcrumbItems = [
+    { href: "/", label: "Beranda" },
+    { href: "/search", label: "Hasil yang Anda cari", isCurrent: true },
+  ];
   const shoeData: ShoesResponse = await getShoe({
-    offerId: latestOffers[0]._id,
     limit: 20,
     page: page ? Number(page) : undefined,
+    sort: (sort as "termahal") ?? undefined,
+    search: keywords,
   });
   const shoes: Shoe[] = shoeData.shoes;
 
-  if (!latestOffers[0]?._id || shoes.length === 0) {
-    return;
-  }
   return (
     <ContainerPage>
-      <Header offers={latestOffers[0]} />
+      <CustomBreadcrumb items={breadcrumbItems} />
       <ProductContent
         shoes={shoes}
-        label={latestOffers[0].label}
+        label={breadcrumbItems[1].label}
         sortParams={sort as string}
         pagination={{
           limit: shoeData.limit,
-          total: shoeData.total,
           totalPages: shoeData.totalPages,
+          total: shoeData.total,
           currentPage: shoeData.currentPage,
         }}
       />
@@ -44,4 +44,4 @@ const LatestOffers = async ({
   );
 };
 
-export default LatestOffers;
+export default SearchPage;

@@ -13,6 +13,7 @@ interface ShoeQuery {
   categoryId?: string;
   page?: number;
   sort?: "terbaru" | "termahal" | "termurah";
+  search?: string;
 }
 
 export async function getShoe({
@@ -24,6 +25,7 @@ export async function getShoe({
   categoryId,
   page,
   sort,
+  search,
 }: ShoeQuery): Promise<ShoesResponse> {
   try {
     // Menggunakan fetchData dengan tipe respons CategoryResponse
@@ -40,6 +42,9 @@ export async function getShoe({
     }
     if (offerId) {
       query = `offerId=${offerId}`;
+    }
+    if (search) {
+      query = `search=${search}`;
     }
     if (categoryId) {
       params += `/category/${categoryId}`;
