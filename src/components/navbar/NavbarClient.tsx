@@ -21,6 +21,7 @@ import {
 import { cn } from "@/lib/utils"; // Asumsi Anda memiliki utilitas cn (classnames) dari Shadcn
 import { Category } from "@/types/categories"; // Pastikan Anda mengimpor tipe Category dan Collection
 import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
 
 type Props = {
   categories: Category[]; // Mengubah nama prop dari 'category' menjadi 'categories' agar lebih jelas
@@ -35,12 +36,21 @@ const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
   // State untuk menyimpan kategori yang sedang di-hover di menu desktop
   const [hoveredCategory, setHoveredCategory] = useState<Category | null>(null);
 
+  const router = useRouter();
+  const { keywords } = useParams();
+
   // Set kategori yang di-hover pertama kali saat komponen dimuat atau kategori berubah
   useEffect(() => {
     if (initialCategories.length > 0 && !hoveredCategory) {
       setHoveredCategory(initialCategories[0]);
     }
   }, [initialCategories, hoveredCategory]);
+
+  useEffect(() => {
+    if (typeof keywords === "string") {
+      setSearchQuery(decodeURIComponent(keywords));
+    }
+  }, [keywords]);
 
   // Fungsi untuk mengubah status menu mobile
   const toggleMobileMenu = () => {
@@ -50,7 +60,7 @@ const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
   // Handler untuk submit pencarian
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Mencegah refresh halaman
-    console.log("Mencari:", searchQuery);
+    router.push(`/search/${searchQuery}`);
     // Di sini Anda bisa mengimplementasikan logika pencarian sebenarnya,
     // seperti mengarahkan ke halaman hasil pencarian atau memfilter produk.
   };
