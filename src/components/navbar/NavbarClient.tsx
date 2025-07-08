@@ -35,6 +35,7 @@ const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
   const [searchQuery, setSearchQuery] = useState("");
   // State untuk menyimpan kategori yang sedang di-hover di menu desktop
   const [hoveredCategory, setHoveredCategory] = useState<Category | null>(null);
+  const [hasShadow, setHasShadow] = useState<boolean>(false);
 
   const router = useRouter();
   const { keywords } = useParams();
@@ -51,6 +52,32 @@ const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
       setSearchQuery(decodeURIComponent(keywords));
     }
   }, [keywords]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Aktifkan shadow jika scrollY lebih dari 100px
+      if (typeof window !== "undefined" && window.scrollY > 40) {
+        // Tambahkan pengecekan window
+        setHasShadow(true);
+      } else {
+        setHasShadow(false);
+      }
+    };
+
+    // Tambahkan event listener saat komponen di-mount
+    if (typeof window !== "undefined") {
+      // Tambahkan pengecekan window
+      window.addEventListener("scroll", handleScroll);
+    }
+
+    // Bersihkan event listener saat komponen di-unmount
+    return () => {
+      if (typeof window !== "undefined") {
+        // Tambahkan pengecekan window
+        window.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, []);
 
   // Fungsi untuk mengubah status menu mobile
   const toggleMobileMenu = () => {
@@ -69,181 +96,188 @@ const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
     // Navbar utama dengan latar belakang 'card' dan teks 'foreground' dari tema Shadcn
     // Shadow-md memberikan sedikit bayangan di bawah navbar
     // Sticky top-0 dan z-50 agar navbar selalu terlihat di bagian atas saat di-scroll
-    <nav className="bg-card text-foreground shadow-md sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+    <nav
+      className={`bg-card text-foreground ${
+        hasShadow ? "shadow-xs" : "shadow-none"
+      } sticky top-0 z-50 transition-shadow duration-300`}
+    >
+      <div className="container mx-auto px-4 flex items-center justify-between">
         {/* Bagian Kiri: Logo, Tombol Kategori (Desktop), Search Bar (Desktop) */}
-        <div className="flex items-center space-x-4">
-          {/* Logo / Nama Toko */}
-          <Link
-            href="/"
-            className="text-2xl font-bold text-foreground whitespace-nowrap"
-          >
-            Toko <span className="text-custom-blue">Anda</span>
-          </Link>
+        <div className="flex items-center w-full justify-between border-b py-3">
+          <div className="flex items-center space-x-4">
+            {/* Logo / Nama Toko */}
+            <Link
+              href="/"
+              className="text-2xl font-bold text-foreground whitespace-nowrap"
+            >
+              Toko <span className="text-custom-blue">Anda</span>
+            </Link>
 
-          {/* Tombol Kategori Menu (Hanya Tampil di Desktop) */}
-          {/* Menggunakan Shadcn NavigationMenu untuk kategori */}
-          {initialCategories.length > 0 && (
-            <NavigationMenu className="hidden lg:flex">
-              {" "}
-              {/* Pastikan NavigationMenu hanya tampil di desktop */}
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger>Kategori</NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <div className="flex w-[700px] h-[350px] p-2">
-                      {" "}
-                      {/* Menyesuaikan ukuran keseluruhan dropdown */}
-                      {/* Section Kiri: Kategori Utama */}
-                      <ul className="w-1/3 border-r pr-4 overflow-y-auto">
-                        {initialCategories.map((cat) => (
-                          <li
-                            key={cat._id}
-                            onMouseEnter={() => setHoveredCategory(cat)}
-                            className={cn(
-                              "cursor-pointer rounded-md transition-colors duration-200",
-                              hoveredCategory?._id === cat._id
-                                ? "bg-accent text-accent-foreground" // Gaya saat di-hover/aktif
-                                : "hover:bg-accent hover:text-accent-foreground"
-                            )}
-                          >
-                            <Link href={`/c1/${cat.slug}`} passHref>
-                              <NavigationMenuLink asChild>
-                                <span className="text-sm font-medium">
-                                  {cat.name}
-                                </span>
-                              </NavigationMenuLink>
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                      {/* Section Kanan: Koleksi dari Kategori yang Di-hover */}
-                      <div className="w-2/3 pl-6 overflow-y-auto">
-                        {hoveredCategory ? (
-                          <>
-                            <h4 className="text-lg font-semibold text-foreground mb-3">
-                              Koleksi {hoveredCategory.name}
-                            </h4>
-                            {hoveredCategory.collections &&
-                            hoveredCategory.collections.length > 0 ? (
-                              <ul className="grid grid-cols-2 gap-x-4 gap-y-2">
-                                {hoveredCategory.collections.map(
-                                  (collection) => (
-                                    <li key={collection._id}>
-                                      <Link
-                                        href={`/c2/${collection.slug}`}
-                                        passHref
-                                      >
-                                        <NavigationMenuLink asChild>
-                                          <span className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                                            <div className="text-sm font-medium leading-none">
-                                              {collection.name}
-                                            </div>
-                                            {/* Anda bisa menambahkan deskripsi koleksi jika ada di tipe Collection */}
-                                            {/* {collection.description && (
+            {/* Tombol Kategori Menu (Hanya Tampil di Desktop) */}
+            {/* Menggunakan Shadcn NavigationMenu untuk kategori */}
+            {initialCategories.length > 0 && (
+              <NavigationMenu className="hidden lg:flex">
+                {" "}
+                {/* Pastikan NavigationMenu hanya tampil di desktop */}
+                <NavigationMenuList>
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger>Kategori</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <div className="flex w-[700px] h-[350px] p-2">
+                        {" "}
+                        {/* Menyesuaikan ukuran keseluruhan dropdown */}
+                        {/* Section Kiri: Kategori Utama */}
+                        <ul className="w-1/3 border-r pr-4 overflow-y-auto">
+                          {initialCategories.map((cat) => (
+                            <li
+                              key={cat._id}
+                              onMouseEnter={() => setHoveredCategory(cat)}
+                              className={cn(
+                                "cursor-pointer rounded-md transition-colors duration-200",
+                                hoveredCategory?._id === cat._id
+                                  ? "bg-accent text-accent-foreground" // Gaya saat di-hover/aktif
+                                  : "hover:bg-accent hover:text-accent-foreground"
+                              )}
+                            >
+                              <Link href={`/c1/${cat.slug}`} passHref>
+                                <NavigationMenuLink asChild>
+                                  <span className="text-sm font-medium">
+                                    {cat.name}
+                                  </span>
+                                </NavigationMenuLink>
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                        {/* Section Kanan: Koleksi dari Kategori yang Di-hover */}
+                        <div className="w-2/3 pl-6 overflow-y-auto">
+                          {hoveredCategory ? (
+                            <>
+                              <h4 className="text-lg font-semibold text-foreground mb-3">
+                                Koleksi {hoveredCategory.name}
+                              </h4>
+                              {hoveredCategory.collections &&
+                              hoveredCategory.collections.length > 0 ? (
+                                <ul className="grid grid-cols-2 gap-x-4 gap-y-2">
+                                  {hoveredCategory.collections.map(
+                                    (collection) => (
+                                      <li key={collection._id}>
+                                        <Link
+                                          href={`/c2/${collection.slug}`}
+                                          passHref
+                                        >
+                                          <NavigationMenuLink asChild>
+                                            <span className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                                              <div className="text-sm font-medium leading-none">
+                                                {collection.name}
+                                              </div>
+                                              {/* Anda bisa menambahkan deskripsi koleksi jika ada di tipe Collection */}
+                                              {/* {collection.description && (
                                             <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                                               {collection.description}
                                             </p>
                                           )} */}
-                                          </span>
-                                        </NavigationMenuLink>
-                                      </Link>
-                                    </li>
-                                  )
-                                )}
-                              </ul>
-                            ) : (
-                              <p className="text-muted-foreground text-sm">
-                                Tidak ada koleksi untuk kategori ini.
-                              </p>
-                            )}
-                          </>
-                        ) : (
-                          <p className="text-muted-foreground text-sm">
-                            Arahkan mouse ke kategori untuk melihat koleksinya.
-                          </p>
-                        )}
+                                            </span>
+                                          </NavigationMenuLink>
+                                        </Link>
+                                      </li>
+                                    )
+                                  )}
+                                </ul>
+                              ) : (
+                                <p className="text-muted-foreground text-sm">
+                                  Tidak ada koleksi untuk kategori ini.
+                                </p>
+                              )}
+                            </>
+                          ) : (
+                            <p className="text-muted-foreground text-sm">
+                              Arahkan mouse ke kategori untuk melihat
+                              koleksinya.
+                            </p>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-                {/* Anda bisa menambahkan item navigasi lain di sini jika diperlukan, misalnya "Produk Terbaru" */}
-                <NavigationMenuItem>
-                  <NavigationMenuLink
-                    href="#"
-                    className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
-                  >
-                    Produk
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuLink
-                    href="#"
-                    className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
-                  >
-                    Tentang Kami
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
-          )}
-
-          {/* Search Bar (Hanya Tampil di Desktop) */}
-          {/* Menggunakan Shadcn Input di dalam form untuk fungsionalitas pencarian */}
-          <form
-            onSubmit={handleSearch}
-            className="hidden md:flex relative w-64"
-          >
-            <Input
-              type="text"
-              placeholder="Cari produk..."
-              className="pl-10 pr-4 py-2 rounded-md border border-input focus:ring-ring focus:border-ring w-full"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            {/* Ikon Search di dalam input field */}
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-          </form>
-        </div>
-
-        {/* Bagian Kanan: Ikon Keranjang, Ikon Avatar (Desktop) & Tombol Toggle Menu Mobile */}
-        <div className="flex items-center space-x-4">
-          {/* Ikon Search (Hanya Tampil di Mobile) */}
-          {/* Tombol ini bisa membuka modal pencarian di mobile */}
-          <Button variant="ghost" size="icon" className="md:hidden">
-            <Search className="h-5 w-5" />
-          </Button>
-
-          {/* Ikon Keranjang Belanja */}
-          {/* Menggunakan Shadcn Button dengan size 'icon' untuk bentuk lingkaran */}
-          <Button variant="ghost" size="icon" className="relative">
-            <ShoppingBag className="h-5 w-5" />
-            {/* Badge untuk jumlah item di keranjang */}
-            <span className="absolute -top-1 -right-1 bg-custom-blue text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-              3 {/* Contoh: jumlah item di keranjang */}
-            </span>
-          </Button>
-
-          {/* Ikon Avatar Pengguna */}
-          {/* Menggunakan Shadcn Button dengan size 'icon' */}
-          <Button variant="ghost" size="icon">
-            <UserCircle className="h-5 w-5" />
-          </Button>
-
-          {/* Tombol Toggle Menu Mobile (Hamburger/X) */}
-          {/* Hanya tampil di mobile, mengontrol visibilitas menu overlay */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="lg:hidden"
-            onClick={toggleMobileMenu}
-          >
-            {isMobileMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                  {/* Anda bisa menambahkan item navigasi lain di sini jika diperlukan, misalnya "Produk Terbaru" */}
+                  <NavigationMenuItem>
+                    <NavigationMenuLink
+                      href="#"
+                      className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
+                    >
+                      Produk
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <NavigationMenuLink
+                      href="#"
+                      className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
+                    >
+                      Tentang Kami
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
             )}
-          </Button>
+
+            {/* Search Bar (Hanya Tampil di Desktop) */}
+            {/* Menggunakan Shadcn Input di dalam form untuk fungsionalitas pencarian */}
+            <form
+              onSubmit={handleSearch}
+              className="hidden md:flex relative w-64"
+            >
+              <Input
+                type="text"
+                placeholder="Cari produk..."
+                className="pl-10 pr-4 py-2 rounded-md border border-input focus:ring-ring focus:border-ring w-full"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              {/* Ikon Search di dalam input field */}
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            </form>
+          </div>
+
+          {/* Bagian Kanan: Ikon Keranjang, Ikon Avatar (Desktop) & Tombol Toggle Menu Mobile */}
+          <div className="flex items-center space-x-4">
+            {/* Ikon Search (Hanya Tampil di Mobile) */}
+            {/* Tombol ini bisa membuka modal pencarian di mobile */}
+            <Button variant="ghost" size="icon" className="md:hidden">
+              <Search className="h-5 w-5" />
+            </Button>
+
+            {/* Ikon Keranjang Belanja */}
+            {/* Menggunakan Shadcn Button dengan size 'icon' untuk bentuk lingkaran */}
+            <Button variant="ghost" size="icon" className="relative">
+              <ShoppingBag className="h-5 w-5" />
+              {/* Badge untuk jumlah item di keranjang */}
+              <span className="absolute -top-1 -right-1 bg-custom-blue text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                3 {/* Contoh: jumlah item di keranjang */}
+              </span>
+            </Button>
+
+            {/* Ikon Avatar Pengguna */}
+            {/* Menggunakan Shadcn Button dengan size 'icon' */}
+            <Button variant="ghost" size="icon">
+              <UserCircle className="h-5 w-5" />
+            </Button>
+
+            {/* Tombol Toggle Menu Mobile (Hamburger/X) */}
+            {/* Hanya tampil di mobile, mengontrol visibilitas menu overlay */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="lg:hidden"
+              onClick={toggleMobileMenu}
+            >
+              {isMobileMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </Button>
+          </div>
         </div>
       </div>
 
