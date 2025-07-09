@@ -5,6 +5,7 @@ import ProductImageMobile from "@/sections/product/ProductImageMobile";
 import ProductInfo from "@/sections/product/ProductInfo";
 import { getShoe } from "@/services/api/shoes/getShoe"; // Pastikan path ini benar
 import { Shoe, ShoesResponse } from "@/types/shoes"; // Impor tipe Shoe dan ShoesResponse
+import Link from "next/link";
 
 /**
  * @fileoverview Product Detail Page
@@ -16,9 +17,9 @@ import { Shoe, ShoesResponse } from "@/types/shoes"; // Impor tipe Shoe dan Shoe
 const ProductDetail = async ({
   params,
 }: {
-  params: Promise<{ slug: string }>; // params langsung berupa objek, tidak perlu Promise
+  params: Promise<{ slug: string }>;
 }) => {
-  const { slug } = await params; // Langsung akses slug dari params
+  const { slug } = await params;
 
   let shoe: Shoe | null = null;
   try {
@@ -30,16 +31,11 @@ const ProductDetail = async ({
         "Produk tidak ditemukan atau gagal mengambil data:",
         shoeData.message
       );
-      // Tangani kasus produk tidak ditemukan, misalnya dengan redirect atau menampilkan pesan error
-      // return <div>Produk tidak ditemukan.</div>; // Contoh sederhana
     }
   } catch (error) {
     console.error("Error fetching shoe data:", error);
-    // Tangani error fetch, misalnya dengan menampilkan pesan error generik
-    // return <div>Terjadi kesalahan saat memuat produk.</div>; // Contoh sederhana
   }
 
-  // Jika produk tidak ditemukan setelah fetch
   if (!shoe) {
     return (
       <ContainerPage>
@@ -50,29 +46,78 @@ const ProductDetail = async ({
           <p className="text-muted-foreground">
             Mohon maaf, produk yang Anda cari tidak tersedia.
           </p>
-          {/* <Link href="/" className="mt-6 text-custom-blue hover:underline">
+          <Link href="/" className="mt-6 text-custom-blue hover:underline">
             Kembali ke Beranda
-          </Link> */}
+          </Link>
         </div>
       </ContainerPage>
     );
   }
 
   // Siapkan data breadcrumb
-  const breadcrumbItems = [
-    { href: "/", label: "Beranda" },
-    {
-      href: `/categories/${shoe.category[0]?.slug || "#"}`,
-      label: shoe.category[0]?.name || "Kategori",
-    }, // Ambil kategori pertama
-    { href: `/product/${shoe.slug}`, label: shoe.name, isCurrent: true },
-  ];
+  const breadcrumbItems: {
+    href: string;
+    label: string;
+    isCurrent?: boolean;
+    hasDropdown?: boolean;
+    dropdownItems?: { href: string; label: string }[];
+  }[] = [{ href: "/", label: "Beranda" }];
 
-  // Kumpulkan semua URL gambar untuk carousel
+  const mainCategories = shoe.category;
+  const numMainCategories = mainCategories.length;
+
+  mainCategories.forEach((cat) => {
+    // Jika hanya ada SATU kategori utama DAN kategori tersebut memiliki sub-kategori
+    if (
+      numMainCategories === 1 &&
+      cat.subCategories &&
+      cat.subCategories.length > 0
+    ) {
+      // Tambahkan kategori utama
+      breadcrumbItems.push({
+        href: `/categories/${cat.slug}`,
+        label: cat.name,
+      });
+      // Kemudian tambahkan semua sub-kategori secara sejajar
+      cat.subCategories.forEach((subCategory) => {
+        // Menggunakan subCategory
+        breadcrumbItems.push({
+          href: `/collections/${subCategory.slug}`,
+          label: subCategory.name,
+        }); // Menggunakan subCategory.slug dan subCategory.name
+      });
+    } else {
+      // Jika ada BANYAK kategori utama, ATAU hanya satu kategori utama tapi tanpa sub-kategori
+      // Tambahkan kategori utama
+      breadcrumbItems.push({
+        href: `/c1/${cat.slug}`,
+        label: cat.name,
+        // Jika ada banyak kategori utama DAN kategori ini memiliki sub-kategori,
+        // maka aktifkan dropdown untuk kategori ini.
+        hasDropdown:
+          numMainCategories > 1 &&
+          cat.subCategories &&
+          cat.subCategories.length > 0, // Menggunakan subCategories
+        dropdownItems:
+          cat.subCategories?.map((subCategory) => ({
+            href: `/c2/${subCategory.slug}`,
+            label: subCategory.name,
+          })) || [], // Menggunakan subCategory
+      });
+    }
+  });
+
+  // Tambahkan produk itu sendiri sebagai item saat ini
+  breadcrumbItems.push({
+    href: `/product/${shoe.slug}`,
+    label: shoe.name,
+    isCurrent: true,
+  });
+
   const allProductImages = [
-    shoe.image, // Gambar utama
-    ...(shoe.variants || []).map((variant) => variant.imageUrl), // Gambar dari varian
-  ].filter(Boolean) as string[]; // Filter out any null/undefined values
+    shoe.image,
+    ...(shoe.variants || []).map((variant) => variant.imageUrl),
+  ].filter(Boolean) as string[];
 
   return (
     <ContainerPage>
@@ -81,8 +126,14 @@ const ProductDetail = async ({
       <div className="mt-8 grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
         {/* Sisi Kiri: Gambar Produk (2/5 lebar di desktop) */}
         <div className="lg:col-span-2">
-          <ProductImageDesktop images={allProductImages} />
-          <ProductImageMobile images={allProductImages} />
+          {/* Tampilan Mobile: Carousel */}
+          <div className="lg:hidden">
+            <ProductImageMobile images={allProductImages} />
+          </div>
+          {/* Tampilan Desktop: Single Image + Thumbnail Carousel */}
+          <div className="hidden lg:block">
+            <ProductImageDesktop images={allProductImages} />
+          </div>
         </div>
 
         {/* Sisi Kanan: Informasi Produk (3/5 lebar di desktop) */}
