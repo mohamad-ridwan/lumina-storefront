@@ -92,14 +92,14 @@ const ProductDetail = async ({
     ) {
       // Tambahkan kategori utama
       breadcrumbItems.push({
-        href: `/categories/${cat.slug}`,
+        href: `/${cat.level === 0 ? "c1" : "c2"}/${cat.slug}`,
         label: cat.name,
       });
       // Kemudian tambahkan semua sub-kategori secara sejajar
       cat.subCategories.forEach((subCategory) => {
         // Menggunakan subCategory
         breadcrumbItems.push({
-          href: `/collections/${subCategory.slug}`,
+          href: `/${subCategory.level === 0 ? "c1" : "c2"}/${subCategory.slug}`,
           label: subCategory.name,
         }); // Menggunakan subCategory.slug dan subCategory.name
       });
@@ -107,7 +107,7 @@ const ProductDetail = async ({
       // Jika ada BANYAK kategori utama, ATAU hanya satu kategori utama tapi tanpa sub-kategori
       // Tambahkan kategori utama
       breadcrumbItems.push({
-        href: `/c1/${cat.slug}`,
+        href: `/${cat.level === 0 ? "c1" : "c2"}/${cat.slug}`,
         label: cat.name,
         // Jika ada banyak kategori utama DAN kategori ini memiliki sub-kategori,
         // maka aktifkan dropdown untuk kategori ini.
@@ -117,7 +117,9 @@ const ProductDetail = async ({
           cat.subCategories.length > 0, // Menggunakan subCategories
         dropdownItems:
           cat.subCategories?.map((subCategory) => ({
-            href: `/c2/${subCategory.slug}`,
+            href: `/${subCategory.level === 0 ? "c1" : "c2"}/${
+              subCategory.slug
+            }`,
             label: subCategory.name,
           })) || [], // Menggunakan subCategory
       });

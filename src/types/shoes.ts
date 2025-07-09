@@ -12,6 +12,7 @@ export interface SubCategoryInProduct {
   _id: string;
   name: string;
   slug: string;
+  level: number;
 }
 
 /**
@@ -22,6 +23,7 @@ export interface ProductCategory {
   _id: string;
   name: string;
   slug: string;
+  level: number;
   subCategories: SubCategoryInProduct[];
 }
 
