@@ -43,6 +43,18 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ shoe }) => {
     setSelectedOptions(initialSelections);
   }, [shoe.variantAttributes]);
 
+  const createParams = (paramsData: { name: string; value: string }[]) => {
+    const params = new URLSearchParams(window.location.search);
+    if (paramsData.length > 0) {
+      paramsData.forEach((p) => {
+        params.set(p.name, p.value);
+      });
+    }
+
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
+    window.history.replaceState(null, "", newUrl);
+  };
+
   // Efek untuk mencocokkan varian setiap kali pilihan berubah
   useEffect(() => {
     const findMatchingVariant = () => {
@@ -52,6 +64,18 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ shoe }) => {
             variant.optionValues[attrName] === selectedOptions[attrName]
         );
       });
+      if (found) {
+        createParams([
+          {
+            name: "variant",
+            value: found._id,
+          },
+          {
+            name: "quantity",
+            value: `${quantity}`,
+          },
+        ]);
+      }
       setMatchedVariant(found || null);
       // Reset quantity if the matched variant changes and stock is less than current quantity
       if (found && quantity > found.stock) {
@@ -62,7 +86,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ shoe }) => {
     };
 
     findMatchingVariant();
-  }, [selectedOptions, shoe.variants]); // quantity tidak perlu di dependency array ini karena tidak mempengaruhi matchedVariant
+  }, [selectedOptions, shoe.variants, quantity]); // quantity tidak perlu di dependency array ini karena tidak mempengaruhi matchedVariant
 
   // Handler untuk perubahan pilihan varian
   const handleOptionChange = (attributeName: string, value: string) => {
