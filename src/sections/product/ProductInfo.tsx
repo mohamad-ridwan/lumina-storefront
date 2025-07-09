@@ -20,27 +20,35 @@ import { cn } from "@/lib/utils"; // Impor cn untuk menggabungkan classNames
  */
 interface ProductInfoProps {
   shoe: Shoe; // Objek sepatu lengkap
+  selectedOptionsParams?: Record<string, string>;
+  quantityParams?: number | null;
 }
 
-const ProductInfo: React.FC<ProductInfoProps> = ({ shoe }) => {
+const ProductInfo: React.FC<ProductInfoProps> = ({
+  shoe,
+  selectedOptionsParams,
+  quantityParams,
+}) => {
   // State untuk menyimpan pilihan varian saat ini
   const [selectedOptions, setSelectedOptions] = useState<
     Record<string, string>
-  >({});
+  >(selectedOptionsParams as Record<string, string>);
   // State untuk menyimpan varian yang cocok berdasarkan pilihan
   const [matchedVariant, setMatchedVariant] = useState<Variant | null>(null);
   // State untuk kuantitas produk
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(quantityParams ?? 1);
 
   // Inisialisasi pilihan varian pertama kali saat komponen dimuat
   useEffect(() => {
-    const initialSelections: Record<string, string> = {};
-    shoe.variantAttributes.forEach((attr) => {
-      if (attr.options.length > 0) {
-        initialSelections[attr.name] = attr.options[0]; // Pilih opsi pertama secara default
-      }
-    });
-    setSelectedOptions(initialSelections);
+    if (Object.keys(selectedOptions).length === 0) {
+      const initialSelections: Record<string, string> = {};
+      shoe.variantAttributes.forEach((attr) => {
+        if (attr.options.length > 0) {
+          initialSelections[attr.name] = attr.options[0]; // Pilih opsi pertama secara default
+        }
+      });
+      setSelectedOptions(initialSelections);
+    }
   }, [shoe.variantAttributes]);
 
   const createParams = (paramsData: { name: string; value: string }[]) => {
@@ -86,7 +94,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ shoe }) => {
     };
 
     findMatchingVariant();
-  }, [selectedOptions, shoe.variants, quantity]); // quantity tidak perlu di dependency array ini karena tidak mempengaruhi matchedVariant
+  }, [selectedOptions, shoe.variants]); // quantity tidak perlu di dependency array ini karena tidak mempengaruhi matchedVariant
 
   // Handler untuk perubahan pilihan varian
   const handleOptionChange = (attributeName: string, value: string) => {

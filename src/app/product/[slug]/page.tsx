@@ -16,10 +16,13 @@ import Link from "next/link";
 // Komponen ProductDetail (Server Component)
 const ProductDetail = async ({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
   const { slug } = await params;
+  const { variant, quantity } = await searchParams;
 
   let shoe: Shoe | null = null;
   try {
@@ -34,6 +37,19 @@ const ProductDetail = async ({
     }
   } catch (error) {
     console.error("Error fetching shoe data:", error);
+  }
+
+  let selectedOptions: Record<string, string> = {};
+  let quantityParams: number | null = null;
+
+  if (variant && shoe?.variants && shoe.variants.length > 0) {
+    const currentVariant = shoe.variants.find((v) => v._id === variant);
+    if (currentVariant) {
+      selectedOptions = currentVariant.optionValues;
+    }
+  }
+  if (quantity && typeof Number(quantity) === "number") {
+    quantityParams = Number(quantity);
   }
 
   if (!shoe) {
@@ -138,7 +154,11 @@ const ProductDetail = async ({
 
         {/* Sisi Kanan: Informasi Produk (3/5 lebar di desktop) */}
         <div className="lg:col-span-3">
-          <ProductInfo shoe={shoe} />
+          <ProductInfo
+            shoe={shoe}
+            quantityParams={quantityParams}
+            selectedOptionsParams={selectedOptions}
+          />
         </div>
       </div>
     </ContainerPage>
