@@ -5,11 +5,14 @@ import { Shoe, Variant, VariantAttribute } from "@/types/shoes"; // Impor tipe S
 import { Button } from "@/components/ui/button"; // Impor Button Shadcn
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"; // Impor RadioGroup Shadcn
 import { Label } from "@/components/ui/label"; // Impor Label Shadcn
+import { Input } from "@/components/ui/input"; // Impor Input Shadcn untuk kuantitas
+import { Minus, Plus } from "lucide-react"; // Ikon untuk tombol kuantitas
+import Image from "next/image"; // Menggunakan next/image untuk optimasi gambar
 
 /**
  * @fileoverview Product Info Component
  * This component displays detailed product information including name, price,
- * description, and variant selection.
+ * description, variant selection, quantity input, and fixed action buttons.
  */
 
 /**
@@ -26,6 +29,8 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ shoe }) => {
   >({});
   // State untuk menyimpan varian yang cocok berdasarkan pilihan
   const [matchedVariant, setMatchedVariant] = useState<Variant | null>(null);
+  // State untuk kuantitas produk
+  const [quantity, setQuantity] = useState(1);
 
   // Inisialisasi pilihan varian pertama kali saat komponen dimuat
   useEffect(() => {
@@ -42,7 +47,6 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ shoe }) => {
   useEffect(() => {
     const findMatchingVariant = () => {
       const found = shoe.variants.find((variant) => {
-        // Periksa apakah semua pilihan yang dipilih cocok dengan optionValues varian
         return Object.keys(selectedOptions).every(
           (attrName) =>
             variant.optionValues[attrName] === selectedOptions[attrName]
@@ -62,16 +66,83 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ shoe }) => {
     }));
   };
 
+  // Handler untuk perubahan kuantitas
+  const handleQuantityChange = (
+    type: "increment" | "decrement" | "input",
+    value?: string
+  ) => {
+    let newQuantity = quantity;
+
+    if (type === "increment") {
+      newQuantity = quantity + 1;
+    } else if (type === "decrement") {
+      newQuantity = quantity - 1;
+    } else if (type === "input" && value !== undefined) {
+      const parsedValue = parseInt(value, 10);
+      newQuantity = isNaN(parsedValue) || parsedValue < 1 ? 1 : parsedValue;
+    }
+
+    // Batasi kuantitas agar tidak melebihi stok yang tersedia
+    const maxStock = matchedVariant?.stock || shoe.stock;
+    if (newQuantity > maxStock) {
+      newQuantity = maxStock;
+    }
+    if (newQuantity < 1) {
+      newQuantity = 1; // Minimal kuantitas 1
+    }
+
+    setQuantity(newQuantity);
+  };
+
   // Tentukan harga yang akan ditampilkan
   const displayPrice = matchedVariant ? matchedVariant.price : shoe.price;
   // Tentukan stok yang akan ditampilkan
   const displayStock = matchedVariant ? matchedVariant.stock : shoe.stock;
+  // Tentukan gambar yang akan ditampilkan di fixed bar (gambar varian jika ada, jika tidak, gambar utama)
+  const displayImage = matchedVariant?.imageUrl || shoe.image;
+
+  // Handler untuk tombol "Tambah ke Keranjang"
+  const handleAddToCart = () => {
+    if (matchedVariant && displayStock > 0 && quantity > 0) {
+      console.log(
+        `Menambahkan ${quantity}x ${shoe.name} (${JSON.stringify(
+          matchedVariant.optionValues
+        )}) ke keranjang. Harga: Rp${displayPrice}`
+      );
+      // Implementasi logika tambah ke keranjang sebenarnya di sini
+      // Misalnya: dispatch(addToCart({ product: shoe, variant: matchedVariant, quantity }));
+    } else {
+      console.log(
+        "Tidak dapat menambahkan ke keranjang: Varian tidak dipilih atau stok habis."
+      );
+      // Tampilkan pesan error ke user
+    }
+  };
+
+  // Handler untuk tombol "Beli Sekarang"
+  //   const handleBuyNow = () => {
+  //     if (matchedVariant && displayStock > 0 && quantity > 0) {
+  //       console.log(
+  //         `Membeli ${quantity}x ${shoe.name} (${JSON.stringify(
+  //           matchedVariant.optionValues
+  //         )}) sekarang. Harga: Rp${displayPrice}`
+  //       );
+  //       // Implementasi logika beli sekarang sebenarnya di sini
+  //       // Misalnya: router.push('/checkout', { product: shoe, variant: matchedVariant, quantity });
+  //     } else {
+  //       console.log(
+  //         "Tidak dapat membeli sekarang: Varian tidak dipilih atau stok habis."
+  //       );
+  //       // Tampilkan pesan error ke user
+  //     }
+  //   };
 
   return (
-    <div className="flex flex-col space-y-6 px-4">
+    <div className="flex flex-col space-y-6 px-4 pb-24 lg:pb-4">
+      {" "}
+      {/* Tambahkan padding-bottom untuk fixed bar */}
       {/* Nama Produk */}
       <h1 className="text-4xl font-bold text-foreground">{shoe.name}</h1>
-
       {/* Brand dan Label */}
       <div className="flex items-center space-x-2 text-sm text-muted-foreground">
         <span>
@@ -90,12 +161,10 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ shoe }) => {
           </>
         )}
       </div>
-
       {/* Harga Produk */}
       <p className="text-5xl font-extrabold text-custom-blue">
         Rp{displayPrice.toLocaleString("id-ID")}
       </p>
-
       {/* Pilihan Varian */}
       {shoe.variantAttributes.length > 0 && (
         <div className="space-y-4">
@@ -127,7 +196,6 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ shoe }) => {
           ))}
         </div>
       )}
-
       {/* Status Stok */}
       <p className="text-lg font-medium text-foreground">
         Stok:{" "}
@@ -135,7 +203,6 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ shoe }) => {
           {displayStock > 0 ? `${displayStock} tersedia` : "Habis"}
         </span>
       </p>
-
       {/* Deskripsi Produk */}
       <div className="space-y-2 text-muted-foreground">
         <h3 className="text-xl font-semibold text-foreground">
@@ -143,18 +210,90 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ shoe }) => {
         </h3>
         <p className="leading-relaxed">{shoe.description}</p>
       </div>
+      {/* Fixed Bottom Bar untuk Kuantitas dan Tombol Aksi */}
+      <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border shadow-lg p-4 flex flex-col sm:flex-row items-center justify-between gap-4 z-40">
+        {/* Bagian Kiri: Gambar Produk dan Nama */}
+        <div className="flex items-center space-x-3 sm:space-x-4 flex-grow sm:flex-grow-0">
+          <div className="relative w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 rounded-md overflow-hidden border border-input bg-gray-50">
+            <Image
+              src={displayImage}
+              alt={shoe.name}
+              fill // Menggunakan fill agar gambar mengisi container
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw" // Optimasi ukuran gambar
+              className="object-cover"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src =
+                  "https://placehold.co/80x80/E0E0E0/666666?text=No+Image";
+              }}
+            />
+          </div>
+          <div className="flex flex-col">
+            <p className="text-base font-semibold text-foreground line-clamp-1">
+              {shoe.name}
+            </p>
+            {matchedVariant && (
+              <p className="text-sm text-muted-foreground line-clamp-1">
+                {Object.values(matchedVariant.optionValues).join(" / ")}
+              </p>
+            )}
+            <p className="text-lg font-bold text-custom-blue">
+              Rp{displayPrice.toLocaleString("id-ID")}
+            </p>
+          </div>
+        </div>
 
-      {/* Tombol Aksi */}
-      <div className="flex space-x-4 mt-6">
-        <Button className="bg-custom-blue text-white px-8 py-3 rounded-full font-semibold hover:bg-custom-blue/90 transition-colors duration-200 shadow-md">
-          Tambah ke Keranjang
-        </Button>
-        <Button
-          variant="outline"
-          className="px-8 py-3 rounded-full font-semibold border-custom-blue text-custom-blue hover:bg-custom-blue hover:text-white transition-colors duration-200"
-        >
-          Beli Sekarang
-        </Button>
+        {/* Bagian Kanan: Input Kuantitas dan Tombol Aksi */}
+        <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+          {/* Input Kuantitas */}
+          <div className="flex items-center space-x-2">
+            <Label
+              htmlFor="quantity"
+              className="text-base font-semibold text-foreground"
+            >
+              Kuantitas:
+            </Label>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => handleQuantityChange("decrement")}
+              disabled={quantity <= 1 || displayStock === 0}
+              className="w-8 h-8"
+            >
+              <Minus className="h-4 w-4" />
+            </Button>
+            <Input
+              id="quantity"
+              type="number"
+              value={quantity}
+              onChange={(e) => handleQuantityChange("input", e.target.value)}
+              className="w-16 text-center"
+              min={1}
+              max={displayStock > 0 ? displayStock : 1}
+              disabled={displayStock === 0}
+            />
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => handleQuantityChange("increment")}
+              disabled={quantity >= displayStock || displayStock === 0}
+              className="w-8 h-8"
+            >
+              <Plus className="h-4 w-4" />
+            </Button>
+          </div>
+
+          {/* Tombol Aksi */}
+          <div className="flex space-x-4 w-full sm:w-auto">
+            <Button
+              onClick={handleAddToCart}
+              disabled={displayStock === 0 || !matchedVariant}
+              className="flex-1 text-white px-6 py-3 rounded-full font-semibold  transition-colors duration-200 shadow-md"
+            >
+              Tambah ke Keranjang
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );
