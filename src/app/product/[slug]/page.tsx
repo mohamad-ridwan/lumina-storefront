@@ -1,6 +1,7 @@
 import CustomBreadcrumb from "@/components/breadcrumbs/CustomBreadcrumb"; // Pastikan path ini benar
 import ContainerPage from "@/container/ContainerPage"; // Pastikan path ini benar
-import ProductImageCarousel from "@/sections/product/ProductImageCarousel";
+import ProductImageDesktop from "@/sections/product/ProductImageDesktop";
+import ProductImageMobile from "@/sections/product/ProductImageMobile";
 import ProductInfo from "@/sections/product/ProductInfo";
 import { getShoe } from "@/services/api/shoes/getShoe"; // Pastikan path ini benar
 import { Shoe, ShoesResponse } from "@/types/shoes"; // Impor tipe Shoe dan ShoesResponse
@@ -80,7 +81,8 @@ const ProductDetail = async ({
       <div className="mt-8 grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
         {/* Sisi Kiri: Gambar Produk (2/5 lebar di desktop) */}
         <div className="lg:col-span-2">
-          <ProductImageCarousel images={allProductImages} />
+          <ProductImageDesktop images={allProductImages} />
+          <ProductImageMobile images={allProductImages} />
         </div>
 
         {/* Sisi Kanan: Informasi Produk (3/5 lebar di desktop) */}
