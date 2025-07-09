@@ -5,6 +5,7 @@ import ProductImageMobile from "@/sections/product/ProductImageMobile";
 import ProductInfo from "@/sections/product/ProductInfo";
 import { getShoe } from "@/services/api/shoes/getShoe"; // Pastikan path ini benar
 import { Shoe, ShoesResponse } from "@/types/shoes"; // Impor tipe Shoe dan ShoesResponse
+import { ActiveProductImg } from "@/types/store/product";
 import Link from "next/link";
 
 /**
@@ -131,9 +132,12 @@ const ProductDetail = async ({
   });
 
   const allProductImages = [
-    shoe.image,
-    ...(shoe.variants || []).map((variant) => variant.imageUrl),
-  ].filter(Boolean) as string[];
+    { _id: shoe._id, imageUrl: shoe.image },
+    ...(shoe.variants || []).map((variant) => ({
+      _id: variant._id,
+      imageUrl: variant.imageUrl,
+    })),
+  ].filter(Boolean) as ActiveProductImg[];
 
   return (
     <ContainerPage>

@@ -1,3 +1,4 @@
+import { ActiveProductImg } from "@/types/store/product";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -8,10 +9,7 @@ export const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
-    setActiveProductImg: (
-      state,
-      payload: PayloadAction<{ _id: string; imageUrl: string }>
-    ) => {
+    setActiveProductImg: (state, payload: PayloadAction<ActiveProductImg>) => {
       state.activeProductImg = payload;
     },
   },

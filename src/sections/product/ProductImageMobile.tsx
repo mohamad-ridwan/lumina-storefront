@@ -8,6 +8,7 @@ import {
   type CarouselApi, // Impor tipe CarouselApi
 } from "@/components/ui/carousel";
 import Image from "next/image";
+import { ActiveProductImg } from "@/types/store/product";
 
 /**
  * @fileoverview Product Image Component for Mobile View.
@@ -16,7 +17,7 @@ import Image from "next/image";
  */
 
 interface ProductImageMobileProps {
-  images: string[]; // Array URL gambar produk
+  images: ActiveProductImg[];
 }
 
 const ProductImageMobile: React.FC<ProductImageMobileProps> = ({ images }) => {
@@ -60,12 +61,12 @@ const ProductImageMobile: React.FC<ProductImageMobileProps> = ({ images }) => {
         {/* Menambahkan setApi */}
         {/* Mempertahankan ml-0 pada CarouselContent untuk menghindari jarak samping */}
         <CarouselContent className="ml-0">
-          {images.map((imageUrl, index) => (
+          {images.map((img, index) => (
             <CarouselItem key={index} className="pl-0">
               <div className="p-1">
                 <div className="flex items-center justify-center rounded-lg overflow-hidden border border-input bg-gray-50 shadow-xs">
                   <Image
-                    src={imageUrl}
+                    src={img.imageUrl}
                     alt={`Product image ${index + 1}`}
                     width={600} // Lebar gambar yang diharapkan
                     height={400} // Tinggi gambar yang diharapkan (rasio 1:1)

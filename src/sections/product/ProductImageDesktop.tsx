@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/carousel";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { ActiveProductImg } from "@/types/store/product";
 
 /**
  * @fileoverview Product Image Component for Desktop View.
@@ -18,13 +19,13 @@ import { cn } from "@/lib/utils";
  */
 
 interface ProductImageDesktopProps {
-  images: string[]; // Array URL gambar produk
+  images: ActiveProductImg[];
 }
 
 const ProductImageDesktop: React.FC<ProductImageDesktopProps> = ({
   images,
 }) => {
-  const [selectedImage, setSelectedImage] = useState<string | undefined>(
+  const [selectedImage, setSelectedImage] = useState<ActiveProductImg>(
     images[0]
   );
   const [thumbnailApi, setThumbnailApi] = useState<CarouselApi>();
@@ -88,7 +89,7 @@ const ProductImageDesktop: React.FC<ProductImageDesktopProps> = ({
       <div className="relative w-full aspect-square rounded-lg overflow-hidden mb-4">
         {selectedImage ? (
           <Image
-            src={selectedImage}
+            src={selectedImage.imageUrl}
             alt="Product main image"
             fill
             sizes="(max-width: 1024px) 100vw, 50vw" // Optimasi ukuran gambar
@@ -120,7 +121,7 @@ const ProductImageDesktop: React.FC<ProductImageDesktopProps> = ({
           <CarouselContent className="-ml-2">
             {" "}
             {/* Sesuaikan margin jika perlu */}
-            {images.map((imageUrl, index) => (
+            {images.map((img, index) => (
               <CarouselItem key={index} className="basis-1/4 pl-2">
                 {" "}
                 {/* Menampilkan 4 item per view */}
@@ -134,7 +135,7 @@ const ProductImageDesktop: React.FC<ProductImageDesktopProps> = ({
                   onClick={() => handleThumbnailClick(index)}
                 >
                   <Image
-                    src={imageUrl}
+                    src={img.imageUrl}
                     alt={`Thumbnail ${index + 1}`}
                     fill
                     sizes="(max-width: 640px) 25vw, (max-width: 768px) 20vw, 10vw" // Optimasi ukuran gambar
