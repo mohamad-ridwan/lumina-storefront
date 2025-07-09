@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { Shoe, Variant, VariantAttribute } from "@/types/shoes"; // Impor tipe Shoe dan turunannya
 import { Button } from "@/components/ui/button"; // Impor Button Shadcn
-// import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"; // Tidak lagi digunakan
 import { Label } from "@/components/ui/label"; // Impor Label Shadcn
 import { Input } from "@/components/ui/input"; // Impor Input Shadcn untuk kuantitas
 import { Minus, Plus } from "lucide-react"; // Ikon untuk tombol kuantitas
@@ -63,7 +62,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ shoe }) => {
     };
 
     findMatchingVariant();
-  }, [selectedOptions, shoe.variants]); // Tambahkan quantity ke dependency array jika ingin mereset quantity saat varian berubah
+  }, [selectedOptions, shoe.variants]); // quantity tidak perlu di dependency array ini karena tidak mempengaruhi matchedVariant
 
   // Handler untuk perubahan pilihan varian
   const handleOptionChange = (attributeName: string, value: string) => {
@@ -120,6 +119,29 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ shoe }) => {
       (v) => v.optionValues[attributeName] === optionValue
     );
     return variantWithOption?.imageUrl;
+  };
+
+  // Fungsi baru untuk memeriksa apakah opsi varian tertentu habis stok
+  const isOptionOutOfStock = (
+    attributeName: string,
+    optionValue: string
+  ): boolean => {
+    // Buat objek pilihan sementara yang menyertakan opsi yang sedang diperiksa
+    const hypotheticalSelectedOptions = {
+      ...selectedOptions,
+      [attributeName]: optionValue,
+    };
+
+    // Cari varian yang cocok dengan semua pilihan hipotetis ini
+    const matchingVariantForOption = shoe.variants.find((variant) => {
+      return Object.keys(hypotheticalSelectedOptions).every(
+        (attr) =>
+          variant.optionValues[attr] === hypotheticalSelectedOptions[attr]
+      );
+    });
+
+    // Jika tidak ada varian yang cocok dengan kombinasi ini, atau jika varian yang cocok memiliki stok 0
+    return !matchingVariantForOption || matchingVariantForOption.stock === 0;
   };
 
   // Handler untuk tombol "Tambah ke Keranjang"
@@ -186,6 +208,11 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ shoe }) => {
                     attribute.name,
                     option
                   );
+                  // Periksa apakah opsi ini, dalam kombinasi dengan pilihan lain, habis stok
+                  const isOptionCombinedOutOfStock = isOptionOutOfStock(
+                    attribute.name,
+                    option
+                  );
 
                   return (
                     <Button
@@ -193,10 +220,14 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ shoe }) => {
                       variant={isSelected ? "default" : "outline"} // Default untuk aktif, outline untuk tidak aktif
                       onClick={() => handleOptionChange(attribute.name, option)}
                       className={cn(
-                        "relative flex items-center justify-center h-9 px-3 rounded-md text-sm font-medium transition-colors duration-200 cursor-pointer",
+                        `relative flex items-center justify-center h-9 px-3 rounded-md text-sm font-medium transition-colors duration-200 cursor-pointer ${
+                          isOptionCombinedOutOfStock
+                            ? "!bg-gray-200 !text-gray-500"
+                            : "bg-transparent"
+                        }`,
                         "border", // Tambahkan border default
                         isSelected
-                          ? "bg-transparent text-[#1d4ed8] border-custom-blue hover:bg-custom-blue/90 border-[#1d4ed8]" // Gaya aktif
+                          ? "text-[#1d4ed8] border-custom-blue hover:bg-custom-blue/90 border-[#1d4ed8]" // Gaya aktif
                           : "bg-background text-foreground border-input hover:bg-accent hover:text-accent-foreground" // Gaya tidak aktif
                       )}
                     >

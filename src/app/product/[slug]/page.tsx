@@ -15,9 +15,9 @@ import { Shoe, ShoesResponse } from "@/types/shoes"; // Impor tipe Shoe dan Shoe
 const ProductDetail = async ({
   params,
 }: {
-  params: { slug: string }; // params langsung berupa objek, tidak perlu Promise
+  params: Promise<{ slug: string }>; // params langsung berupa objek, tidak perlu Promise
 }) => {
-  const { slug } = params; // Langsung akses slug dari params
+  const { slug } = await params; // Langsung akses slug dari params
 
   let shoe: Shoe | null = null;
   try {
