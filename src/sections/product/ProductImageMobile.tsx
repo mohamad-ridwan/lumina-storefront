@@ -22,7 +22,7 @@ interface ProductImageMobileProps {
 const ProductImageMobile: React.FC<ProductImageMobileProps> = ({ images }) => {
   const [api, setApi] = useState<CarouselApi>(); // State untuk menyimpan instance CarouselApi
   const [current, setCurrent] = useState(0); // State untuk menyimpan indeks gambar saat ini (1-based)
-  const [count, setCount] = useState(0); // State untuk menyimpan total jumlah gambar
+  const [count, setCount] = useState(images.length); // State untuk menyimpan total jumlah gambar
 
   // Inisialisasi API carousel dan event listener
   useEffect(() => {
@@ -31,7 +31,10 @@ const ProductImageMobile: React.FC<ProductImageMobileProps> = ({ images }) => {
     }
 
     // Set indeks awal dan total count saat API tersedia
-    setCount(api.scrollSnapList().length);
+    if (api.scrollSnapList().length === images.length) {
+      setCount(api.scrollSnapList().length);
+    }
+
     setCurrent(api.selectedScrollSnap() + 1);
 
     // Tambahkan event listener untuk perubahan slide
