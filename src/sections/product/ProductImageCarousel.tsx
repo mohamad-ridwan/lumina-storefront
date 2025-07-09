@@ -40,7 +40,7 @@ const ProductImageCarousel: React.FC<ProductImageCarouselProps> = ({
           {images.map((imageUrl, index) => (
             <CarouselItem key={index}>
               <div className="p-1">
-                <div className="flex items-center justify-center rounded-lg overflow-hidden border border-input bg-gray-50 shadow-sm">
+                <div className="flex items-center justify-center rounded-lg overflow-hidden border border-input bg-gray-50 shadow-xs">
                   <Image
                     src={imageUrl}
                     alt={`Product image ${index + 1}`}

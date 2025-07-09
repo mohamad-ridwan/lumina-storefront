@@ -173,8 +173,11 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ shoe }) => {
         <div className="space-y-4">
           {shoe.variantAttributes.map((attribute: VariantAttribute) => (
             <div key={attribute._id} className="flex flex-col space-y-2">
-              <Label className="text-sm font-[500] text-foreground">
+              <Label className="text-sm font-[500] text-foreground gap-1">
                 {attribute.name}:
+                <span className="font-normal">
+                  {matchedVariant?.optionValues[attribute.name]}
+                </span>
               </Label>
               <div className="flex flex-wrap gap-3">
                 {attribute.options.map((option: string) => {
@@ -225,7 +228,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ shoe }) => {
         </div>
       )}
       {/* Status Stok */}
-      <p className="text-lg font-medium text-foreground">
+      <p className="text-sm font-medium text-foreground">
         Stok:{" "}
         <span className={displayStock > 0 ? "text-green-600" : "text-red-600"}>
           {displayStock > 0 ? `${displayStock} tersedia` : "Habis"}
@@ -233,7 +236,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ shoe }) => {
       </p>
       {/* Deskripsi Produk */}
       <div className="space-y-2 text-muted-foreground">
-        <h3 className="text-xl font-semibold text-foreground">
+        <h3 className="text-lg font-semibold text-foreground">
           Deskripsi Produk
         </h3>
         <p className="leading-relaxed">{shoe.description}</p>
