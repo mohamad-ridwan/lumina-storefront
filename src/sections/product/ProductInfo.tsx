@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input"; // Impor Input Shadcn untuk kuant
 import { Minus, Plus } from "lucide-react"; // Ikon untuk tombol kuantitas
 import Image from "next/image"; // Menggunakan next/image untuk optimasi gambar
 import { cn } from "@/lib/utils"; // Impor cn untuk menggabungkan classNames
+import { useAppDispatch } from "@/hooks/redux";
+import { setActiveProductImg } from "@/store/product/productSlice";
 
 /**
  * @fileoverview Product Info Component
@@ -37,6 +39,8 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
   const [matchedVariant, setMatchedVariant] = useState<Variant | null>(null);
   // State untuk kuantitas produk
   const [quantity, setQuantity] = useState(quantityParams ?? 1);
+
+  const dispatch = useAppDispatch();
 
   // Inisialisasi pilihan varian pertama kali saat komponen dimuat
   useEffect(() => {
@@ -73,6 +77,9 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
         );
       });
       if (found) {
+        dispatch(
+          setActiveProductImg({ _id: found._id, imageUrl: found.imageUrl })
+        );
         createParams([
           {
             name: "variant",

@@ -12,6 +12,9 @@ import {
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { ActiveProductImg } from "@/types/store/product";
+import { createSelector } from "reselect";
+import { RootState } from "@/store";
+import { shallowEqual, useSelector } from "react-redux";
 
 /**
  * @fileoverview Product Image Component for Desktop View.
@@ -31,12 +34,30 @@ const ProductImageDesktop: React.FC<ProductImageDesktopProps> = ({
   const [thumbnailApi, setThumbnailApi] = useState<CarouselApi>();
   const [currentThumbnailIndex, setCurrentThumbnailIndex] = useState(0);
 
+  const memoizedActiveProductImg = createSelector(
+    [(state: RootState) => state.product.activeProductImg],
+    (activeProductImg) => {
+      return activeProductImg;
+    }
+  );
+
+  const activeProductImg = useSelector(
+    memoizedActiveProductImg,
+    shallowEqual
+  ) as { payload: ActiveProductImg };
+
   // Inisialisasi gambar yang dipilih saat komponen dimuat atau gambar berubah
   useEffect(() => {
     if (images && images.length > 0) {
       setSelectedImage(images[0]);
     }
   }, [images]);
+
+  useEffect(() => {
+    if (activeProductImg.payload) {
+      setSelectedImage(activeProductImg.payload);
+    }
+  }, [activeProductImg]);
 
   // Sinkronisasi thumbnail carousel dengan gambar yang dipilih
   useEffect(() => {

@@ -9,6 +9,9 @@ import {
 } from "@/components/ui/carousel";
 import Image from "next/image";
 import { ActiveProductImg } from "@/types/store/product";
+import { createSelector } from "reselect";
+import { RootState } from "@/store";
+import { shallowEqual, useSelector } from "react-redux";
 
 /**
  * @fileoverview Product Image Component for Mobile View.
@@ -24,6 +27,18 @@ const ProductImageMobile: React.FC<ProductImageMobileProps> = ({ images }) => {
   const [api, setApi] = useState<CarouselApi>(); // State untuk menyimpan instance CarouselApi
   const [current, setCurrent] = useState(0); // State untuk menyimpan indeks gambar saat ini (1-based)
   const [count, setCount] = useState(images.length); // State untuk menyimpan total jumlah gambar
+
+  const memoizedActiveProductImg = createSelector(
+    [(state: RootState) => state.product.activeProductImg],
+    (activeProductImg) => {
+      return activeProductImg;
+    }
+  );
+
+  const activeProductImg = useSelector(
+    memoizedActiveProductImg,
+    shallowEqual
+  ) as { payload: ActiveProductImg };
 
   // Inisialisasi API carousel dan event listener
   useEffect(() => {
@@ -43,6 +58,20 @@ const ProductImageMobile: React.FC<ProductImageMobileProps> = ({ images }) => {
       setCurrent(api.selectedScrollSnap() + 1);
     });
   }, [api]);
+
+  useEffect(() => {
+    if (api && activeProductImg?.payload) {
+      // Cari indeks gambar yang cocok dengan activeProductImg._id
+      const targetIndex = images.findIndex(
+        (img) => img._id === activeProductImg.payload._id
+      );
+
+      // Jika gambar ditemukan dan bukan slide yang sedang aktif, gulir ke sana
+      if (targetIndex !== -1 && api.selectedScrollSnap() !== targetIndex) {
+        api.scrollTo(targetIndex);
+      }
+    }
+  }, [api, activeProductImg, images]);
 
   if (!images || images.length === 0) {
     return (
