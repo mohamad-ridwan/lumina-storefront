@@ -85,14 +85,14 @@ const ProductImageDesktop: React.FC<ProductImageDesktopProps> = ({
   return (
     <div className="w-full hidden lg:block">
       {/* Gambar Besar Tunggal */}
-      <div className="relative w-full aspect-square rounded-lg overflow-hidden border border-input bg-gray-50 shadow-xs mb-4">
+      <div className="relative w-full aspect-square rounded-lg overflow-hidden mb-4">
         {selectedImage ? (
           <Image
             src={selectedImage}
             alt="Product main image"
             fill
             sizes="(max-width: 1024px) 100vw, 50vw" // Optimasi ukuran gambar
-            className="object-contain"
+            className="object-cover"
             priority // Prioritaskan gambar utama
             onError={(e) => {
               e.currentTarget.onerror = null;

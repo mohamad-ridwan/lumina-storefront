@@ -38,7 +38,7 @@ export async function getShoe({
       query = `id=${id}`;
     }
     if (slug) {
-      query = `slug/${slug}`;
+      params = `/slug/${slug}`;
     }
     if (offerId) {
       query = `offerId=${offerId}`;
