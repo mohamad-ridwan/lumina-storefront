@@ -10,7 +10,7 @@ import Image from "next/image"; // Menggunakan next/image untuk optimasi gambar
 import { cn } from "@/lib/utils"; // Impor cn untuk menggabungkan classNames
 import { useAppDispatch } from "@/hooks/redux";
 import { setActiveProductImg } from "@/store/product/productSlice";
-import { useCart } from "@/hooks/useCart";
+import { useReduxCart } from "@/hooks/useCart";
 import MobileBottomBar from "@/components/product/MobileBottomBar";
 
 /**
@@ -43,7 +43,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
   const [quantity, setQuantity] = useState(quantityParams ?? 1);
 
   const dispatch = useAppDispatch();
-  const { addToCart, isLoading } = useCart();
+  const { addToCart, isLoading } = useReduxCart();
 
   // Inisialisasi pilihan varian pertama kali saat komponen dimuat
   useEffect(() => {

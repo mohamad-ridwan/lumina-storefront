@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
-import { useCart } from "@/hooks/useCart";
+import { useReduxCart } from "@/hooks/useCart";
 
 const CartInitializer = () => {
-  const { getCart } = useCart();
+  const { getCart } = useReduxCart();
 
   useEffect(() => {
     // Initialize cart data on app startup
