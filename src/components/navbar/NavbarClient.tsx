@@ -40,7 +40,7 @@ const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
 
   const router = useRouter();
   const { keywords } = useParams();
-  
+
   // Get cart count from Redux store
   const cartCount = useCartCount();
 
@@ -253,15 +253,21 @@ const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
 
             {/* Ikon Keranjang Belanja */}
             {/* Menggunakan Shadcn Button dengan size 'icon' untuk bentuk lingkaran */}
-            <Button variant="ghost" size="icon" className="relative">
-              <ShoppingBag className="h-5 w-5" />
-              {/* Badge untuk jumlah item di keranjang */}
-              {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-custom-blue text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                  {cartCount}
-                </span>
-              )}
-            </Button>
+            <Link href="/cart">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="relative cursor-pointer"
+              >
+                <ShoppingBag className="h-5 w-5" />
+                {/* Badge untuk jumlah item di keranjang */}
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-custom-blue text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
+              </Button>
+            </Link>
 
             {/* Ikon Avatar Pengguna */}
             {/* Menggunakan Shadcn Button dengan size 'icon' */}
