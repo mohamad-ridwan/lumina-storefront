@@ -1,43 +1,38 @@
+"use server";
+
 import fetchData from "../fetchData";
 import { clientAPI } from "../clientAPI";
+import { GetCartResponse } from "@/types/cart";
 
 interface UpdateCartQuantityRequest {
   userId: string;
-  cartItemId: string;
+  shoeId: string;
+  selectedVariantId: string | null;
   quantity: number;
-}
-
-interface UpdateCartQuantityResponse {
-  success: boolean;
-  message: string;
-  cartItem?: {
-    _id: string;
-    quantity: number;
-    subtotal: number;
-  };
 }
 
 export async function updateCartQuantity({
   userId,
-  cartItemId,
+  shoeId,
+  selectedVariantId,
   quantity,
-}: UpdateCartQuantityRequest): Promise<UpdateCartQuantityResponse> {
+}: UpdateCartQuantityRequest): Promise<GetCartResponse> {
   try {
-    if (!userId || !cartItemId || quantity < 0) {
+    if (!userId || !shoeId || quantity < 0) {
       throw new Error("Invalid parameters for updating cart quantity.");
     }
 
-    const url = `${clientAPI}/cart/update-quantity`;
-    
+    const url = `${clientAPI}/cart/update-quantity?userId=${userId}`;
+
     const requestBody = {
-      userId,
-      cartItemId,
+      shoeId,
+      selectedVariantId,
       quantity,
     };
 
-    const responseData = await fetchData<UpdateCartQuantityResponse>(
+    const responseData = await fetchData<GetCartResponse>(
       url,
-      "PUT",
+      "POST",
       requestBody
     );
 

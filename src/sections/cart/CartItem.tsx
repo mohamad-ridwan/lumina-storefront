@@ -11,7 +11,8 @@ import Link from "next/link";
 interface CartItemProps {
   item: CartItemType;
   onUpdateQuantity: (
-    cartItemId: string,
+    shoeId: string,
+    selectedVariantId: string | null,
     newQuantity: number,
     availableStock: number
   ) => Promise<void>;
@@ -34,7 +35,12 @@ export default function CartItem({
     setIsLoading(true);
 
     try {
-      await onUpdateQuantity(item._id, newQuantity, item.availableStock);
+      await onUpdateQuantity(
+        item.shoeId as string,
+        item.selectedVariantId,
+        newQuantity,
+        item.availableStock
+      );
       setLocalQuantity(newQuantity);
     } catch (err) {
       setError(
