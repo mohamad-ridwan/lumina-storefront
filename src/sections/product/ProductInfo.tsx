@@ -190,12 +190,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
   const handleAddToCart = async () => {
     if (matchedVariant && displayStock > 0 && quantity > 0) {
       try {
-        // Untuk demo, saya menggunakan userId yang di-hardcode
-        // Dalam implementasi sebenarnya, Anda harus mendapatkan userId dari autentikasi
-        const userId = "67e65beb165cb6e6184d63c0"; // TODO: Dapatkan dari auth context
-
         await addToCart({
-          userId,
           shoeId: shoe._id,
           selectedVariantId: matchedVariant._id,
           quantity,
@@ -208,13 +203,11 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
         );
       } catch (error) {
         console.error("Error menambahkan ke keranjang:", error);
-        // TODO: Tampilkan notifikasi error ke user
       }
     } else {
       console.log(
         "Tidak dapat menambahkan ke keranjang: Varian tidak dipilih atau stok habis."
       );
-      // TODO: Tampilkan pesan error ke user
     }
   };
 

@@ -5,6 +5,8 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import ProviderClient from "@/store/ProviderClient";
 import CartInitializer from "@/components/cart/CartInitializer";
+import UserInitializer from "@/components/auth/UserInitializer";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,10 +34,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ProviderClient>
+          <UserInitializer />
           <CartInitializer />
           <Navbar />
           {children}
           <Footer />
+          <Toaster />
         </ProviderClient>
       </body>
     </html>

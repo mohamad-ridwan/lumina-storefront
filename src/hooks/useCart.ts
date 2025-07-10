@@ -2,11 +2,19 @@
 
 import { useState, useCallback } from "react";
 import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
+import { toast } from "sonner";
 import { CartItem, GetCartResponse } from "@/types/cart";
 import { updateCartQuantity } from "@/services/api/cart/updateCartQuantity";
 import { removeFromCart } from "@/services/api/cart/removeFromCart";
 import { RootState, AppDispatch } from "@/store";
-import { addToCartAsync, getCartAsync, clearCartError, resetCart } from "@/store/cart/cartSlice";
+import { 
+  addToCartAsync, 
+  getCartAsync, 
+  updateCartQuantityAsync,
+  removeFromCartAsync,
+  clearCartError, 
+  resetCart 
+} from "@/store/cart/cartSlice";
 
 // --- ORIGINAL USECARE INTERFACE ---
 export interface UseCartReturn {
@@ -111,36 +119,99 @@ const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 export const useReduxCart = () => {
   const dispatch = useAppDispatch();
   const cartState = useAppSelector((state) => state.cart);
+  const user = useAppSelector((state) => state.user.user);
 
   // Function untuk menambahkan item ke cart
   const addToCart = useCallback(
     async (params: {
-      userId: string;
       shoeId: string;
       selectedVariantId: string | null;
       quantity: number;
     }) => {
+      if (!user?._id) {
+        toast.error("Silakan login terlebih dahulu");
+        return;
+      }
+
       try {
-        const result = await dispatch(addToCartAsync(params));
-        return result;
-      } catch (error) {
+        await dispatch(addToCartAsync({
+          userId: user._id,
+          ...params
+        })).unwrap();
+        toast.success("Produk berhasil ditambahkan ke keranjang");
+      } catch (error: unknown) {
+        toast.error((error as Error)?.message || "Gagal menambahkan ke keranjang");
         throw error;
       }
     },
-    [dispatch]
+    [dispatch, user?._id]
   );
 
   // Function untuk mengambil data cart
   const getCart = useCallback(
-    async (userId: string) => {
+    async (userId?: string) => {
+      const userIdToUse = userId || user?._id;
+      if (!userIdToUse) {
+        return;
+      }
+
       try {
-        const result = await dispatch(getCartAsync(userId));
-        return result;
-      } catch (error) {
+        await dispatch(getCartAsync(userIdToUse)).unwrap();
+      } catch (error: unknown) {
+        // Don't show error toast for getting cart, as it might not exist yet
+        console.error("Error getting cart:", error);
         throw error;
       }
     },
-    [dispatch]
+    [dispatch, user?._id]
+  );
+
+  // Function untuk update quantity
+  const updateQuantity = useCallback(
+    async (params: {
+      shoeId: string;
+      selectedVariantId: string | null;
+      quantity: number;
+    }) => {
+      if (!user?._id) {
+        toast.error("Silakan login terlebih dahulu");
+        return;
+      }
+
+      try {
+        await dispatch(updateCartQuantityAsync({
+          userId: user._id,
+          ...params
+        })).unwrap();
+        toast.success("Quantity berhasil diupdate");
+      } catch (error: unknown) {
+        toast.error((error as Error)?.message || "Gagal mengupdate quantity");
+        throw error;
+      }
+    },
+    [dispatch, user?._id]
+  );
+
+  // Function untuk remove item dari cart
+  const removeItem = useCallback(
+    async (cartId: string) => {
+      if (!user?._id) {
+        toast.error("Silakan login terlebih dahulu");
+        return;
+      }
+
+      try {
+        await dispatch(removeFromCartAsync({
+          userId: user._id,
+          cartId
+        })).unwrap();
+        toast.success("Item berhasil dihapus dari keranjang");
+      } catch (error: unknown) {
+        toast.error((error as Error)?.message || "Gagal menghapus item");
+        throw error;
+      }
+    },
+    [dispatch, user?._id]
   );
 
   // Function untuk clear error
@@ -164,6 +235,8 @@ export const useReduxCart = () => {
     // Actions
     addToCart,
     getCart,
+    updateQuantity,
+    removeItem,
     clearError,
     resetCartState,
   };
