@@ -312,10 +312,10 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
         <p className="leading-relaxed">{shoe.description}</p>
       </div>
       {/* Fixed Bottom Bar untuk Kuantitas dan Tombol Aksi */}
-      <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border shadow-lg p-4 flex flex-col sm:flex-row items-center justify-between gap-4 z-40">
+      <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border shadow-lg px-8 py-2 flex flex-col sm:flex-row items-center justify-between gap-4 z-40">
         {/* Bagian Kiri: Gambar Produk dan Nama */}
         <div className="flex items-center space-x-3 sm:space-x-4 flex-grow sm:flex-grow-0">
-          <div className="relative w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 rounded-md overflow-hidden border border-input bg-gray-50">
+          <div className="relative w-16 h-16 sm:w-18 sm:h-18 flex-shrink-0 rounded-md overflow-hidden border border-input bg-gray-50">
             <Image
               src={displayImage}
               alt={shoe.name}
@@ -330,7 +330,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
             />
           </div>
           <div className="flex flex-col">
-            <p className="text-base font-semibold text-foreground line-clamp-1">
+            <p className="text-xs font-semibold text-foreground line-clamp-1">
               {shoe.name}
             </p>
             {matchedVariant && (
@@ -338,7 +338,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
                 {Object.values(matchedVariant.optionValues).join(" / ")}
               </p>
             )}
-            <p className="text-lg font-bold text-custom-blue">
+            <p className="text-sm font-bold text-custom-blue">
               Rp{displayPrice.toLocaleString("id-ID")}
             </p>
           </div>
@@ -350,7 +350,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
           <div className="flex items-center space-x-2">
             <Label
               htmlFor="quantity"
-              className="text-base font-semibold text-foreground"
+              className="text-sm font-semibold text-foreground"
             >
               Kuantitas:
             </Label>
