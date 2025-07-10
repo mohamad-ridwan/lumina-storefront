@@ -40,6 +40,7 @@ interface MobileBottomBarProps {
     attributeName: string,
     optionValue: string
   ) => string | undefined;
+  isLoading?: boolean;
 }
 
 const MobileBottomBar: React.FC<MobileBottomBarProps> = ({
@@ -55,6 +56,7 @@ const MobileBottomBar: React.FC<MobileBottomBarProps> = ({
   onAddToCart,
   isOptionOutOfStock,
   getOptionImageUrl,
+  isLoading = false,
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -112,10 +114,10 @@ const MobileBottomBar: React.FC<MobileBottomBarProps> = ({
           {/* Tombol Tambah ke Keranjang */}
           <Button
             onClick={handleAddToCartClick}
-            disabled={displayStock === 0}
+            disabled={displayStock === 0 || isLoading}
             className="bg-[#1d4ed8] text-white px-6 py-3 w-full sm:w-fit rounded-full font-semibold hover:bg-custom-blue/90 transition-colors duration-200 shadow-md flex-shrink-0"
           >
-            Tambah ke Keranjang
+            {isLoading ? "Menambahkan..." : "Tambah ke Keranjang"}
           </Button>
         </div>
       </div>
@@ -285,10 +287,10 @@ const MobileBottomBar: React.FC<MobileBottomBarProps> = ({
               </Button>
               <Button
                 onClick={handleConfirmAddToCart}
-                disabled={displayStock === 0 || !matchedVariant}
+                disabled={displayStock === 0 || !matchedVariant || isLoading}
                 className="flex-1 bg-[#1d4ed8] text-white hover:bg-custom-blue/90"
               >
-                Konfirmasi
+                {isLoading ? "Menambahkan..." : "Konfirmasi"}
               </Button>
             </div>
           </div>

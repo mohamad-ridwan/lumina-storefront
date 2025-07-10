@@ -10,6 +10,7 @@ import Image from "next/image"; // Menggunakan next/image untuk optimasi gambar
 import { cn } from "@/lib/utils"; // Impor cn untuk menggabungkan classNames
 import { useAppDispatch } from "@/hooks/redux";
 import { setActiveProductImg } from "@/store/product/productSlice";
+import { useCart } from "@/hooks/useCart";
 import MobileBottomBar from "@/components/product/MobileBottomBar";
 
 /**
@@ -42,6 +43,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
   const [quantity, setQuantity] = useState(quantityParams ?? 1);
 
   const dispatch = useAppDispatch();
+  const { addToCart, isLoading } = useCart();
 
   // Inisialisasi pilihan varian pertama kali saat komponen dimuat
   useEffect(() => {
@@ -185,20 +187,34 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
   };
 
   // Handler untuk tombol "Tambah ke Keranjang"
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (matchedVariant && displayStock > 0 && quantity > 0) {
-      console.log(
-        `Menambahkan ${quantity}x ${shoe.name} (${JSON.stringify(
-          matchedVariant.optionValues
-        )}) ke keranjang. Harga: Rp${displayPrice}`
-      );
-      // Implementasi logika tambah ke keranjang sebenarnya di sini
-      // Misalnya: dispatch(addToCart({ product: shoe, variant: matchedVariant, quantity }));
+      try {
+        // Untuk demo, saya menggunakan userId yang di-hardcode
+        // Dalam implementasi sebenarnya, Anda harus mendapatkan userId dari autentikasi
+        const userId = "demo-user-id"; // TODO: Dapatkan dari auth context
+        
+        await addToCart({
+          userId,
+          shoeId: shoe._id,
+          selectedVariantId: matchedVariant._id,
+          quantity,
+        });
+        
+        console.log(
+          `Berhasil menambahkan ${quantity}x ${shoe.name} (${JSON.stringify(
+            matchedVariant.optionValues
+          )}) ke keranjang. Harga: Rp${displayPrice}`
+        );
+      } catch (error) {
+        console.error("Error menambahkan ke keranjang:", error);
+        // TODO: Tampilkan notifikasi error ke user
+      }
     } else {
       console.log(
         "Tidak dapat menambahkan ke keranjang: Varian tidak dipilih atau stok habis."
       );
-      // Tampilkan pesan error ke user
+      // TODO: Tampilkan pesan error ke user
     }
   };
 
@@ -393,10 +409,10 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
           {/* Tombol Aksi Desktop */}
           <Button
             onClick={handleAddToCart}
-            disabled={displayStock === 0 || !matchedVariant}
+            disabled={displayStock === 0 || !matchedVariant || isLoading}
             className="bg-[#1d4ed8] text-white px-6 py-3 rounded-full font-semibold hover:bg-custom-blue/90 transition-colors duration-200 shadow-md"
           >
-            Tambah ke Keranjang
+            {isLoading ? "Menambahkan..." : "Tambah ke Keranjang"}
           </Button>
         </div>
       </div>
@@ -415,6 +431,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
         onAddToCart={handleAddToCart}
         isOptionOutOfStock={isOptionOutOfStock}
         getOptionImageUrl={getOptionImageUrl}
+        isLoading={isLoading}
       />
     </>
   );

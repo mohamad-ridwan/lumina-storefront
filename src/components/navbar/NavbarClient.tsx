@@ -22,6 +22,7 @@ import { cn } from "@/lib/utils"; // Asumsi Anda memiliki utilitas cn (classname
 import { Category } from "@/types/categories"; // Pastikan Anda mengimpor tipe Category dan Collection
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { useCartCount } from "@/hooks/useCart";
 
 type Props = {
   categories: Category[]; // Mengubah nama prop dari 'category' menjadi 'categories' agar lebih jelas
@@ -39,6 +40,9 @@ const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
 
   const router = useRouter();
   const { keywords } = useParams();
+  
+  // Get cart count from Redux store
+  const cartCount = useCartCount();
 
   // Set kategori yang di-hover pertama kali saat komponen dimuat atau kategori berubah
   useEffect(() => {
@@ -252,9 +256,11 @@ const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
             <Button variant="ghost" size="icon" className="relative">
               <ShoppingBag className="h-5 w-5" />
               {/* Badge untuk jumlah item di keranjang */}
-              <span className="absolute -top-1 -right-1 bg-custom-blue text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                3 {/* Contoh: jumlah item di keranjang */}
-              </span>
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-custom-blue text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
             </Button>
 
             {/* Ikon Avatar Pengguna */}
