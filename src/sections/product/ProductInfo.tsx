@@ -320,53 +320,85 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
       </div>
 
       {/* Desktop Actions - Hanya tampil di desktop */}
-      <div className="hidden lg:flex fixed bottom-0 bg-white left-0 right-0 flex-col sm:flex-row items-center gap-4 pt-6">
-        {/* Input Kuantitas Desktop */}
-        <div className="flex items-center space-x-2">
-          <Label
-            htmlFor="quantity-desktop"
-            className="text-sm font-semibold text-foreground"
-          >
-            Kuantitas:
-          </Label>
+      <div className="hidden lg:flex fixed bottom-0 left-0 right-0 bg-card border-t border-border shadow-lg py-2 px-12 z-40">
+        <div className="flex items-center justify-between gap-3 w-full">
+          {/* Bagian Kiri: Gambar Produk, Nama, dan Harga */}
+          <div className="flex items-center space-x-3 flex-1 min-w-0">
+            <div className="relative w-12 h-12 flex-shrink-0 rounded-md overflow-hidden border border-input bg-gray-50">
+              <Image
+                src={displayImage}
+                alt={shoe.name}
+                fill
+                sizes="48px"
+                className="object-cover"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src =
+                    "https://placehold.co/48x48/E0E0E0/666666?text=No+Image";
+                }}
+              />
+            </div>
+            <div className="flex flex-col min-w-0 flex-1">
+              <p className="text-sm font-semibold text-foreground line-clamp-1">
+                {shoe.name}
+              </p>
+              {matchedVariant && (
+                <p className="text-xs text-muted-foreground line-clamp-1">
+                  {Object.values(matchedVariant.optionValues).join(" / ")}
+                </p>
+              )}
+              <p className="text-sm font-bold text-custom-blue">
+                Rp{displayPrice.toLocaleString("id-ID")}
+              </p>
+            </div>
+          </div>
+
+          {/* Tombol Tambah ke Keranjang */}
+          <div className="flex items-center gap-2">
+            <Label
+              htmlFor="quantity-desktop"
+              className="text-sm font-semibold text-foreground"
+            >
+              Kuantitas:
+            </Label>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => handleQuantityChange("decrement")}
+              disabled={quantity <= 1 || displayStock === 0}
+              className="w-8 h-8"
+            >
+              <Minus className="h-4 w-4" />
+            </Button>
+            <Input
+              id="quantity-desktop"
+              type="number"
+              value={quantity}
+              onChange={(e) => handleQuantityChange("input", e.target.value)}
+              className="w-16 text-center"
+              min={1}
+              max={displayStock > 0 ? displayStock : 1}
+              disabled={displayStock === 0}
+            />
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => handleQuantityChange("increment")}
+              disabled={quantity >= displayStock || displayStock === 0}
+              className="w-8 h-8"
+            >
+              <Plus className="h-4 w-4" />
+            </Button>
+          </div>
+          {/* Tombol Aksi Desktop */}
           <Button
-            variant="outline"
-            size="icon"
-            onClick={() => handleQuantityChange("decrement")}
-            disabled={quantity <= 1 || displayStock === 0}
-            className="w-8 h-8"
+            onClick={handleAddToCart}
+            disabled={displayStock === 0 || !matchedVariant}
+            className="bg-[#1d4ed8] text-white px-6 py-3 rounded-full font-semibold hover:bg-custom-blue/90 transition-colors duration-200 shadow-md"
           >
-            <Minus className="h-4 w-4" />
-          </Button>
-          <Input
-            id="quantity-desktop"
-            type="number"
-            value={quantity}
-            onChange={(e) => handleQuantityChange("input", e.target.value)}
-            className="w-16 text-center"
-            min={1}
-            max={displayStock > 0 ? displayStock : 1}
-            disabled={displayStock === 0}
-          />
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => handleQuantityChange("increment")}
-            disabled={quantity >= displayStock || displayStock === 0}
-            className="w-8 h-8"
-          >
-            <Plus className="h-4 w-4" />
+            Tambah ke Keranjang
           </Button>
         </div>
-
-        {/* Tombol Aksi Desktop */}
-        <Button
-          onClick={handleAddToCart}
-          disabled={displayStock === 0 || !matchedVariant}
-          className="bg-[#1d4ed8] text-white px-6 py-3 rounded-full font-semibold hover:bg-custom-blue/90 transition-colors duration-200 shadow-md"
-        >
-          Tambah ke Keranjang
-        </Button>
       </div>
 
       {/* Mobile Bottom Bar */}
