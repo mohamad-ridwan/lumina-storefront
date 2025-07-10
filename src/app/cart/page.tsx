@@ -2,7 +2,7 @@ import CustomBreadcrumb from "@/components/breadcrumbs/CustomBreadcrumb";
 import ContainerPage from "@/container/ContainerPage";
 import { fetchCart } from "@/services/api/cart/getCart";
 import { GetCartResponse } from "@/types/cart";
-import CartContent from "@/components/cart/CartContent";
+import CartContent from "@/sections/cart/CartContent";
 
 // Helper function to get userId from localStorage in server component
 async function getUserIdFromClient(): Promise<string> {
@@ -16,11 +16,11 @@ const CartPage = async () => {
     { href: "/", label: "Beranda" },
     { href: "/cart", label: "Cart", isCurrent: true },
   ];
-  
+
   try {
     const userId = await getUserIdFromClient();
     const cartData: GetCartResponse = await fetchCart({ userId });
-    
+
     return (
       <ContainerPage>
         <CustomBreadcrumb items={breadcrumbItems} />
@@ -31,7 +31,7 @@ const CartPage = async () => {
     );
   } catch (error) {
     console.error("Error fetching cart data:", error);
-    
+
     // Return empty cart state if error occurs
     const emptyCartData: GetCartResponse = {
       success: false,
@@ -40,7 +40,7 @@ const CartPage = async () => {
       currentCartTotalUniqueItems: 0,
       cartTotalPrice: 0,
     };
-    
+
     return (
       <ContainerPage>
         <CustomBreadcrumb items={breadcrumbItems} />
