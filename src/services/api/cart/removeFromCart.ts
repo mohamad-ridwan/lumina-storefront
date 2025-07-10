@@ -1,35 +1,33 @@
+"use server";
+
 import fetchData from "../fetchData";
 import { clientAPI } from "../clientAPI";
+import { GetCartResponse } from "@/types/cart";
 
 interface RemoveFromCartRequest {
   userId: string;
-  cartItemId: string;
-}
-
-interface RemoveFromCartResponse {
-  success: boolean;
-  message: string;
+  cartId: string;
 }
 
 export async function removeFromCart({
   userId,
-  cartItemId,
-}: RemoveFromCartRequest): Promise<RemoveFromCartResponse> {
+  cartId,
+}: RemoveFromCartRequest): Promise<GetCartResponse> {
   try {
-    if (!userId || !cartItemId) {
+    if (!userId || !cartId) {
       throw new Error("User ID and Cart Item ID are required.");
     }
 
-    const url = `${clientAPI}/cart/remove`;
-    
+    const url = `${clientAPI}/cart/delete?userId=${userId}&cartId=${cartId}`;
+
     const requestBody = {
       userId,
-      cartItemId,
+      cartId,
     };
 
-    const responseData = await fetchData<RemoveFromCartResponse>(
+    const responseData = await fetchData<GetCartResponse>(
       url,
-      "DELETE",
+      "POST",
       requestBody
     );
 

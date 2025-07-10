@@ -80,19 +80,19 @@ export function useCart(
   );
 
   const removeItem = useCallback(
-    async (cartItemId: string) => {
+    async (cartId: string) => {
       setIsUpdating(true);
       try {
-        await removeFromCart({
+        const result: GetCartResponse = await removeFromCart({
           userId,
-          cartItemId,
+          cartId,
         });
 
         // Update local state
-        const updatedItems = initialCartItems.filter(
-          (item) => item._id !== cartItemId
-        );
-        updateCartItems(updatedItems, 0);
+        // const updatedItems = initialCartItems.filter(
+        //   (item) => item._id !== cartId
+        // );
+        updateCartItems(result.cartItems, result.cartTotalPrice);
       } catch (error) {
         console.error("Error removing item:", error);
         throw error;
