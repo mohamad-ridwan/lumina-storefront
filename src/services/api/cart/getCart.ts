@@ -1,3 +1,5 @@
+"use server";
+
 import { GetCartResponse } from "@/types/cart"; // Sesuaikan path ini jika perlu
 import fetchData from "../fetchData"; // Sesuaikan path ini jika perlu
 import { clientAPI } from "../clientAPI"; // Sesuaikan path ini jika perlu
