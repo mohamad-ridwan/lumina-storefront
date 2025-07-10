@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { CartItem } from "@/types/cart";
+import { CartItem, GetCartResponse } from "@/types/cart";
 import { updateCartQuantity } from "@/services/api/cart/updateCartQuantity";
 import { removeFromCart } from "@/services/api/cart/removeFromCart";
 
@@ -14,7 +14,7 @@ export interface UseCartReturn {
     availableStock: number
   ) => Promise<void>;
   removeItem: (shoeId: string) => Promise<void>;
-  updateCartItems: (updatedItems: CartItem[]) => void;
+  updateCartItems: (updatedItems: CartItem[], cartTotalPrice: number) => void;
 }
 
 export function useCart(
@@ -25,12 +25,8 @@ export function useCart(
   const [isUpdating, setIsUpdating] = useState(false);
 
   const updateCartItems = useCallback(
-    (updatedItems: CartItem[]) => {
-      const newTotal = updatedItems.reduce(
-        (sum, item) => sum + item.subtotal,
-        0
-      );
-      onCartUpdate?.(updatedItems, newTotal);
+    (updatedItems: CartItem[], cartTotalPrice: number) => {
+      onCartUpdate?.(updatedItems, cartTotalPrice);
     },
     [onCartUpdate]
   );
@@ -54,7 +50,7 @@ export function useCart(
 
       setIsUpdating(true);
       try {
-        await updateCartQuantity({
+        const resultUpdate: GetCartResponse = await updateCartQuantity({
           userId,
           shoeId,
           selectedVariantId,
@@ -62,17 +58,17 @@ export function useCart(
         });
 
         // Update local state
-        const updatedItems = initialCartItems.map((item) =>
-          item._id === shoeId
-            ? {
-                ...item,
-                quantity: newQuantity,
-                subtotal: item.price * newQuantity,
-              }
-            : item
-        );
+        // const updatedItems = initialCartItems.map((item) =>
+        //   item._id === shoeId
+        //     ? {
+        //         ...item,
+        //         quantity: newQuantity,
+        //         subtotal: item.price * newQuantity,
+        //       }
+        //     : item
+        // );
 
-        updateCartItems(updatedItems);
+        updateCartItems(resultUpdate.cartItems, resultUpdate.cartTotalPrice);
       } catch (error) {
         console.error("Error updating quantity:", error);
         throw error;
@@ -96,7 +92,7 @@ export function useCart(
         const updatedItems = initialCartItems.filter(
           (item) => item._id !== cartItemId
         );
-        updateCartItems(updatedItems);
+        updateCartItems(updatedItems, 0);
       } catch (error) {
         console.error("Error removing item:", error);
         throw error;
