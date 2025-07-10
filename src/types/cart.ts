@@ -11,6 +11,7 @@ export interface CartItem {
   price: number; // Harga per unit item (snapshot saat ditambahkan ke keranjang)
   quantity: number; // Kuantitas item ini di keranjang
   subtotal: number; // Harga total untuk item ini (price * quantity)
+  availableStock: number;
   selectedVariantId: string | null; // ID varian yang dipilih (jika ada)
   variantOptionValues: VariantOptionValues | null; // Objek berisi opsi varian (contoh: { "Ukuran": "38" })
   variantSku: string | null; // SKU varian (jika ada)
