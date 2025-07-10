@@ -257,12 +257,12 @@ const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="relative cursor-pointer"
+                className="cursor-pointer relative"
               >
                 <ShoppingBag className="h-5 w-5" />
                 {/* Badge untuk jumlah item di keranjang */}
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-custom-blue text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
                     {cartCount}
                   </span>
                 )}
