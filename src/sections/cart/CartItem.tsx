@@ -117,22 +117,40 @@ export default function CartItem({
         </div>
       </div>
 
-      {/* Product Info */}
-      <div className="flex-1 min-w-0">
-        <Link href={directProductSlug}>
-          <h3 className="font-medium text-gray-900 truncate">{item.name}</h3>
-        </Link>
+      {/* Product Info - Kontainer Utama untuk teks dan kontrol */}
+      {/* Di mobile: flex-col. Di desktop: flex-row justify-between */}
+      <div className="flex-1 min-w-0 flex flex-col md:flex-row md:justify-between">
+        {/* Bagian Kiri (Desktop) / Atas (Mobile): Nama Produk, Varian, Stok */}
+        <div className="flex-1">
+          {" "}
+          {/* flex-1 agar mengambil ruang yang tersedia */}
+          <Link href={directProductSlug}>
+            <h3 className="font-medium text-gray-900 truncate">{item.name}</h3>
+          </Link>
+          {variantInfo && (
+            <p className="text-sm text-gray-600 mt-1">{variantInfo}</p>
+          )}
+          <p className="text-sm text-gray-500 mt-1">
+            Stock tersedia: {item.availableStock}
+          </p>
+          {/* Harga untuk Mobile (muncul di bawah informasi produk) */}
+          <p className="font-medium text-gray-900 mt-1 md:hidden">
+            {formatPrice(item.price)}
+          </p>
+        </div>
 
-        {variantInfo && (
-          <p className="text-sm text-gray-600 mt-1">{variantInfo}</p>
-        )}
+        {/* Bagian Kanan (Desktop) / Bawah (Mobile): Harga Desktop, Kuantitas, dan Tombol Hapus */}
+        {/* Di mobile: flex-col, items-end. Di desktop: flex-col justify-between items-end */}
+        <div className="flex flex-col items-end md:justify-between md:w-auto">
+          {/* Harga untuk Desktop (muncul di atas kuantitas) */}
+          <p className="font-medium text-gray-900 hidden md:block">
+            {formatPrice(item.price)}
+          </p>
 
-        <p className="text-sm text-gray-500 mt-1">
-          Stock tersedia: {item.availableStock}
-        </p>
-
-        <div className="flex items-center justify-between mt-3">
-          <div className="flex items-center gap-2">
+          {/* Kuantitas dan Tombol Hapus - selalu di pojok kanan bawah */}
+          <div className="flex items-center gap-2 mt-2 md:mt-auto">
+            {" "}
+            {/* mt-auto untuk dorong ke bawah di desktop */}
             {/* Decrease Button */}
             <Button
               variant="outline"
@@ -145,7 +163,6 @@ export default function CartItem({
             >
               <Minus className="w-3 h-3" />
             </Button>
-
             {/* Quantity Input */}
             <Input
               type="number"
@@ -157,7 +174,6 @@ export default function CartItem({
               min="1"
               max={item.availableStock}
             />
-
             {/* Increase Button */}
             <Button
               variant="outline"
@@ -174,29 +190,20 @@ export default function CartItem({
             >
               <Plus className="w-3 h-3" />
             </Button>
+            {/* Remove Button */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleRemove}
+              disabled={isLoading || isUpdating}
+              className="text-red-600 hover:text-red-700 hover:bg-red-50 w-8 h-8 p-0"
+            >
+              <Trash2 className="w-4 h-4" />
+            </Button>
           </div>
-
-          {/* Remove Button */}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleRemove}
-            disabled={isLoading || isUpdating}
-            className="text-red-600 hover:text-red-700 hover:bg-red-50"
-          >
-            <Trash2 className="w-4 h-4" />
-          </Button>
         </div>
 
         {error && <p className="text-red-600 text-sm mt-2">{error}</p>}
-      </div>
-
-      {/* Price */}
-      <div className="flex-shrink-0 text-right">
-        {/* <p className="font-medium text-gray-900">
-          {formatPrice(item.subtotal)}
-        </p> */}
-        <p className="font-medium text-gray-900">{formatPrice(item.price)}</p>
       </div>
     </div>
   );

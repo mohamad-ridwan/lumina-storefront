@@ -1,39 +1,45 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { CartItem as CartItemType, GetCartResponse } from '@/types/cart';
-import { useCart } from '@/hooks/useCart';
-import CartItem from './CartItem';
-import OrderSummary from './OrderSummary';
-import MobileOrderSummary from './MobileOrderSummary';
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { CartItem as CartItemType, GetCartResponse } from "@/types/cart";
+import { useCart } from "@/hooks/useCart";
+import CartItem from "./CartItem";
+import OrderSummary from "./OrderSummary";
+import MobileOrderSummary from "./MobileOrderSummary";
 
 interface CartContentProps {
   initialCartData: GetCartResponse;
 }
 
 export default function CartContent({ initialCartData }: CartContentProps) {
-  const [cartItems, setCartItems] = useState<CartItemType[]>(initialCartData.cartItems);
+  const [cartItems, setCartItems] = useState<CartItemType[]>(
+    initialCartData.cartItems
+  );
   const [totalPrice, setTotalPrice] = useState(initialCartData.cartTotalPrice);
-  const [totalItems, setTotalItems] = useState(initialCartData.currentCartTotalUniqueItems);
-  const [userId, setUserId] = useState<string>('');
+  const [totalItems, setTotalItems] = useState(
+    initialCartData.currentCartTotalUniqueItems
+  );
+  const [userId, setUserId] = useState<string>("");
 
   // Get userId from localStorage
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const userSession = localStorage.getItem('user-session-lumina-storefront');
+    if (typeof window !== "undefined") {
+      const userSession = localStorage.getItem(
+        "user-session-lumina-storefront"
+      );
       if (userSession) {
         try {
           const sessionData = JSON.parse(userSession);
-          setUserId(sessionData.userId || sessionData.id || '');
+          setUserId(sessionData.userId || sessionData.id || "");
         } catch (error) {
-          console.error('Error parsing user session:', error);
+          console.error("Error parsing user session:", error);
           // Fallback to static userId for now
-          setUserId('67e65beb165cb6e6184d63c0');
+          setUserId("67e65beb165cb6e6184d63c0");
         }
       } else {
         // Fallback to static userId for now
-        setUserId('67e65beb165cb6e6184d63c0');
+        setUserId("67e65beb165cb6e6184d63c0");
       }
     }
   }, []);
@@ -89,7 +95,7 @@ export default function CartContent({ initialCartData }: CartContentProps) {
   return (
     <div className="space-y-6">
       {/* Desktop Layout */}
-      <div className="hidden md:grid md:grid-cols-3 gap-6">
+      <div className="hidden lg:grid lg:grid-cols-3 gap-6">
         {/* Cart Items - Left Side (2/3 width) */}
         <div className="md:col-span-2 space-y-4">
           <h1 className="text-2xl font-bold text-gray-900">
@@ -119,11 +125,9 @@ export default function CartContent({ initialCartData }: CartContentProps) {
       </div>
 
       {/* Mobile Layout */}
-      <div className="md:hidden space-y-4">
-        <h1 className="text-xl font-bold text-gray-900">
-          Keranjang Belanja
-        </h1>
-        
+      <div className="lg:hidden space-y-4">
+        <h1 className="text-xl font-bold text-gray-900">Keranjang Belanja</h1>
+
         {/* Cart Items - Mobile (single column) */}
         <div className="space-y-4 pb-24">
           {cartItems.map((item) => (
