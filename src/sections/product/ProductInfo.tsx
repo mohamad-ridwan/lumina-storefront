@@ -10,6 +10,7 @@ import Image from "next/image"; // Menggunakan next/image untuk optimasi gambar
 import { cn } from "@/lib/utils"; // Impor cn untuk menggabungkan classNames
 import { useAppDispatch } from "@/hooks/redux";
 import { setActiveProductImg } from "@/store/product/productSlice";
+import MobileBottomBar from "@/components/product/MobileBottomBar";
 
 /**
  * @fileoverview Product Info Component
@@ -202,154 +203,122 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
   };
 
   return (
-    <div className="flex flex-col space-y-6 px-4 pb-24 lg:pb-4">
-      {" "}
-      {/* Tambahkan padding-bottom untuk fixed bar */}
-      {/* Nama Produk */}
-      <h1 className="text-2xl font-semibold text-foreground">{shoe.name}</h1>
-      {/* Brand dan Label */}
-      <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-        <span>
-          Brand:{" "}
-          <span className="font-semibold text-foreground">{shoe.brand}</span>
-        </span>
-        {shoe.label && (
-          <>
-            <span className="text-gray-300">|</span>
-            <span>
-              Label:{" "}
-              <span className="font-semibold text-foreground">
-                {shoe.label}
-              </span>
-            </span>
-          </>
-        )}
-      </div>
-      {/* Harga Produk */}
-      <p className="text-3xl font-bold text-custom-blue">
-        Rp{displayPrice.toLocaleString("id-ID")}
-      </p>
-      {/* Pilihan Varian */}
-      {shoe.variantAttributes.length > 0 && (
-        <div className="space-y-4">
-          {shoe.variantAttributes.map((attribute: VariantAttribute) => (
-            <div key={attribute._id} className="flex flex-col space-y-2">
-              <Label className="text-sm font-[500] text-foreground gap-1">
-                {attribute.name}:
-                <span className="font-normal">
-                  {matchedVariant?.optionValues[attribute.name]}
+    <>
+      <div className="flex flex-col space-y-6 px-4 pb-24 lg:pb-4">
+        {/* Tambahkan padding-bottom untuk mobile fixed bar */}
+        {/* Nama Produk */}
+        <h1 className="text-2xl font-semibold text-foreground">{shoe.name}</h1>
+        {/* Brand dan Label */}
+        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+          <span>
+            Brand:{" "}
+            <span className="font-semibold text-foreground">{shoe.brand}</span>
+          </span>
+          {shoe.label && (
+            <>
+              <span className="text-gray-300">|</span>
+              <span>
+                Label:{" "}
+                <span className="font-semibold text-foreground">
+                  {shoe.label}
                 </span>
-              </Label>
-              <div className="flex flex-wrap gap-3">
-                {attribute.options.map((option: string) => {
-                  const isSelected = selectedOptions[attribute.name] === option;
-                  const optionImageUrl = getOptionImageUrl(
-                    attribute.name,
-                    option
-                  );
-                  // Periksa apakah opsi ini, dalam kombinasi dengan pilihan lain, habis stok
-                  const isOptionCombinedOutOfStock = isOptionOutOfStock(
-                    attribute.name,
-                    option
-                  );
+              </span>
+            </>
+          )}
+        </div>
+        {/* Harga Produk */}
+        <p className="text-3xl font-bold text-custom-blue">
+          Rp{displayPrice.toLocaleString("id-ID")}
+        </p>
+        {/* Pilihan Varian - Tampil di desktop dan mobile */}
+        {shoe.variantAttributes.length > 0 && (
+          <div className="space-y-4">
+            {shoe.variantAttributes.map((attribute: VariantAttribute) => (
+              <div key={attribute._id} className="flex flex-col space-y-2">
+                <Label className="text-sm font-[500] text-foreground gap-1">
+                  {attribute.name}:
+                  <span className="font-normal">
+                    {matchedVariant?.optionValues[attribute.name]}
+                  </span>
+                </Label>
+                <div className="flex flex-wrap gap-3">
+                  {attribute.options.map((option: string) => {
+                    const isSelected = selectedOptions[attribute.name] === option;
+                    const optionImageUrl = getOptionImageUrl(
+                      attribute.name,
+                      option
+                    );
+                    // Periksa apakah opsi ini, dalam kombinasi dengan pilihan lain, habis stok
+                    const isOptionCombinedOutOfStock = isOptionOutOfStock(
+                      attribute.name,
+                      option
+                    );
 
-                  return (
-                    <Button
-                      key={option}
-                      variant={isSelected ? "default" : "outline"} // Default untuk aktif, outline untuk tidak aktif
-                      onClick={() => handleOptionChange(attribute.name, option)}
-                      className={cn(
-                        `relative flex items-center justify-center h-9 px-3 rounded-md text-sm font-medium transition-colors duration-200 cursor-pointer ${
-                          isOptionCombinedOutOfStock
-                            ? "!bg-gray-200 !text-gray-500"
-                            : "bg-transparent"
-                        }`,
-                        "border", // Tambahkan border default
-                        isSelected
-                          ? "text-[#1d4ed8] border-custom-blue hover:bg-custom-blue/90 border-[#1d4ed8]" // Gaya aktif
-                          : "bg-background text-foreground border-input hover:bg-accent hover:text-accent-foreground" // Gaya tidak aktif
-                      )}
-                    >
-                      {optionImageUrl &&
-                      (attribute.name === "Warna" ||
-                        attribute.name === "Color") ? ( // Tampilkan gambar hanya untuk atribut "Warna" atau "Color"
-                        <Image
-                          src={optionImageUrl}
-                          alt={option}
-                          width={24}
-                          height={24}
-                          className={`rounded-full mr-2 object-cover ${
-                            isSelected ? "bg-[#1d4ed8]" : "bg-transparent"
-                          }`} // Gambar lingkaran kecil
-                          onError={(e) => {
-                            e.currentTarget.onerror = null;
-                            e.currentTarget.src =
-                              "https://placehold.co/24x24/E0E0E0/666666?text=X"; // Fallback placeholder
-                          }}
-                        />
-                      ) : null}
-                      {option}
-                    </Button>
-                  );
-                })}
+                    return (
+                      <Button
+                        key={option}
+                        variant={isSelected ? "default" : "outline"} // Default untuk aktif, outline untuk tidak aktif
+                        onClick={() => handleOptionChange(attribute.name, option)}
+                        className={cn(
+                          `relative flex items-center justify-center h-9 px-3 rounded-md text-sm font-medium transition-colors duration-200 cursor-pointer ${
+                            isOptionCombinedOutOfStock
+                              ? "!bg-gray-200 !text-gray-500"
+                              : "bg-transparent"
+                          }`,
+                          "border", // Tambahkan border default
+                          isSelected
+                            ? "text-[#1d4ed8] border-custom-blue hover:bg-custom-blue/90 border-[#1d4ed8]" // Gaya aktif
+                            : "bg-background text-foreground border-input hover:bg-accent hover:text-accent-foreground" // Gaya tidak aktif
+                        )}
+                      >
+                        {optionImageUrl &&
+                        (attribute.name === "Warna" ||
+                          attribute.name === "Color") ? ( // Tampilkan gambar hanya untuk atribut "Warna" atau "Color"
+                          <Image
+                            src={optionImageUrl}
+                            alt={option}
+                            width={24}
+                            height={24}
+                            className={`rounded-full mr-2 object-cover ${
+                              isSelected ? "bg-[#1d4ed8]" : "bg-transparent"
+                            }`} // Gambar lingkaran kecil
+                            onError={(e) => {
+                              e.currentTarget.onerror = null;
+                              e.currentTarget.src =
+                                "https://placehold.co/24x24/E0E0E0/666666?text=X"; // Fallback placeholder
+                            }}
+                          />
+                        ) : null}
+                        {option}
+                      </Button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
-      {/* Status Stok */}
-      <p className="text-sm font-medium text-foreground">
-        Stok:{" "}
-        <span className={displayStock > 0 ? "text-green-600" : "text-red-600"}>
-          {displayStock > 0 ? `${displayStock} tersedia` : "Habis"}
-        </span>
-      </p>
-      {/* Deskripsi Produk */}
-      <div className="space-y-2 text-muted-foreground">
-        <h3 className="text-lg font-semibold text-foreground">
-          Deskripsi Produk
-        </h3>
-        <p className="leading-relaxed">{shoe.description}</p>
-      </div>
-      {/* Fixed Bottom Bar untuk Kuantitas dan Tombol Aksi */}
-      <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border shadow-lg px-8 py-2 flex flex-col sm:flex-row items-center justify-between gap-4 z-40">
-        {/* Bagian Kiri: Gambar Produk dan Nama */}
-        <div className="flex items-center space-x-3 sm:space-x-4 flex-grow sm:flex-grow-0">
-          <div className="relative w-16 h-16 sm:w-18 sm:h-18 flex-shrink-0 rounded-md overflow-hidden border border-input bg-gray-50">
-            <Image
-              src={displayImage}
-              alt={shoe.name}
-              fill // Menggunakan fill agar gambar mengisi container
-              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw" // Optimasi ukuran gambar
-              className="object-cover"
-              onError={(e) => {
-                e.currentTarget.onerror = null;
-                e.currentTarget.src =
-                  "https://placehold.co/80x80/E0E0E0/666666?text=No+Image";
-              }}
-            />
+            ))}
           </div>
-          <div className="flex flex-col">
-            <p className="text-xs font-semibold text-foreground line-clamp-1">
-              {shoe.name}
-            </p>
-            {matchedVariant && (
-              <p className="text-sm text-muted-foreground line-clamp-1">
-                {Object.values(matchedVariant.optionValues).join(" / ")}
-              </p>
-            )}
-            <p className="text-sm font-bold text-custom-blue">
-              Rp{displayPrice.toLocaleString("id-ID")}
-            </p>
-          </div>
+        )}
+        {/* Status Stok */}
+        <p className="text-sm font-medium text-foreground">
+          Stok:{" "}
+          <span className={displayStock > 0 ? "text-green-600" : "text-red-600"}>
+            {displayStock > 0 ? `${displayStock} tersedia` : "Habis"}
+          </span>
+        </p>
+        {/* Deskripsi Produk */}
+        <div className="space-y-2 text-muted-foreground">
+          <h3 className="text-lg font-semibold text-foreground">
+            Deskripsi Produk
+          </h3>
+          <p className="leading-relaxed">{shoe.description}</p>
         </div>
 
-        {/* Bagian Kanan: Input Kuantitas dan Tombol Aksi */}
-        <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-          {/* Input Kuantitas */}
+        {/* Desktop Actions - Hanya tampil di desktop */}
+        <div className="hidden lg:flex flex-col sm:flex-row items-center gap-4 pt-6">
+          {/* Input Kuantitas Desktop */}
           <div className="flex items-center space-x-2">
             <Label
-              htmlFor="quantity"
+              htmlFor="quantity-desktop"
               className="text-sm font-semibold text-foreground"
             >
               Kuantitas:
@@ -364,7 +333,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
               <Minus className="h-4 w-4" />
             </Button>
             <Input
-              id="quantity"
+              id="quantity-desktop"
               type="number"
               value={quantity}
               onChange={(e) => handleQuantityChange("input", e.target.value)}
@@ -384,19 +353,33 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
             </Button>
           </div>
 
-          {/* Tombol Aksi */}
-          <div className="flex space-x-4 w-full sm:w-auto">
-            <Button
-              onClick={handleAddToCart}
-              disabled={displayStock === 0 || !matchedVariant}
-              className="flex-1 bg-[#1d4ed8] text-white px-6 py-3 rounded-full font-semibold hover:bg-custom-blue/90 transition-colors duration-200 shadow-md"
-            >
-              Tambah ke Keranjang
-            </Button>
-          </div>
+          {/* Tombol Aksi Desktop */}
+          <Button
+            onClick={handleAddToCart}
+            disabled={displayStock === 0 || !matchedVariant}
+            className="bg-[#1d4ed8] text-white px-6 py-3 rounded-full font-semibold hover:bg-custom-blue/90 transition-colors duration-200 shadow-md"
+          >
+            Tambah ke Keranjang
+          </Button>
         </div>
       </div>
-    </div>
+
+      {/* Mobile Bottom Bar */}
+      <MobileBottomBar
+        shoe={shoe}
+        selectedOptions={selectedOptions}
+        matchedVariant={matchedVariant}
+        quantity={quantity}
+        displayPrice={displayPrice}
+        displayStock={displayStock}
+        displayImage={displayImage}
+        onOptionChange={handleOptionChange}
+        onQuantityChange={handleQuantityChange}
+        onAddToCart={handleAddToCart}
+        isOptionOutOfStock={isOptionOutOfStock}
+        getOptionImageUrl={getOptionImageUrl}
+      />
+    </>
   );
 };
 
