@@ -101,7 +101,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
     };
 
     findMatchingVariant();
-  }, [selectedOptions, shoe.variants]); // quantity tidak perlu di dependency array ini karena tidak mempengaruhi matchedVariant
+  }, [selectedOptions, shoe.variants, quantity]); // quantity tidak perlu di dependency array ini karena tidak mempengaruhi matchedVariant
 
   // Handler untuk perubahan pilihan varian
   const handleOptionChange = (attributeName: string, value: string) => {
