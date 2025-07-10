@@ -20,7 +20,7 @@ export default function CartContent({ initialCartData }: CartContentProps) {
   const [totalItems, setTotalItems] = useState(
     initialCartData.currentCartTotalUniqueItems
   );
-  const [userId, setUserId] = useState<string>("");
+  const [userId, setUserId] = useState<string>("67e65beb165cb6e6184d63c0");
 
   // Get userId from localStorage
   useEffect(() => {
@@ -31,7 +31,9 @@ export default function CartContent({ initialCartData }: CartContentProps) {
       if (userSession) {
         try {
           const sessionData = JSON.parse(userSession);
-          setUserId(sessionData.userId || sessionData.id || "");
+          setUserId(
+            sessionData.userId || sessionData.id || "67e65beb165cb6e6184d63c0"
+          );
         } catch (error) {
           console.error("Error parsing user session:", error);
           // Fallback to static userId for now

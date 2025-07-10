@@ -192,15 +192,15 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
       try {
         // Untuk demo, saya menggunakan userId yang di-hardcode
         // Dalam implementasi sebenarnya, Anda harus mendapatkan userId dari autentikasi
-        const userId = "demo-user-id"; // TODO: Dapatkan dari auth context
-        
+        const userId = "67e65beb165cb6e6184d63c0"; // TODO: Dapatkan dari auth context
+
         await addToCart({
           userId,
           shoeId: shoe._id,
           selectedVariantId: matchedVariant._id,
           quantity,
         });
-        
+
         console.log(
           `Berhasil menambahkan ${quantity}x ${shoe.name} (${JSON.stringify(
             matchedVariant.optionValues

@@ -12,8 +12,8 @@ const CartInitializer = () => {
       try {
         // TODO: Replace with actual user ID from authentication
         // For now using demo user ID
-        const userId = "demo-user-id";
-        
+        const userId = "67e65beb165cb6e6184d63c0";
+
         if (userId) {
           await getCart(userId);
         }
