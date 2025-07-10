@@ -39,20 +39,24 @@ export default function MobileOrderSummary({
       {/* Fixed bottom bar for mobile */}
       <div className="fixed bottom-0 mb-0 left-0 right-0 bg-white border-t shadow-lg p-4 z-50 lg:hidden">
         <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm text-gray-600">{totalItems} produk</p>
-            <p className="font-semibold text-lg">{formatPrice(finalTotal)}</p>
+          <div className="hidden min-[400px]:flex flex-col">
+            <p className="text-xs text-gray-600">{totalItems} produk</p>
+            <p className="font-semibold text-xs">{formatPrice(finalTotal)}</p>
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex gap-2 w-full min-[400px]:w-fit min-[400px]:pr-5">
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
               <DialogTrigger asChild>
-                <Button variant="outline" size="sm">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="!w-[50%] min-[400px]:w-fit"
+                >
                   <ShoppingCart className="w-4 h-4 mr-2" />
                   Detail
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-sm mx-auto">
+              <DialogContent className="max-w-[95%] min-[400px]:max-w-sm mx-auto">
                 <DialogHeader>
                   <DialogTitle>Ringkasan Pesanan</DialogTitle>
                 </DialogHeader>
@@ -95,8 +99,9 @@ export default function MobileOrderSummary({
             </Dialog>
 
             <Button
-              className="flex-1 min-w-[120px]"
+              className="flex-1 w-[50%] min-[400px]:min-w-[120px]"
               disabled={isUpdating || totalItems === 0}
+              size="sm"
             >
               {isUpdating ? "Memperbarui..." : "Checkout"}
             </Button>

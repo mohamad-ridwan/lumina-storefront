@@ -98,7 +98,7 @@ export default function CartContent({ initialCartData }: CartContentProps) {
       <div className="hidden lg:grid lg:grid-cols-3 gap-6">
         {/* Cart Items - Left Side (2/3 width) */}
         <div className="md:col-span-2 space-y-4">
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-xl font-bold text-gray-900">
             Keranjang Belanja ({totalItems} produk)
           </h1>
           <div className="space-y-4">

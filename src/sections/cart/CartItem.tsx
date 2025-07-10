@@ -99,7 +99,7 @@ export default function CartItem({
     <div className="flex gap-4 p-4 border rounded-lg bg-white">
       {/* Product Image */}
       <div className="flex-shrink-0">
-        <div className="relative w-20 h-20 md:w-24 md:h-24 overflow-hidden rounded-md">
+        <div className="relative w-16 h-16 md:w-24 md:h-24 overflow-hidden rounded-md">
           {item.image ? (
             <Link href={directProductSlug}>
               <Image
@@ -125,16 +125,20 @@ export default function CartItem({
           {" "}
           {/* flex-1 agar mengambil ruang yang tersedia */}
           <Link href={directProductSlug}>
-            <h3 className="font-medium text-gray-900 truncate">{item.name}</h3>
+            <h3 className="font-medium text-xs sm:text-[16px] text-gray-900 truncate">
+              {item.name}
+            </h3>
           </Link>
           {variantInfo && (
-            <p className="text-sm text-gray-600 mt-1">{variantInfo}</p>
+            <p className="text-xs sm:text-sm text-gray-600 mt-1">
+              {variantInfo}
+            </p>
           )}
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-xs sm:text-sm text-gray-500 mt-1">
             Stock tersedia: {item.availableStock}
           </p>
           {/* Harga untuk Mobile (muncul di bawah informasi produk) */}
-          <p className="font-medium text-gray-900 mt-1 md:hidden">
+          <p className="font-medium text-sm sm:text-sm text-gray-900 mt-1 md:hidden">
             {formatPrice(item.price)}
           </p>
         </div>
@@ -159,7 +163,7 @@ export default function CartItem({
                 handleQuantityChange(Math.max(1, localQuantity - 1))
               }
               disabled={isLoading || isUpdating || localQuantity <= 1}
-              className="w-8 h-8 p-0"
+              className="w-8 sm:h-8 p-0"
             >
               <Minus className="w-3 h-3" />
             </Button>
