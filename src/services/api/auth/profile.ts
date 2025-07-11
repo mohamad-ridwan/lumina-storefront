@@ -34,10 +34,14 @@ export async function getUserProfile(token: string): Promise<User> {
     if (responseData.data) {
       return responseData.data;
     } else {
-      throw new Error(responseData.message || "Failed to get user profile.");
+      throw new Error(
+        "Sesi tidak valid atau autentikasi gagal. Silakan login kembali."
+      );
     }
   } catch (error) {
     console.error("Error getting user profile:", error);
-    throw error;
+    throw new Error(
+      "Sesi tidak valid atau autentikasi gagal. Silakan login kembali."
+    );
   }
 }

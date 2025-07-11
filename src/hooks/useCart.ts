@@ -68,7 +68,8 @@ export const useReduxCart = () => {
         toast.success("Produk berhasil ditambahkan ke keranjang");
       } catch (error: unknown) {
         toast.error(
-          (error as Error)?.message || "Gagal menambahkan ke keranjang"
+          (error as Error)?.message ||
+            "Gagal menambahkan ke keranjang. Mohon coba lagi"
         );
         throw error;
       }
@@ -133,7 +134,10 @@ export const useReduxCart = () => {
         ).unwrap();
         toast.success("Quantity berhasil diupdate");
       } catch (error: unknown) {
-        toast.error((error as Error)?.message || "Gagal mengupdate quantity");
+        toast.error(
+          (error as Error)?.message ||
+            "Gagal mengupdate quantity. Mohon coba lagi"
+        );
         throw error;
       }
     },
@@ -158,7 +162,9 @@ export const useReduxCart = () => {
         ).unwrap();
         toast.success("Item berhasil dihapus dari keranjang");
       } catch (error: unknown) {
-        toast.error((error as Error)?.message || "Gagal menghapus item");
+        toast.error(
+          (error as Error)?.message || "Gagal menghapus item. Mohon coba lagi"
+        );
         throw error;
       }
     },

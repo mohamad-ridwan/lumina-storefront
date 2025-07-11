@@ -34,7 +34,10 @@ export async function authValidationClient(
     router.push("/auth/login");
     setTimeout(() => {
       dispatch(logout());
+      return error;
     }, 1000);
-    throw error;
+    throw new Error(
+      "Sesi tidak valid atau autentikasi gagal. Silakan login kembali."
+    );
   }
 }
