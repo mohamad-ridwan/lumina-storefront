@@ -1,17 +1,22 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 import Link from "next/link";
 import { AppDispatch } from "@/store";
-import { loginAsync } from "@/store/user/userSlice";
-import { setClientSessionCookie } from "@/lib/cookies";
+import { loginAsync, logout } from "@/store/user/userSlice";
+import {
+  removeClientSessionCookie,
+  setClientSessionCookie,
+} from "@/lib/cookies";
 import AuthLayout from "@/components/auth/AuthLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { resetCart } from "@/store/cart/cartSlice";
+import { resetActiveProductImg } from "@/store/product/productSlice";
 
 function LoginForm() {
   const [formData, setFormData] = useState({
@@ -20,11 +25,18 @@ function LoginForm() {
     phoneNumber: "",
   });
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get('redirect') || '/';
+  const redirectTo = searchParams.get("redirect") || "/";
+
+  useEffect(() => {
+    dispatch(resetCart());
+    dispatch(logout());
+    dispatch(resetActiveProductImg());
+    removeClientSessionCookie();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -35,20 +47,20 @@ function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.username || !formData.password || !formData.phoneNumber) {
       toast.error("Semua field harus diisi");
       return;
     }
 
     setIsLoading(true);
-    
+
     try {
       const result = await dispatch(loginAsync(formData)).unwrap();
-      
+
       // Save token to cookie
       setClientSessionCookie(result.token);
-      
+
       toast.success("Login berhasil!");
       router.push(redirectTo);
     } catch (error: unknown) {
@@ -59,8 +71,8 @@ function LoginForm() {
   };
 
   return (
-    <AuthLayout 
-      title="Masuk ke Akun Anda" 
+    <AuthLayout
+      title="Masuk ke Akun Anda"
       subtitle="Masukkan detail akun Anda untuk melanjutkan"
     >
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -106,18 +118,14 @@ function LoginForm() {
           />
         </div>
 
-        <Button
-          type="submit"
-          className="w-full"
-          disabled={isLoading}
-        >
+        <Button type="submit" className="w-full" disabled={isLoading}>
           {isLoading ? "Sedang masuk..." : "Masuk"}
         </Button>
 
         <div className="text-center text-sm">
           <span className="text-gray-600">Belum punya akun? </span>
-          <Link 
-            href="/auth/register" 
+          <Link
+            href="/auth/register"
             className="text-blue-600 hover:text-blue-500 font-medium"
           >
             Daftar sekarang
