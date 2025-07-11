@@ -26,6 +26,7 @@ import {
   selectCartAddingItem,
 } from "@/store/selectors";
 import { useRouter } from "next/navigation";
+import { authValidationClient } from "@/lib/auth-validation-client";
 
 // Redux-based cart hook for global state management
 export const useReduxCart = () => {
@@ -57,6 +58,7 @@ export const useReduxCart = () => {
       }
 
       try {
+        await authValidationClient(router, dispatch);
         await dispatch(
           addToCartAsync({
             userId: user._id,
@@ -120,6 +122,7 @@ export const useReduxCart = () => {
       }
 
       try {
+        await authValidationClient(router, dispatch);
         await dispatch(
           updateCartQuantityAsync({
             userId: user._id,
@@ -146,6 +149,7 @@ export const useReduxCart = () => {
       }
 
       try {
+        await authValidationClient(router, dispatch);
         await dispatch(
           removeFromCartAsync({
             userId: user._id,

@@ -1,10 +1,15 @@
-import { createSlice, createAsyncThunk, PayloadAction, ActionReducerMapBuilder } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  PayloadAction,
+  ActionReducerMapBuilder,
+} from "@reduxjs/toolkit";
 import { User, LoginResponse } from "@/types/user";
 import { loginUser } from "@/services/api/auth/login";
 import { getUserProfile } from "@/services/api/auth/profile";
 
 // Types untuk user state
-interface UserState {
+export interface UserState {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
@@ -45,7 +50,9 @@ export const getUserProfileAsync = createAsyncThunk(
       const response = await getUserProfile(token);
       return response;
     } catch (error: unknown) {
-      return rejectWithValue((error as Error).message || "Failed to get user profile");
+      return rejectWithValue(
+        (error as Error).message || "Failed to get user profile"
+      );
     }
   }
 );
@@ -67,7 +74,10 @@ const userSlice = createSlice({
       state.error = null;
     },
     // Action untuk set user dari cookie pada server-side
-    setUserFromCookie: (state: UserState, action: PayloadAction<{ user: User; token: string }>) => {
+    setUserFromCookie: (
+      state: UserState,
+      action: PayloadAction<{ user: User; token: string }>
+    ) => {
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.isAuthenticated = true;
@@ -81,29 +91,35 @@ const userSlice = createSlice({
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(loginAsync.fulfilled, (state: UserState, action: PayloadAction<LoginResponse>) => {
-        state.isLoading = false;
-        state.user = action.payload.data;
-        state.token = action.payload.token;
-        state.isAuthenticated = true;
-        state.error = null;
-      })
+      .addCase(
+        loginAsync.fulfilled,
+        (state: UserState, action: PayloadAction<LoginResponse>) => {
+          state.isLoading = false;
+          state.user = action.payload.data;
+          state.token = action.payload.token;
+          state.isAuthenticated = true;
+          state.error = null;
+        }
+      )
       .addCase(loginAsync.rejected, (state: UserState, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
-      })
+      });
     // Get Profile
     builder
       .addCase(getUserProfileAsync.pending, (state: UserState) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(getUserProfileAsync.fulfilled, (state: UserState, action: PayloadAction<User>) => {
-        state.isLoading = false;
-        state.user = action.payload;
-        state.isAuthenticated = true;
-        state.error = null;
-      })
+      .addCase(
+        getUserProfileAsync.fulfilled,
+        (state: UserState, action: PayloadAction<User>) => {
+          state.isLoading = false;
+          state.user = action.payload;
+          state.isAuthenticated = true;
+          state.error = null;
+        }
+      )
       .addCase(getUserProfileAsync.rejected, (state: UserState, action) => {
         state.isLoading = false;
         state.error = action.payload as string;

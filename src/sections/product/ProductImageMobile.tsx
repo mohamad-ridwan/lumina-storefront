@@ -35,10 +35,7 @@ const ProductImageMobile: React.FC<ProductImageMobileProps> = ({ images }) => {
     }
   );
 
-  const activeProductImg = useSelector(
-    memoizedActiveProductImg,
-    shallowEqual
-  ) as { payload: ActiveProductImg };
+  const activeProductImg = useSelector(memoizedActiveProductImg, shallowEqual);
 
   // Inisialisasi API carousel dan event listener
   useEffect(() => {
@@ -60,10 +57,10 @@ const ProductImageMobile: React.FC<ProductImageMobileProps> = ({ images }) => {
   }, [api]);
 
   useEffect(() => {
-    if (api && activeProductImg?.payload) {
+    if (api && activeProductImg) {
       // Cari indeks gambar yang cocok dengan activeProductImg._id
       const targetIndex = images.findIndex(
-        (img) => img._id === activeProductImg.payload._id
+        (img) => img._id === activeProductImg._id
       );
 
       // Jika gambar ditemukan dan bukan slide yang sedang aktif, gulir ke sana

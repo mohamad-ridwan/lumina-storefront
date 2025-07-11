@@ -41,10 +41,7 @@ const ProductImageDesktop: React.FC<ProductImageDesktopProps> = ({
     }
   );
 
-  const activeProductImg = useSelector(
-    memoizedActiveProductImg,
-    shallowEqual
-  ) as { payload: ActiveProductImg };
+  const activeProductImg = useSelector(memoizedActiveProductImg, shallowEqual);
 
   // Inisialisasi gambar yang dipilih saat komponen dimuat atau gambar berubah
   useEffect(() => {
@@ -54,8 +51,8 @@ const ProductImageDesktop: React.FC<ProductImageDesktopProps> = ({
   }, [images]);
 
   useEffect(() => {
-    if (activeProductImg.payload) {
-      setSelectedImage(activeProductImg.payload);
+    if (activeProductImg) {
+      setSelectedImage(activeProductImg);
     }
   }, [activeProductImg]);
 
