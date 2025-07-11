@@ -22,6 +22,7 @@ import {
   selectUser,
   selectCartCount
 } from "@/store/selectors";
+import { useRouter } from "next/navigation";
 
 // Redux-based cart hook for global state management
 export const useReduxCart = () => {
@@ -34,6 +35,8 @@ export const useReduxCart = () => {
   const error = useSelector(selectCartError);
   const user = useSelector(selectUser);
 
+  const router = useRouter();
+
   // Function untuk menambahkan item ke cart
   const addToCart = useCallback(
     async (params: {
@@ -43,21 +46,26 @@ export const useReduxCart = () => {
     }) => {
       if (!user?._id) {
         toast.error("Silakan login terlebih dahulu");
+        router.push("/auth/login");
         return;
       }
 
       try {
-        await dispatch(addToCartAsync({
-          userId: user._id,
-          ...params
-        })).unwrap();
+        await dispatch(
+          addToCartAsync({
+            userId: user._id,
+            ...params,
+          })
+        ).unwrap();
         toast.success("Produk berhasil ditambahkan ke keranjang");
       } catch (error: unknown) {
-        toast.error((error as Error)?.message || "Gagal menambahkan ke keranjang");
+        toast.error(
+          (error as Error)?.message || "Gagal menambahkan ke keranjang"
+        );
         throw error;
       }
     },
-    [dispatch, user?._id]
+    [dispatch, user?._id, router]
   );
 
   // Function untuk mengambil data cart
@@ -128,10 +136,12 @@ export const useReduxCart = () => {
       }
 
       try {
-        await dispatch(removeFromCartAsync({
-          userId: user._id,
-          cartId
-        })).unwrap();
+        await dispatch(
+          removeFromCartAsync({
+            userId: user._id,
+            cartId,
+          })
+        ).unwrap();
         toast.success("Item berhasil dihapus dari keranjang");
       } catch (error: unknown) {
         toast.error((error as Error)?.message || "Gagal menghapus item");
@@ -174,7 +184,7 @@ export const useReduxCart = () => {
 // Hook untuk hanya menggunakan cart count (untuk navbar)
 export const useCartCount = () => {
   const cartCount = useSelector(selectCartCount);
-  
+
   return cartCount;
 };
 
