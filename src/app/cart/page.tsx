@@ -39,6 +39,7 @@ const CartPage = async () => {
       cartItems: [],
       currentCartTotalUniqueItems: 0,
       cartTotalPrice: 0,
+      totalProduct: 0,
     };
 
     return (

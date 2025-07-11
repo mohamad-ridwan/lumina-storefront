@@ -15,6 +15,16 @@ import {
   clearCartError, 
   resetCart 
 } from "@/store/cart/cartSlice";
+import { 
+  selectCartItems,
+  selectCartTotalPrice,
+  selectCartTotalUniqueItems,
+  selectCartTotalProducts,
+  selectCartLoading,
+  selectCartError,
+  selectUser,
+  selectCartCount
+} from "@/store/selectors";
 
 // --- ORIGINAL USECARE INTERFACE ---
 export interface UseCartReturn {
@@ -118,8 +128,13 @@ const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 // New Redux-based cart hook for global state management
 export const useReduxCart = () => {
   const dispatch = useAppDispatch();
-  const cartState = useAppSelector((state) => state.cart);
-  const user = useAppSelector((state) => state.user.user);
+  const cartItems = useSelector(selectCartItems);
+  const cartTotalPrice = useSelector(selectCartTotalPrice);
+  const currentCartTotalUniqueItems = useSelector(selectCartTotalUniqueItems);
+  const totalProduct = useSelector(selectCartTotalProducts);
+  const isLoading = useSelector(selectCartLoading);
+  const error = useSelector(selectCartError);
+  const user = useSelector(selectUser);
 
   // Function untuk menambahkan item ke cart
   const addToCart = useCallback(
@@ -226,11 +241,12 @@ export const useReduxCart = () => {
 
   return {
     // State
-    cartItems: cartState.cartItems,
-    currentCartTotalUniqueItems: cartState.currentCartTotalUniqueItems,
-    cartTotalPrice: cartState.cartTotalPrice,
-    isLoading: cartState.isLoading,
-    error: cartState.error,
+    cartItems,
+    currentCartTotalUniqueItems,
+    cartTotalPrice,
+    totalProduct,
+    isLoading,
+    error,
     
     // Actions
     addToCart,
@@ -244,9 +260,7 @@ export const useReduxCart = () => {
 
 // Hook untuk hanya menggunakan cart count (untuk navbar)
 export const useCartCount = () => {
-  const currentCartTotalUniqueItems = useAppSelector(
-    (state) => state.cart.currentCartTotalUniqueItems
-  );
+  const cartCount = useSelector(selectCartCount);
   
-  return currentCartTotalUniqueItems;
+  return cartCount;
 };

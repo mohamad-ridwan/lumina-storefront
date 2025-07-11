@@ -27,9 +27,11 @@ export interface GetCartResponse {
   cartItems: CartItem[]; // Array dari item-item di keranjang
   currentCartTotalUniqueItems: number; // Total jumlah item unik di keranjang
   cartTotalPrice: number; // Total harga semua item di keranjang
+  totalProduct: number; // Total jumlah produk (sum of all quantities)
 }
 
 // Contoh penggunaan (jika di TypeScript):
 // const responseData: GetCartResponse = { ... data dari API ... };
 // console.log(responseData.cartItems[0].name);
 // console.log(responseData.cartTotalPrice);
+// console.log(responseData.totalProduct);

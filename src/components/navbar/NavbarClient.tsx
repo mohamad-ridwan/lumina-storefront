@@ -23,6 +23,7 @@ import { Category } from "@/types/categories"; // Pastikan Anda mengimpor tipe C
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useCartCount } from "@/hooks/useCart";
+import UserDropdown from "./UserDropdown";
 
 type Props = {
   categories: Category[]; // Mengubah nama prop dari 'category' menjadi 'categories' agar lebih jelas
@@ -269,11 +270,8 @@ const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
               </Button>
             </Link>
 
-            {/* Ikon Avatar Pengguna */}
-            {/* Menggunakan Shadcn Button dengan size 'icon' */}
-            <Button variant="ghost" size="icon">
-              <UserCircle className="h-5 w-5" />
-            </Button>
+            {/* User Dropdown */}
+            <UserDropdown />
 
             {/* Tombol Toggle Menu Mobile (Hamburger/X) */}
             {/* Hanya tampil di mobile, mengontrol visibilitas menu overlay */}
@@ -297,11 +295,12 @@ const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
       {/* Ditampilkan/disembunyikan berdasarkan state 'isMobileMenuOpen' */}
       {/* Menggunakan transisi untuk efek slide in/out yang halus */}
       <div
-        className={`md:hidden absolute top-full left-0 w-full bg-card shadow-lg py-4 transition-all duration-300 ease-in-out ${
+        className={`md:hidden absolute top-full left-0 w-full bg-card shadow-lg transition-all duration-300 ease-in-out ${
           isMobileMenuOpen ? "block" : "hidden"
         }`}
       >
-        <div className="flex flex-col items-start px-4 space-y-4">
+        <div className="max-h-[calc(100vh-100px)] overflow-y-auto py-4">
+          <div className="flex flex-col items-start px-4 space-y-4">
           {/* Search Bar (Mobile) - ditampilkan di dalam menu mobile */}
           <form onSubmit={handleSearch} className="relative w-full">
             <Input
@@ -381,6 +380,10 @@ const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
           >
             Kontak
           </a>
+          
+          {/* User Dropdown Mobile */}
+          <UserDropdown isMobile />
+        </div>
         </div>
       </div>
     </nav>

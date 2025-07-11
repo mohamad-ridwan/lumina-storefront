@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 import Link from "next/link";
@@ -23,6 +23,8 @@ export default function LoginPage() {
   
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get('redirect') || '/';
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -48,7 +50,7 @@ export default function LoginPage() {
       setClientSessionCookie(result.token);
       
       toast.success("Login berhasil!");
-      router.push("/");
+      router.push(redirectTo);
     } catch (error: unknown) {
       toast.error((error as Error)?.message || "Login gagal");
     } finally {

@@ -10,6 +10,7 @@ interface CartState {
   cartItems: CartItem[];
   currentCartTotalUniqueItems: number;
   cartTotalPrice: number;
+  totalProduct: number;
   isLoading: boolean;
   error: string | null;
 }
@@ -19,6 +20,7 @@ const initialState: CartState = {
   cartItems: [],
   currentCartTotalUniqueItems: 0,
   cartTotalPrice: 0,
+  totalProduct: 0,
   isLoading: false,
   error: null,
 };
@@ -111,6 +113,7 @@ const cartSlice = createSlice({
       state.cartItems = [];
       state.currentCartTotalUniqueItems = 0;
       state.cartTotalPrice = 0;
+      state.totalProduct = 0;
       state.error = null;
     },
   },
@@ -126,6 +129,7 @@ const cartSlice = createSlice({
         state.cartItems = action.payload.cartItems;
         state.currentCartTotalUniqueItems = action.payload.currentCartTotalUniqueItems;
         state.cartTotalPrice = action.payload.cartTotalPrice;
+        state.totalProduct = action.payload.totalProduct || 0;
         state.error = null;
       })
       .addCase(getCartAsync.rejected, (state: CartState, action) => {
@@ -143,6 +147,7 @@ const cartSlice = createSlice({
         state.cartItems = action.payload.cartItems;
         state.currentCartTotalUniqueItems = action.payload.currentCartTotalUniqueItems;
         state.cartTotalPrice = action.payload.cartTotalPrice;
+        state.totalProduct = action.payload.totalProduct || 0;
         state.error = null;
       })
       .addCase(addToCartAsync.rejected, (state: CartState, action) => {
@@ -160,6 +165,7 @@ const cartSlice = createSlice({
         state.cartItems = action.payload.cartItems;
         state.currentCartTotalUniqueItems = action.payload.currentCartTotalUniqueItems;
         state.cartTotalPrice = action.payload.cartTotalPrice;
+        state.totalProduct = action.payload.totalProduct || 0;
         state.error = null;
       })
       .addCase(updateCartQuantityAsync.rejected, (state: CartState, action) => {
@@ -177,6 +183,7 @@ const cartSlice = createSlice({
         state.cartItems = action.payload.cartItems;
         state.currentCartTotalUniqueItems = action.payload.currentCartTotalUniqueItems;
         state.cartTotalPrice = action.payload.cartTotalPrice;
+        state.totalProduct = action.payload.totalProduct || 0;
         state.error = null;
       })
       .addCase(removeFromCartAsync.rejected, (state: CartState, action) => {
