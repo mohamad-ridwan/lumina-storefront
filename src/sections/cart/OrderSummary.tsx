@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 interface OrderSummaryProps {
   totalItems: number;
   totalPrice: number;
@@ -50,12 +52,14 @@ export default function OrderSummary({
         </div>
       </div>
 
-      <button
-        disabled={isUpdating || totalItems === 0}
-        className="w-full mt-6 bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
-      >
-        {isUpdating ? "Memperbarui..." : "Checkout"}
-      </button>
+      <Link href="/checkout">
+        <button
+          disabled={isUpdating || totalItems === 0}
+          className="w-full mt-6 bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors cursor-pointer"
+        >
+          {isUpdating ? "Memperbarui..." : "Checkout"}
+        </button>
+      </Link>
 
       <p className="text-xs text-gray-500 mt-3 text-center">
         Dengan melanjutkan, Anda menyetujui syarat dan ketentuan yang berlaku

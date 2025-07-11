@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
+import Link from "next/link";
 
 interface MobileOrderSummaryProps {
   totalItems: number;
@@ -98,13 +99,15 @@ export default function MobileOrderSummary({
               </DialogContent>
             </Dialog>
 
-            <Button
-              className="flex-1 w-[50%] min-[400px]:min-w-[120px]"
-              disabled={isUpdating || totalItems === 0}
-              size="sm"
-            >
-              {isUpdating ? "Memperbarui..." : "Checkout"}
-            </Button>
+            <Link href="/checkout">
+              <Button
+                className="flex-1 w-[50%] min-[400px]:min-w-[120px] cursor-pointer"
+                disabled={isUpdating || totalItems === 0}
+                size="sm"
+              >
+                {isUpdating ? "Memperbarui..." : "Checkout"}
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
