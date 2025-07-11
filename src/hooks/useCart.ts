@@ -20,7 +20,10 @@ import {
   selectCartLoading,
   selectCartError,
   selectUser,
-  selectCartCount
+  selectCartCount,
+  selectCartUpdatingQuantity,
+  selectCartRemovingItem,
+  selectCartAddingItem
 } from "@/store/selectors";
 import { useRouter } from "next/navigation";
 
@@ -34,6 +37,9 @@ export const useReduxCart = () => {
   const isLoading = useSelector(selectCartLoading);
   const error = useSelector(selectCartError);
   const user = useSelector(selectUser);
+  const isUpdatingQuantity = useSelector(selectCartUpdatingQuantity);
+  const isRemovingItem = useSelector(selectCartRemovingItem);
+  const isAddingItem = useSelector(selectCartAddingItem);
 
   const router = useRouter();
 
@@ -168,6 +174,9 @@ export const useReduxCart = () => {
     cartTotalPrice,
     totalProduct,
     isLoading,
+    isUpdatingQuantity,
+    isRemovingItem,
+    isAddingItem,
     error,
     user,
     

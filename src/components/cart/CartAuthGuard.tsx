@@ -7,7 +7,7 @@ import { selectUserAuthStatus } from "@/store/selectors";
 import { toast } from "sonner";
 
 interface CartAuthGuardProps {
-  children: React.ReactElement<any>;
+  children: React.ReactElement<{ onClick?: (e: React.MouseEvent) => void }>;
   action: "add" | "update" | "remove";
   onSuccess?: () => void;
 }

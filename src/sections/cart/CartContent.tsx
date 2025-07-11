@@ -19,6 +19,8 @@ export default function CartContent() {
     currentCartTotalUniqueItems, 
     totalProduct,
     isLoading, 
+    isUpdatingQuantity,
+    isRemovingItem,
     updateQuantity, 
     removeItem,
     getCart
@@ -38,8 +40,8 @@ export default function CartContent() {
     }
   }, [isAuthenticated, hasValidSession, user?._id, getCart]);
 
-  // Show loading state
-  if (isLoading) {
+  // Show loading state only when initially loading cart (no items yet)
+  if (isLoading && cartItems.length === 0) {
     return (
       <div className="text-center py-12">
         <div className="max-w-md mx-auto">
@@ -117,7 +119,8 @@ export default function CartContent() {
                   })
                 }
                 onRemoveItem={removeItem}
-                isUpdating={isLoading}
+                isUpdatingQuantity={isUpdatingQuantity}
+                isRemovingItem={isRemovingItem}
               />
             ))}
           </div>
@@ -128,7 +131,7 @@ export default function CartContent() {
           <OrderSummary
             totalItems={totalProduct}
             totalPrice={cartTotalPrice}
-            isUpdating={isLoading}
+            isUpdating={isUpdatingQuantity || isRemovingItem}
           />
         </div>
       </div>
@@ -154,7 +157,8 @@ export default function CartContent() {
                 })
               }
               onRemoveItem={removeItem}
-              isUpdating={isLoading}
+              isUpdatingQuantity={isUpdatingQuantity}
+              isRemovingItem={isRemovingItem}
             />
           ))}
         </div>
@@ -163,7 +167,7 @@ export default function CartContent() {
         <MobileOrderSummary
           totalItems={totalProduct}
           totalPrice={cartTotalPrice}
-          isUpdating={isLoading}
+          isUpdating={isUpdatingQuantity || isRemovingItem}
         />
       </div>
     </div>

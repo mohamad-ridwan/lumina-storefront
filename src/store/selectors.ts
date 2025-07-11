@@ -67,6 +67,21 @@ export const selectCartError = createSelector(
   (cartState) => cartState.error
 );
 
+export const selectCartUpdatingQuantity = createSelector(
+  [selectCartState],
+  (cartState) => cartState.isUpdatingQuantity
+);
+
+export const selectCartRemovingItem = createSelector(
+  [selectCartState],
+  (cartState) => cartState.isRemovingItem
+);
+
+export const selectCartAddingItem = createSelector(
+  [selectCartState],
+  (cartState) => cartState.isAddingItem
+);
+
 // Combined selectors
 export const selectCartCount = createSelector(
   [selectCartTotalProducts],

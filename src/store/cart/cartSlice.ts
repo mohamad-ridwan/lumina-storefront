@@ -12,6 +12,9 @@ interface CartState {
   cartTotalPrice: number;
   totalProduct: number;
   isLoading: boolean;
+  isUpdatingQuantity: boolean;
+  isRemovingItem: boolean;
+  isAddingItem: boolean;
   error: string | null;
 }
 
@@ -22,6 +25,9 @@ const initialState: CartState = {
   cartTotalPrice: 0,
   totalProduct: 0,
   isLoading: false,
+  isUpdatingQuantity: false,
+  isRemovingItem: false,
+  isAddingItem: false,
   error: null,
 };
 
@@ -139,11 +145,11 @@ const cartSlice = createSlice({
     // Add to Cart
     builder
       .addCase(addToCartAsync.pending, (state: CartState) => {
-        state.isLoading = true;
+        state.isAddingItem = true;
         state.error = null;
       })
       .addCase(addToCartAsync.fulfilled, (state: CartState, action: PayloadAction<GetCartResponse>) => {
-        state.isLoading = false;
+        state.isAddingItem = false;
         state.cartItems = action.payload.cartItems;
         state.currentCartTotalUniqueItems = action.payload.currentCartTotalUniqueItems;
         state.cartTotalPrice = action.payload.cartTotalPrice;
@@ -151,17 +157,17 @@ const cartSlice = createSlice({
         state.error = null;
       })
       .addCase(addToCartAsync.rejected, (state: CartState, action) => {
-        state.isLoading = false;
+        state.isAddingItem = false;
         state.error = action.payload as string;
       })
     // Update Cart Quantity
     builder
       .addCase(updateCartQuantityAsync.pending, (state: CartState) => {
-        state.isLoading = true;
+        state.isUpdatingQuantity = true;
         state.error = null;
       })
       .addCase(updateCartQuantityAsync.fulfilled, (state: CartState, action: PayloadAction<GetCartResponse>) => {
-        state.isLoading = false;
+        state.isUpdatingQuantity = false;
         state.cartItems = action.payload.cartItems;
         state.currentCartTotalUniqueItems = action.payload.currentCartTotalUniqueItems;
         state.cartTotalPrice = action.payload.cartTotalPrice;
@@ -169,17 +175,17 @@ const cartSlice = createSlice({
         state.error = null;
       })
       .addCase(updateCartQuantityAsync.rejected, (state: CartState, action) => {
-        state.isLoading = false;
+        state.isUpdatingQuantity = false;
         state.error = action.payload as string;
       })
     // Remove from Cart
     builder
       .addCase(removeFromCartAsync.pending, (state: CartState) => {
-        state.isLoading = true;
+        state.isRemovingItem = true;
         state.error = null;
       })
       .addCase(removeFromCartAsync.fulfilled, (state: CartState, action: PayloadAction<GetCartResponse>) => {
-        state.isLoading = false;
+        state.isRemovingItem = false;
         state.cartItems = action.payload.cartItems;
         state.currentCartTotalUniqueItems = action.payload.currentCartTotalUniqueItems;
         state.cartTotalPrice = action.payload.cartTotalPrice;
@@ -187,7 +193,7 @@ const cartSlice = createSlice({
         state.error = null;
       })
       .addCase(removeFromCartAsync.rejected, (state: CartState, action) => {
-        state.isLoading = false;
+        state.isRemovingItem = false;
         state.error = action.payload as string;
       });
   },

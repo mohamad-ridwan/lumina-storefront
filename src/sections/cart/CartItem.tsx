@@ -17,14 +17,16 @@ interface CartItemProps {
     availableStock: number
   ) => Promise<void>;
   onRemoveItem: (cartItemId: string) => Promise<void>;
-  isUpdating: boolean;
+  isUpdatingQuantity: boolean;
+  isRemovingItem: boolean;
 }
 
 export default function CartItem({
   item,
   onUpdateQuantity,
   onRemoveItem,
-  isUpdating,
+  isUpdatingQuantity,
+  isRemovingItem,
 }: CartItemProps) {
   const [localQuantity, setLocalQuantity] = useState(item.quantity);
   const [isLoading, setIsLoading] = useState(false);
@@ -168,7 +170,7 @@ export default function CartItem({
               onClick={() =>
                 handleQuantityChange(Math.max(1, localQuantity - 1))
               }
-              disabled={isLoading || isUpdating || localQuantity <= 1}
+              disabled={isLoading || isUpdatingQuantity || localQuantity <= 1}
               className="w-8 sm:h-8 p-0"
             >
               <Minus className="w-3 h-3" />
@@ -179,7 +181,7 @@ export default function CartItem({
               value={localQuantity}
               onChange={handleInputChange}
               onBlur={handleInputBlur}
-              disabled={isLoading || isUpdating}
+              disabled={isLoading || isUpdatingQuantity}
               className="w-16 h-8 text-center text-sm"
               min="1"
               max={item.availableStock}
@@ -194,7 +196,7 @@ export default function CartItem({
                 )
               }
               disabled={
-                isLoading || isUpdating || localQuantity >= item.availableStock
+                isLoading || isUpdatingQuantity || localQuantity >= item.availableStock
               }
               className="w-8 h-8 p-0"
             >
@@ -205,7 +207,7 @@ export default function CartItem({
               variant="outline"
               size="sm"
               onClick={handleRemove}
-              disabled={isLoading || isUpdating}
+              disabled={isLoading || isRemovingItem}
               className="text-red-600 hover:text-red-700 hover:bg-red-50 w-8 h-8 p-0"
             >
               <Trash2 className="w-4 h-4" />

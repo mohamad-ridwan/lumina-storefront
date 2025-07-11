@@ -16,7 +16,6 @@ import {
   X, // Ikon untuk menutup menu
   Search, // Ikon untuk search bar
   ShoppingBag, // Ikon untuk keranjang belanja
-  UserCircle, // Ikon untuk avatar pengguna
 } from "lucide-react"; // Menggunakan Lucide React untuk ikon
 import { cn } from "@/lib/utils"; // Asumsi Anda memiliki utilitas cn (classnames) dari Shadcn
 import { Category } from "@/types/categories"; // Pastikan Anda mengimpor tipe Category dan Collection
