@@ -37,20 +37,28 @@ export interface UseCartReturn {
     availableStock: number
   ) => Promise<void>;
   removeItem: (shoeId: string) => Promise<void>;
-  updateCartItems: (updatedItems: CartItem[], cartTotalPrice: number) => void;
+  updateCartItems: (
+    updatedItems: CartItem[],
+    cartTotalPrice: number,
+    totalItems: number
+  ) => void;
 }
 
 // Original useCart hook implementation (preserving existing logic)
 export function useCart(
   initialCartItems: CartItem[],
   userId: string,
-  onCartUpdate?: (updatedItems: CartItem[], newTotal: number) => void
+  onCartUpdate?: (
+    updatedItems: CartItem[],
+    newTotal: number,
+    totalItems: number
+  ) => void
 ): UseCartReturn {
   const [isUpdating, setIsUpdating] = useState(false);
 
   const updateCartItems = useCallback(
-    (updatedItems: CartItem[], cartTotalPrice: number) => {
-      onCartUpdate?.(updatedItems, cartTotalPrice);
+    (updatedItems: CartItem[], cartTotalPrice: number, totalItems: number) => {
+      onCartUpdate?.(updatedItems, cartTotalPrice, totalItems);
     },
     [onCartUpdate]
   );
@@ -74,6 +82,13 @@ export function useCart(
 
       setIsUpdating(true);
       try {
+        // const resultUpdate: GetCartResponse = await updateCartQuantity({
+        //   userId,
+        //   shoeId,
+        //   selectedVariantId,
+        //   quantity: newQuantity,
+        // });
+
         const resultUpdate: GetCartResponse = await updateCartQuantity({
           userId,
           shoeId,
@@ -81,7 +96,11 @@ export function useCart(
           quantity: newQuantity,
         });
 
-        updateCartItems(resultUpdate.cartItems, resultUpdate.cartTotalPrice);
+        updateCartItems(
+          resultUpdate.cartItems,
+          resultUpdate.cartTotalPrice,
+          resultUpdate.totalProduct
+        );
       } catch (error) {
         console.error("Error updating quantity:", error);
         throw error;
@@ -101,7 +120,11 @@ export function useCart(
           cartId,
         });
 
-        updateCartItems(result.cartItems, result.cartTotalPrice);
+        updateCartItems(
+          result.cartItems,
+          result.cartTotalPrice,
+          result.totalProduct
+        );
       } catch (error) {
         console.error("Error removing item:", error);
         throw error;

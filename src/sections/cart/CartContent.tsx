@@ -17,9 +17,7 @@ export default function CartContent({ initialCartData }: CartContentProps) {
     initialCartData.cartItems
   );
   const [totalPrice, setTotalPrice] = useState(initialCartData.cartTotalPrice);
-  const [totalItems, setTotalItems] = useState(
-    initialCartData.currentCartTotalUniqueItems
-  );
+  const [totalItems, setTotalItems] = useState(initialCartData.totalProduct);
   const [userId, setUserId] = useState<string>("67e65beb165cb6e6184d63c0");
 
   // Get userId from localStorage
@@ -46,10 +44,14 @@ export default function CartContent({ initialCartData }: CartContentProps) {
     }
   }, []);
 
-  const handleCartUpdate = (updatedItems: CartItemType[], newTotal: number) => {
+  const handleCartUpdate = (
+    updatedItems: CartItemType[],
+    newTotal: number,
+    totalItems: number
+  ) => {
     setCartItems(updatedItems);
     setTotalPrice(newTotal);
-    setTotalItems(updatedItems.length);
+    setTotalItems(totalItems);
   };
 
   const { isUpdating, updateQuantity, removeItem } = useCart(

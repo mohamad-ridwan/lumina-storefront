@@ -263,7 +263,7 @@ const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
                 <ShoppingBag className="h-5 w-5" />
                 {/* Badge untuk jumlah item di keranjang */}
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-[11px] rounded-full h-5 w-5 flex items-center justify-center font-semibold">
                     {cartCount}
                   </span>
                 )}
@@ -301,89 +301,89 @@ const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
       >
         <div className="max-h-[calc(100vh-100px)] overflow-y-auto py-4">
           <div className="flex flex-col items-start px-4 space-y-4">
-          {/* Search Bar (Mobile) - ditampilkan di dalam menu mobile */}
-          <form onSubmit={handleSearch} className="relative w-full">
-            <Input
-              type="text"
-              placeholder="Cari produk..."
-              className="pl-10 pr-4 py-2 rounded-md border border-input focus:ring-ring focus:border-ring w-full"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-          </form>
+            {/* Search Bar (Mobile) - ditampilkan di dalam menu mobile */}
+            <form onSubmit={handleSearch} className="relative w-full">
+              <Input
+                type="text"
+                placeholder="Cari produk..."
+                className="pl-10 pr-4 py-2 rounded-md border border-input focus:ring-ring focus:border-ring w-full"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            </form>
 
-          {/* Kategori Menu Mobile */}
-          {initialCategories.length > 0 && (
-            <div className="w-full">
-              <h3 className="text-lg font-semibold text-foreground mb-2">
-                Kategori
-              </h3>
-              <ul className="space-y-2">
-                {initialCategories.map((cat) => (
-                  <li key={cat._id}>
-                    <Link
-                      href={`/c1/${cat.slug}`} // Contoh link ke halaman kategori
-                      className="block w-full px-2 py-2 text-foreground hover:text-custom-blue hover:bg-muted rounded-md transition-colors duration-200"
-                      onClick={toggleMobileMenu} // Tutup menu setelah klik
-                    >
-                      {cat.name}
-                    </Link>
-                    {/* Tampilkan sub-kategori jika ada */}
-                    {cat.collections && cat.collections.length > 0 && (
-                      <ul className="ml-4 mt-1 space-y-1 border-l border-border pl-2">
-                        {cat.collections.map((collection) => (
-                          <li key={collection._id}>
-                            <Link
-                              href={`/c2/${collection.slug}`} // Contoh link ke halaman sub-kategori
-                              className="block w-full px-2 py-1 text-muted-foreground hover:text-custom-blue hover:bg-muted rounded-md transition-colors duration-200 text-sm"
-                              onClick={toggleMobileMenu}
-                            >
-                              {collection.name}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+            {/* Kategori Menu Mobile */}
+            {initialCategories.length > 0 && (
+              <div className="w-full">
+                <h3 className="text-lg font-semibold text-foreground mb-2">
+                  Kategori
+                </h3>
+                <ul className="space-y-2">
+                  {initialCategories.map((cat) => (
+                    <li key={cat._id}>
+                      <Link
+                        href={`/c1/${cat.slug}`} // Contoh link ke halaman kategori
+                        className="block w-full px-2 py-2 text-foreground hover:text-custom-blue hover:bg-muted rounded-md transition-colors duration-200"
+                        onClick={toggleMobileMenu} // Tutup menu setelah klik
+                      >
+                        {cat.name}
+                      </Link>
+                      {/* Tampilkan sub-kategori jika ada */}
+                      {cat.collections && cat.collections.length > 0 && (
+                        <ul className="ml-4 mt-1 space-y-1 border-l border-border pl-2">
+                          {cat.collections.map((collection) => (
+                            <li key={collection._id}>
+                              <Link
+                                href={`/c2/${collection.slug}`} // Contoh link ke halaman sub-kategori
+                                className="block w-full px-2 py-1 text-muted-foreground hover:text-custom-blue hover:bg-muted rounded-md transition-colors duration-200 text-sm"
+                                onClick={toggleMobileMenu}
+                              >
+                                {collection.name}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
-          {/* Link Navigasi Umum (Mobile) */}
-          <a
-            href="#"
-            className="block w-full px-2 py-2 text-foreground hover:text-custom-blue hover:bg-muted rounded-md transition-colors duration-200"
-            onClick={toggleMobileMenu}
-          >
-            Beranda
-          </a>
-          <a
-            href="#"
-            className="block w-full px-2 py-2 text-foreground hover:text-custom-blue hover:bg-muted rounded-md transition-colors duration-200"
-            onClick={toggleMobileMenu}
-          >
-            Produk
-          </a>
-          <a
-            href="#"
-            className="block w-full px-2 py-2 text-foreground hover:text-custom-blue hover:bg-muted rounded-md transition-colors duration-200"
-            onClick={toggleMobileMenu}
-          >
-            Tentang Kami
-          </a>
-          <a
-            href="#"
-            className="block w-full px-2 py-2 text-foreground hover:text-custom-blue hover:bg-muted rounded-md transition-colors duration-200"
-            onClick={toggleMobileMenu}
-          >
-            Kontak
-          </a>
-          
-          {/* User Dropdown Mobile */}
-          <UserDropdown isMobile />
-        </div>
+            {/* Link Navigasi Umum (Mobile) */}
+            <a
+              href="#"
+              className="block w-full px-2 py-2 text-foreground hover:text-custom-blue hover:bg-muted rounded-md transition-colors duration-200"
+              onClick={toggleMobileMenu}
+            >
+              Beranda
+            </a>
+            <a
+              href="#"
+              className="block w-full px-2 py-2 text-foreground hover:text-custom-blue hover:bg-muted rounded-md transition-colors duration-200"
+              onClick={toggleMobileMenu}
+            >
+              Produk
+            </a>
+            <a
+              href="#"
+              className="block w-full px-2 py-2 text-foreground hover:text-custom-blue hover:bg-muted rounded-md transition-colors duration-200"
+              onClick={toggleMobileMenu}
+            >
+              Tentang Kami
+            </a>
+            <a
+              href="#"
+              className="block w-full px-2 py-2 text-foreground hover:text-custom-blue hover:bg-muted rounded-md transition-colors duration-200"
+              onClick={toggleMobileMenu}
+            >
+              Kontak
+            </a>
+
+            {/* User Dropdown Mobile */}
+            <UserDropdown isMobile />
+          </div>
         </div>
       </div>
     </nav>
