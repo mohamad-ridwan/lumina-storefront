@@ -1,21 +1,21 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import { CartItem, GetCartResponse } from "@/types/cart";
 import { updateCartQuantity } from "@/services/api/cart/updateCartQuantity";
 import { removeFromCart } from "@/services/api/cart/removeFromCart";
-import { RootState, AppDispatch } from "@/store";
-import { 
-  addToCartAsync, 
-  getCartAsync, 
+import { AppDispatch } from "@/store";
+import {
+  addToCartAsync,
+  getCartAsync,
   updateCartQuantityAsync,
   removeFromCartAsync,
-  clearCartError, 
-  resetCart 
+  clearCartError,
+  resetCart,
 } from "@/store/cart/cartSlice";
-import { 
+import {
   selectCartItems,
   selectCartTotalPrice,
   selectCartTotalUniqueItems,
@@ -23,8 +23,9 @@ import {
   selectCartLoading,
   selectCartError,
   selectUser,
-  selectCartCount
+  selectCartCount,
 } from "@/store/selectors";
+import { useRouter } from "next/navigation";
 
 // --- ORIGINAL USECARE INTERFACE ---
 export interface UseCartReturn {
@@ -123,7 +124,7 @@ export function useCart(
 
 // Typed hooks for Redux
 const useAppDispatch = () => useDispatch<AppDispatch>();
-const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+// const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 // New Redux-based cart hook for global state management
 export const useReduxCart = () => {
@@ -136,6 +137,8 @@ export const useReduxCart = () => {
   const error = useSelector(selectCartError);
   const user = useSelector(selectUser);
 
+  const router = useRouter();
+
   // Function untuk menambahkan item ke cart
   const addToCart = useCallback(
     async (params: {
@@ -145,17 +148,22 @@ export const useReduxCart = () => {
     }) => {
       if (!user?._id) {
         toast.error("Silakan login terlebih dahulu");
+        router.push("/auth/login");
         return;
       }
 
       try {
-        await dispatch(addToCartAsync({
-          userId: user._id,
-          ...params
-        })).unwrap();
+        await dispatch(
+          addToCartAsync({
+            userId: user._id,
+            ...params,
+          })
+        ).unwrap();
         toast.success("Produk berhasil ditambahkan ke keranjang");
       } catch (error: unknown) {
-        toast.error((error as Error)?.message || "Gagal menambahkan ke keranjang");
+        toast.error(
+          (error as Error)?.message || "Gagal menambahkan ke keranjang"
+        );
         throw error;
       }
     },
@@ -194,10 +202,12 @@ export const useReduxCart = () => {
       }
 
       try {
-        await dispatch(updateCartQuantityAsync({
-          userId: user._id,
-          ...params
-        })).unwrap();
+        await dispatch(
+          updateCartQuantityAsync({
+            userId: user._id,
+            ...params,
+          })
+        ).unwrap();
         toast.success("Quantity berhasil diupdate");
       } catch (error: unknown) {
         toast.error((error as Error)?.message || "Gagal mengupdate quantity");
@@ -216,10 +226,12 @@ export const useReduxCart = () => {
       }
 
       try {
-        await dispatch(removeFromCartAsync({
-          userId: user._id,
-          cartId
-        })).unwrap();
+        await dispatch(
+          removeFromCartAsync({
+            userId: user._id,
+            cartId,
+          })
+        ).unwrap();
         toast.success("Item berhasil dihapus dari keranjang");
       } catch (error: unknown) {
         toast.error((error as Error)?.message || "Gagal menghapus item");
@@ -247,7 +259,7 @@ export const useReduxCart = () => {
     totalProduct,
     isLoading,
     error,
-    
+
     // Actions
     addToCart,
     getCart,
@@ -261,6 +273,6 @@ export const useReduxCart = () => {
 // Hook untuk hanya menggunakan cart count (untuk navbar)
 export const useCartCount = () => {
   const cartCount = useSelector(selectCartCount);
-  
+
   return cartCount;
 };
