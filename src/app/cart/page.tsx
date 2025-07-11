@@ -1,56 +1,58 @@
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 import CustomBreadcrumb from "@/components/breadcrumbs/CustomBreadcrumb";
 import ContainerPage from "@/container/ContainerPage";
-import { fetchCart } from "@/services/api/cart/getCart";
-import { GetCartResponse } from "@/types/cart";
 import CartContent from "@/sections/cart/CartContent";
+import { selectUserAuthStatus } from "@/store/selectors";
+import { useReduxCart } from "@/hooks/useCart";
 
-// Helper function to get userId from localStorage in server component
-async function getUserIdFromClient(): Promise<string> {
-  // For now, return static userId since we can't access localStorage in server component
-  // The CartContent component will handle getting userId from localStorage on client side
-  return "67e65beb165cb6e6184d63c0";
-}
+const CartPage = () => {
+  const router = useRouter();
+  const { user, isAuthenticated, hasValidSession } = useSelector(selectUserAuthStatus);
+  const { getCart } = useReduxCart();
 
-const CartPage = async () => {
   const breadcrumbItems = [
     { href: "/", label: "Beranda" },
     { href: "/cart", label: "Cart", isCurrent: true },
   ];
 
-  try {
-    const userId = await getUserIdFromClient();
-    const cartData: GetCartResponse = await fetchCart({ userId });
+  // Check authentication and redirect if needed
+  useEffect(() => {
+    if (!isAuthenticated || !hasValidSession || !user?._id) {
+      // Redirect to login with cart as return destination
+      router.push('/auth/login?redirect=/cart');
+      return;
+    }
 
+    // Fetch cart data if user is authenticated
+    getCart(user._id);
+  }, [isAuthenticated, hasValidSession, user?._id, getCart, router]);
+
+  // Show loading or redirect message while checking authentication
+  if (!isAuthenticated || !hasValidSession || !user?._id) {
     return (
       <ContainerPage>
-        <CustomBreadcrumb items={breadcrumbItems} />
-        <div className="mt-6">
-          <CartContent initialCartData={cartData} />
-        </div>
-      </ContainerPage>
-    );
-  } catch (error) {
-    console.error("Error fetching cart data:", error);
-
-    // Return empty cart state if error occurs
-    const emptyCartData: GetCartResponse = {
-      success: false,
-      message: "Gagal memuat data keranjang",
-      cartItems: [],
-      currentCartTotalUniqueItems: 0,
-      cartTotalPrice: 0,
-      totalProduct: 0,
-    };
-
-    return (
-      <ContainerPage>
-        <CustomBreadcrumb items={breadcrumbItems} />
-        <div className="mt-6">
-          <CartContent initialCartData={emptyCartData} />
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold mb-4">Redirecting to login...</h1>
+            <p className="text-muted-foreground">Please wait while we redirect you to the login page.</p>
+          </div>
         </div>
       </ContainerPage>
     );
   }
+
+  return (
+    <ContainerPage>
+      <CustomBreadcrumb items={breadcrumbItems} />
+      <div className="mt-6">
+        <CartContent />
+      </div>
+    </ContainerPage>
+  );
 };
 
 export default CartPage;

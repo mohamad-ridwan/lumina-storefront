@@ -1,63 +1,63 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { CartItem as CartItemType, GetCartResponse } from "@/types/cart";
-import { useCart } from "@/hooks/useCart";
+import { useSelector } from "react-redux";
+import { useReduxCart } from "@/hooks/useCart";
+import { selectUserAuthStatus } from "@/store/selectors";
 import CartItem from "./CartItem";
 import OrderSummary from "./OrderSummary";
 import MobileOrderSummary from "./MobileOrderSummary";
 
-interface CartContentProps {
-  initialCartData: GetCartResponse;
-}
+export default function CartContent() {
+  const router = useRouter();
+  const { user, isAuthenticated, hasValidSession } = useSelector(selectUserAuthStatus);
+  const { 
+    cartItems, 
+    cartTotalPrice, 
+    currentCartTotalUniqueItems, 
+    totalProduct,
+    isLoading, 
+    updateQuantity, 
+    removeItem,
+    getCart
+  } = useReduxCart();
 
-export default function CartContent({ initialCartData }: CartContentProps) {
-  const [cartItems, setCartItems] = useState<CartItemType[]>(
-    initialCartData.cartItems
-  );
-  const [totalPrice, setTotalPrice] = useState(initialCartData.cartTotalPrice);
-  const [totalItems, setTotalItems] = useState(
-    initialCartData.currentCartTotalUniqueItems
-  );
-  const [userId, setUserId] = useState<string>("67e65beb165cb6e6184d63c0");
-
-  // Get userId from localStorage
+  // Redirect to login if not authenticated
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const userSession = localStorage.getItem(
-        "user-session-lumina-storefront"
-      );
-      if (userSession) {
-        try {
-          const sessionData = JSON.parse(userSession);
-          setUserId(
-            sessionData.userId || sessionData.id || "67e65beb165cb6e6184d63c0"
-          );
-        } catch (error) {
-          console.error("Error parsing user session:", error);
-          // Fallback to static userId for now
-          setUserId("67e65beb165cb6e6184d63c0");
-        }
-      } else {
-        // Fallback to static userId for now
-        setUserId("67e65beb165cb6e6184d63c0");
-      }
+    if (!isAuthenticated || !hasValidSession || !user?._id) {
+      router.push('/auth/login?redirect=/cart');
     }
-  }, []);
+  }, [isAuthenticated, hasValidSession, user?._id, router]);
 
-  const handleCartUpdate = (updatedItems: CartItemType[], newTotal: number) => {
-    setCartItems(updatedItems);
-    setTotalPrice(newTotal);
-    setTotalItems(updatedItems.length);
-  };
+  // Fetch cart data when component mounts or user changes
+  useEffect(() => {
+    if (isAuthenticated && hasValidSession && user?._id) {
+      getCart(user._id);
+    }
+  }, [isAuthenticated, hasValidSession, user?._id, getCart]);
 
-  const { isUpdating, updateQuantity, removeItem } = useCart(
-    cartItems,
-    userId,
-    handleCartUpdate
-  );
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="text-center py-12">
+        <div className="max-w-md mx-auto">
+          <div className="w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          </div>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">
+            Memuat Keranjang...
+          </h3>
+          <p className="text-gray-500">
+            Sedang mengambil data keranjang belanja Anda
+          </p>
+        </div>
+      </div>
+    );
+  }
 
+  // Show empty cart state
   if (cartItems.length === 0) {
     return (
       <div className="text-center py-12">
@@ -101,16 +101,23 @@ export default function CartContent({ initialCartData }: CartContentProps) {
         {/* Cart Items - Left Side (2/3 width) */}
         <div className="md:col-span-2 space-y-4">
           <h1 className="text-xl font-bold text-gray-900">
-            Keranjang Belanja ({totalItems} produk)
+            Keranjang Belanja ({currentCartTotalUniqueItems} item, {totalProduct} produk)
           </h1>
           <div className="space-y-4">
             {cartItems.map((item) => (
               <CartItem
                 key={item._id}
                 item={item}
-                onUpdateQuantity={updateQuantity}
+                onUpdateQuantity={(shoeId, selectedVariantId, newQuantity, availableStock) => 
+                  updateQuantity({ 
+                    shoeId, 
+                    selectedVariantId, 
+                    quantity: newQuantity, 
+                    availableStock 
+                  })
+                }
                 onRemoveItem={removeItem}
-                isUpdating={isUpdating}
+                isUpdating={isLoading}
               />
             ))}
           </div>
@@ -119,16 +126,18 @@ export default function CartContent({ initialCartData }: CartContentProps) {
         {/* Order Summary - Right Side (1/3 width) */}
         <div className="md:col-span-1">
           <OrderSummary
-            totalItems={totalItems}
-            totalPrice={totalPrice}
-            isUpdating={isUpdating}
+            totalItems={totalProduct}
+            totalPrice={cartTotalPrice}
+            isUpdating={isLoading}
           />
         </div>
       </div>
 
       {/* Mobile Layout */}
       <div className="lg:hidden space-y-4">
-        <h1 className="text-xl font-bold text-gray-900">Keranjang Belanja</h1>
+        <h1 className="text-xl font-bold text-gray-900">
+          Keranjang Belanja ({totalProduct} produk)
+        </h1>
 
         {/* Cart Items - Mobile (single column) */}
         <div className="space-y-4 pb-24">
@@ -136,18 +145,25 @@ export default function CartContent({ initialCartData }: CartContentProps) {
             <CartItem
               key={item._id}
               item={item}
-              onUpdateQuantity={updateQuantity}
+              onUpdateQuantity={(shoeId, selectedVariantId, newQuantity, availableStock) => 
+                updateQuantity({ 
+                  shoeId, 
+                  selectedVariantId, 
+                  quantity: newQuantity, 
+                  availableStock 
+                })
+              }
               onRemoveItem={removeItem}
-              isUpdating={isUpdating}
+              isUpdating={isLoading}
             />
           ))}
         </div>
 
         {/* Mobile Order Summary (Fixed bottom) */}
         <MobileOrderSummary
-          totalItems={totalItems}
-          totalPrice={totalPrice}
-          isUpdating={isUpdating}
+          totalItems={totalProduct}
+          totalPrice={cartTotalPrice}
+          isUpdating={isLoading}
         />
       </div>
     </div>
