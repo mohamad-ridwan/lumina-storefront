@@ -4,15 +4,15 @@ import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import { AppDispatch } from "@/store";
-import { 
-  addToCartAsync, 
-  getCartAsync, 
+import {
+  addToCartAsync,
+  getCartAsync,
   updateCartQuantityAsync,
   removeFromCartAsync,
-  clearCartError, 
-  resetCart 
+  clearCartError,
+  resetCart,
 } from "@/store/cart/cartSlice";
-import { 
+import {
   selectCartItems,
   selectCartTotalPrice,
   selectCartTotalUniqueItems,
@@ -23,7 +23,7 @@ import {
   selectCartCount,
   selectCartUpdatingQuantity,
   selectCartRemovingItem,
-  selectCartAddingItem
+  selectCartAddingItem,
 } from "@/store/selectors";
 import { useRouter } from "next/navigation";
 
@@ -108,7 +108,9 @@ export const useReduxCart = () => {
 
       // Validate quantity constraints
       if (params.availableStock && params.quantity > params.availableStock) {
-        toast.error(`Quantity tidak boleh melebihi stock yang tersedia (${params.availableStock})`);
+        toast.error(
+          `Quantity tidak boleh melebihi stock yang tersedia (${params.availableStock})`
+        );
         return;
       }
 
@@ -118,12 +120,14 @@ export const useReduxCart = () => {
       }
 
       try {
-        await dispatch(updateCartQuantityAsync({
-          userId: user._id,
-          shoeId: params.shoeId,
-          selectedVariantId: params.selectedVariantId,
-          quantity: params.quantity
-        })).unwrap();
+        await dispatch(
+          updateCartQuantityAsync({
+            userId: user._id,
+            shoeId: params.shoeId,
+            selectedVariantId: params.selectedVariantId,
+            quantity: params.quantity,
+          })
+        ).unwrap();
         toast.success("Quantity berhasil diupdate");
       } catch (error: unknown) {
         toast.error((error as Error)?.message || "Gagal mengupdate quantity");
@@ -179,7 +183,7 @@ export const useReduxCart = () => {
     isAddingItem,
     error,
     user,
-    
+
     // Actions
     addToCart,
     getCart,

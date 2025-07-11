@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { useReduxCart } from "@/hooks/useCart";
@@ -11,27 +10,22 @@ import OrderSummary from "./OrderSummary";
 import MobileOrderSummary from "./MobileOrderSummary";
 
 export default function CartContent() {
-  const router = useRouter();
-  const { user, isAuthenticated, hasValidSession } = useSelector(selectUserAuthStatus);
-  const { 
-    cartItems, 
-    cartTotalPrice, 
-    currentCartTotalUniqueItems, 
+  const { user, isAuthenticated, hasValidSession } =
+    useSelector(selectUserAuthStatus);
+  const {
+    cartItems,
+    cartTotalPrice,
+    currentCartTotalUniqueItems,
     totalProduct,
-    isLoading, 
+    isLoading,
     isUpdatingQuantity,
     isRemovingItem,
-    updateQuantity, 
+    updateQuantity,
     removeItem,
-    getCart
+    getCart,
   } = useReduxCart();
 
   // Redirect to login if not authenticated
-  useEffect(() => {
-    if (!isAuthenticated || !hasValidSession || !user?._id) {
-      router.push('/auth/login?redirect=/cart');
-    }
-  }, [isAuthenticated, hasValidSession, user?._id, router]);
 
   // Fetch cart data when component mounts or user changes
   useEffect(() => {
@@ -103,19 +97,25 @@ export default function CartContent() {
         {/* Cart Items - Left Side (2/3 width) */}
         <div className="md:col-span-2 space-y-4">
           <h1 className="text-xl font-bold text-gray-900">
-            Keranjang Belanja ({currentCartTotalUniqueItems} item, {totalProduct} produk)
+            Keranjang Belanja ({currentCartTotalUniqueItems} item,{" "}
+            {totalProduct} produk)
           </h1>
           <div className="space-y-4">
             {cartItems.map((item) => (
               <CartItem
                 key={item._id}
                 item={item}
-                onUpdateQuantity={(shoeId, selectedVariantId, newQuantity, availableStock) => 
-                  updateQuantity({ 
-                    shoeId, 
-                    selectedVariantId, 
-                    quantity: newQuantity, 
-                    availableStock 
+                onUpdateQuantity={(
+                  shoeId,
+                  selectedVariantId,
+                  newQuantity,
+                  availableStock
+                ) =>
+                  updateQuantity({
+                    shoeId,
+                    selectedVariantId,
+                    quantity: newQuantity,
+                    availableStock,
                   })
                 }
                 onRemoveItem={removeItem}
@@ -148,12 +148,17 @@ export default function CartContent() {
             <CartItem
               key={item._id}
               item={item}
-              onUpdateQuantity={(shoeId, selectedVariantId, newQuantity, availableStock) => 
-                updateQuantity({ 
-                  shoeId, 
-                  selectedVariantId, 
-                  quantity: newQuantity, 
-                  availableStock 
+              onUpdateQuantity={(
+                shoeId,
+                selectedVariantId,
+                newQuantity,
+                availableStock
+              ) =>
+                updateQuantity({
+                  shoeId,
+                  selectedVariantId,
+                  quantity: newQuantity,
+                  availableStock,
                 })
               }
               onRemoveItem={removeItem}
