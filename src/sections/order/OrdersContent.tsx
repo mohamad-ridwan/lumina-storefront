@@ -2,11 +2,13 @@
 
 import React from "react";
 import Link from "next/link";
-import { Order } from "@/types/order"; // Impor tipe Order dan OrderItem
+import { Order } from "@/types/order"; // Impor tipe Order, OrderItem, dan Pagination
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"; // Impor komponen Tabs dari Shadcn UI
 import { Button } from "@/components/ui/button"; // Impor Button untuk "Lihat Detail"
 import BaseCard from "@/components/card/BaseCard"; // Impor komponen BaseCard
 import { useRouter, useSearchParams, usePathname } from "next/navigation"; // Impor hooks dari next/navigation
+import BasePagination from "@/components/pagination/BasePagination"; // Impor komponen BasePagination
+import { Pagination } from "@/types/pagination";
 
 /**
  * @fileoverview Orders Content Component
@@ -19,9 +21,13 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation"; // Im
  */
 interface OrdersContentProps {
   orders: Order[]; // Array objek pesanan yang akan ditampilkan
+  pagination: Pagination; // Data pagination dari API
 }
 
-const OrdersContent: React.FC<OrdersContentProps> = ({ orders }) => {
+const OrdersContent: React.FC<OrdersContentProps> = ({
+  orders,
+  pagination,
+}) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -80,6 +86,8 @@ const OrdersContent: React.FC<OrdersContentProps> = ({ orders }) => {
   };
 
   // Filter pesanan berdasarkan status
+  // Catatan: Filtering ini hanya dilakukan di sisi klien dari data yang sudah diambil.
+  // Untuk pagination yang sebenarnya, filtering dan pagination harus dilakukan di API.
   const filterOrders = (status: string) => {
     if (status === "all") {
       return orders;
@@ -95,8 +103,12 @@ const OrdersContent: React.FC<OrdersContentProps> = ({ orders }) => {
     } else {
       params.set("status", value);
     }
+    // Reset halaman ke 1 saat mengganti tab
+    params.delete("page");
     router.push(`${pathname}?${params.toString()}`);
   };
+
+  const ordersToDisplay = filterOrders(currentTab);
 
   return (
     <div className="container mx-auto p-4 md:p-6 lg:p-8">
@@ -129,78 +141,17 @@ const OrdersContent: React.FC<OrdersContentProps> = ({ orders }) => {
             {/* Tambahkan trigger lain jika ada status pesanan tambahan (misalnya 'processing', 'shipped') */}
           </TabsList>
 
-          {/* Konten untuk Tab "Semua Pesanan" */}
-          <TabsContent value="all" className="mt-6">
+          {/* Konten untuk Tab yang dipilih */}
+          <TabsContent value={currentTab} className="mt-6">
+            {" "}
+            {/* Menggunakan currentTab sebagai value */}
             <div className="space-y-4">
-              {filterOrders("all").length === 0 ? (
+              {ordersToDisplay.length === 0 ? (
                 <p className="text-muted-foreground text-center py-8 bg-card rounded-lg shadow-md">
-                  Tidak ada pesanan.
+                  Tidak ada pesanan untuk status ini.
                 </p>
               ) : (
-                filterOrders("all").map((order) => (
-                  <OrderSummaryCard
-                    key={order._id}
-                    order={order}
-                    formatPrice={formatPrice}
-                    formatDate={formatDate}
-                    getStatusDisplay={getStatusDisplay}
-                  />
-                ))
-              )}
-            </div>
-          </TabsContent>
-
-          {/* Konten untuk Tab "Menunggu Pembayaran" */}
-          <TabsContent value="pending" className="mt-6">
-            <div className="space-y-4">
-              {filterOrders("pending").length === 0 ? (
-                <p className="text-muted-foreground text-center py-8 bg-card rounded-lg shadow-md">
-                  Tidak ada pesanan menunggu pembayaran.
-                </p>
-              ) : (
-                filterOrders("pending").map((order) => (
-                  <OrderSummaryCard
-                    key={order._id}
-                    order={order}
-                    formatPrice={formatPrice}
-                    formatDate={formatDate}
-                    getStatusDisplay={getStatusDisplay}
-                  />
-                ))
-              )}
-            </div>
-          </TabsContent>
-
-          {/* Konten untuk Tab "Selesai" */}
-          <TabsContent value="completed" className="mt-6">
-            <div className="space-y-4">
-              {filterOrders("completed").length === 0 ? (
-                <p className="text-muted-foreground text-center py-8 bg-card rounded-lg shadow-md">
-                  Tidak ada pesanan selesai.
-                </p>
-              ) : (
-                filterOrders("completed").map((order) => (
-                  <OrderSummaryCard
-                    key={order._id}
-                    order={order}
-                    formatPrice={formatPrice}
-                    formatDate={formatDate}
-                    getStatusDisplay={getStatusDisplay}
-                  />
-                ))
-              )}
-            </div>
-          </TabsContent>
-
-          {/* Konten untuk Tab "Dibatalkan" */}
-          <TabsContent value="cancelled" className="mt-6">
-            <div className="space-y-4">
-              {filterOrders("cancelled").length === 0 ? (
-                <p className="text-muted-foreground text-center py-8 bg-card rounded-lg shadow-md">
-                  Tidak ada pesanan dibatalkan.
-                </p>
-              ) : (
-                filterOrders("cancelled").map((order) => (
+                ordersToDisplay.map((order) => (
                   <OrderSummaryCard
                     key={order._id}
                     order={order}
@@ -213,6 +164,13 @@ const OrdersContent: React.FC<OrdersContentProps> = ({ orders }) => {
             </div>
           </TabsContent>
         </Tabs>
+      )}
+
+      {/* Pagination */}
+      {orders.length > 0 && pagination.totalPages > 1 && (
+        <div className="mt-8 flex justify-center">
+          <BasePagination pagination={pagination} />
+        </div>
       )}
     </div>
   );

@@ -6,6 +6,7 @@ import OrdersContent from "@/sections/order/OrdersContent";
 import { getUserProfile } from "@/services/api/auth/profile"; // Asumsi path ini benar
 import { getOrders } from "@/services/api/order/getOrders"; // Asumsi path ini benar
 import { OrdersResponse, Order } from "@/types/order"; // Impor OrdersResponse dan Order
+import { Pagination } from "@/types/pagination";
 import { User } from "@/types/user"; // Impor User
 import { cookies } from "next/headers"; // Impor komponen OrdersContent yang baru
 import Link from "next/link";
@@ -29,6 +30,7 @@ const OrdersPage = async ({
   let user: User | null = null;
   let orders: Order[] = [];
   let errorMessage: string | null = null;
+  let pagination = {} as Pagination;
 
   try {
     if (!token) {
@@ -46,6 +48,7 @@ const OrdersPage = async ({
     });
     if (ordersResponse.success) {
       orders = ordersResponse.data;
+      pagination = ordersResponse.pagination;
     } else {
       errorMessage =
         ordersResponse.message || "Gagal mengambil daftar pesanan.";
@@ -75,7 +78,7 @@ const OrdersPage = async ({
           )}
         </div>
       ) : (
-        <OrdersContent orders={orders} />
+        <OrdersContent orders={orders} pagination={pagination} />
       )}
     </ContainerPage>
   );

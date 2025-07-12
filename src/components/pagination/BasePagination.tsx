@@ -11,7 +11,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination"; // Asumsi path komponen Pagination Shadcn
 import { Pagination } from "@/types/pagination";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface BasePaginationProps {
   pagination: Pagination; // Data pagination
@@ -25,12 +25,15 @@ const BasePagination: React.FC<BasePaginationProps> = ({
 }) => {
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const params = new URLSearchParams(searchParams.toString());
 
   const { currentPage, totalPages } = pagination;
 
   const onPageChange = (page: number) => {
     if (pagination.currentPage !== page) {
-      router.replace(`${pathname}?page=${page}`);
+      params.delete("page");
+      router.replace(`${pathname}?${params.toString()}&page=${page}`);
     }
   };
 
@@ -102,7 +105,6 @@ const BasePagination: React.FC<BasePaginationProps> = ({
               <PaginationEllipsis />
             ) : (
               <PaginationLink
-                href="#"
                 onClick={(e) => {
                   e.preventDefault();
                   onPageChange(page as number);
@@ -118,7 +120,6 @@ const BasePagination: React.FC<BasePaginationProps> = ({
         {/* Tombol Next */}
         <PaginationItem>
           <PaginationNext
-            href="#"
             onClick={(e) => {
               e.preventDefault();
               if (currentPage < totalPages) {

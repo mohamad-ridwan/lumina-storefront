@@ -4,6 +4,8 @@
  * and the complete API response upon successful order creation.
  */
 
+import { Pagination } from "./pagination";
+
 /**
  * Interface untuk objek nilai opsi varian.
  * Contoh: { "Ukuran": "35", "Warna": "Hitam" }
@@ -82,4 +84,5 @@ export interface OrdersResponse {
   success: boolean;
   message: string;
   data: Order[];
+  pagination: Pagination;
 }
