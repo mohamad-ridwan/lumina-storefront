@@ -98,8 +98,15 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
       // Reset quantity if the matched variant changes and stock is less than current quantity
       if (found && quantity > found.stock) {
         setQuantity(found.stock > 0 ? found.stock : 1);
-      } else if (!found) {
+      } else if (!found && shoe.variants.length > 0) {
         setQuantity(1); // Reset to 1 if no variant matches
+      } else {
+        createParams([
+          {
+            name: "quantity",
+            value: `${quantity}`,
+          },
+        ]);
       }
     };
 
@@ -188,26 +195,16 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
 
   // Handler untuk tombol "Tambah ke Keranjang"
   const handleAddToCart = async () => {
-    if (matchedVariant && displayStock > 0 && quantity > 0) {
+    if (displayStock > 0 && quantity > 0) {
       try {
         await addToCart({
           shoeId: shoe._id,
-          selectedVariantId: matchedVariant._id,
+          selectedVariantId: matchedVariant?._id ?? null,
           quantity,
         });
-
-        console.log(
-          `Berhasil menambahkan ${quantity}x ${shoe.name} (${JSON.stringify(
-            matchedVariant.optionValues
-          )}) ke keranjang. Harga: Rp${displayPrice}`
-        );
       } catch (error) {
         console.error("Error menambahkan ke keranjang:", error);
       }
-    } else {
-      console.log(
-        "Tidak dapat menambahkan ke keranjang: Varian tidak dipilih atau stok habis."
-      );
     }
   };
 
@@ -402,8 +399,8 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
           {/* Tombol Aksi Desktop */}
           <Button
             onClick={handleAddToCart}
-            disabled={displayStock === 0 || !matchedVariant || isLoading}
-            className="bg-[#1d4ed8] text-white px-6 py-3 rounded-full font-semibold hover:bg-custom-blue/90 transition-colors duration-200 shadow-md"
+            disabled={displayStock === 0 || isLoading}
+            className="bg-[#1d4ed8] text-white px-6 py-3 rounded-full font-semibold hover:bg-custom-blue/90 transition-colors duration-200 shadow-md cursor-pointer"
           >
             {isLoading ? "Menambahkan..." : "Tambah ke Keranjang"}
           </Button>
