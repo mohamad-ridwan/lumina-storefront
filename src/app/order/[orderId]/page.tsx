@@ -4,6 +4,8 @@ import OrderDetailContent from "@/sections/order/order-detail/OrderDetailContent
 import { getOrderDetail } from "@/services/api/order/getOrderDetail";
 import { CreateOrderResponse } from "@/types/order";
 
+export const dynamic = "force-dynamic";
+
 const OrderDetail = async ({
   params,
 }: {

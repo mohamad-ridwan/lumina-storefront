@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { UserCircle, LogOut, User, LogIn, UserPlus } from "lucide-react";
+import { UserCircle, LogOut, User, LogIn, UserPlus, Truck } from "lucide-react";
 import { selectUserAuthStatus } from "@/store/selectors";
 import { logout } from "@/store/user/userSlice";
 import { resetCart } from "@/store/cart/cartSlice";
@@ -22,20 +22,23 @@ export default function UserDropdown({ isMobile = false }: UserDropdownProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  
+
   const { user, isAuthenticated } = useSelector(selectUserAuthStatus);
 
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -44,12 +47,12 @@ export default function UserDropdown({ isMobile = false }: UserDropdownProps) {
     dispatch(logout());
     dispatch(resetCart());
     removeClientSessionCookie();
-    
+
     toast.success("Logout berhasil");
     setIsOpen(false);
-    
+
     // Redirect to home page
-    router.push('/');
+    router.push("/");
   };
 
   const toggleDropdown = () => {
@@ -67,11 +70,11 @@ export default function UserDropdown({ isMobile = false }: UserDropdownProps) {
         <h3 className="text-lg font-semibold text-foreground mb-2">
           {isAuthenticated ? "Akun" : "Masuk/Daftar"}
         </h3>
-        
+
         {isAuthenticated ? (
           <div className="space-y-2">
             <div className="px-2 py-2 text-sm text-muted-foreground">
-              Halo, {user?.username || 'User'}
+              Halo, {user?.username || "User"}
             </div>
             <Link
               href="/profile"
@@ -80,6 +83,14 @@ export default function UserDropdown({ isMobile = false }: UserDropdownProps) {
             >
               <User className="h-4 w-4" />
               <span>Profile</span>
+            </Link>
+            <Link
+              href="/order"
+              className="flex items-center space-x-2 w-full px-2 py-2 text-foreground hover:text-custom-blue hover:bg-muted rounded-md transition-colors duration-200"
+              onClick={closeDropdown}
+            >
+              <Truck className="h-4 w-4" />
+              <span>Your Orders</span>
             </Link>
             <button
               onClick={handleLogout}
@@ -116,11 +127,11 @@ export default function UserDropdown({ isMobile = false }: UserDropdownProps) {
   // Desktop version - render as dropdown
   return (
     <div className="relative" ref={dropdownRef}>
-      <Button 
-        variant="ghost" 
+      <Button
+        variant="ghost"
         size="icon"
         onClick={toggleDropdown}
-        className="relative"
+        className="relative cursor-pointer"
       >
         <UserCircle className="h-5 w-5" />
         {isAuthenticated && (
@@ -134,7 +145,7 @@ export default function UserDropdown({ isMobile = false }: UserDropdownProps) {
             {isAuthenticated ? (
               <>
                 <div className="px-4 py-2 text-sm text-muted-foreground border-b border-border">
-                  Halo, {user?.username || 'User'}
+                  Halo, {user?.username || "User"}
                 </div>
                 <Link
                   href="/profile"
@@ -144,9 +155,17 @@ export default function UserDropdown({ isMobile = false }: UserDropdownProps) {
                   <User className="h-4 w-4" />
                   <span>Profile</span>
                 </Link>
+                <Link
+                  href="/order"
+                  className="flex items-center space-x-2 px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors duration-200"
+                  onClick={closeDropdown}
+                >
+                  <Truck className="h-4 w-4" />
+                  <span>Your Orders</span>
+                </Link>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-foreground hover:bg-muted hover:text-red-600 transition-colors duration-200"
+                  className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-foreground hover:bg-muted hover:text-red-600 transition-colors duration-200 cursor-pointer"
                 >
                   <LogOut className="h-4 w-4" />
                   <span>Logout</span>

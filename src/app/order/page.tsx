@@ -13,6 +13,8 @@ import Link from "next/link";
 
 const COOKIE_NAME = "user-session-lumina-storefront";
 
+export const dynamic = "force-dynamic";
+
 const OrdersPage = async ({
   searchParams,
 }: {
