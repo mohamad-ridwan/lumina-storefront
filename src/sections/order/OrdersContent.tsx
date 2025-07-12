@@ -303,7 +303,7 @@ const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
         {" "}
         {/* Sejajarkan tombol ke kanan-bawah di desktop */}
         <Link href={`/order/${order.orderId}`} passHref>
-          <Button className="w-full md:w-auto bg-custom-blue text-white hover:bg-custom-blue/90">
+          <Button className="w-full md:w-auto text-white cursor-pointer">
             Lihat Detail
           </Button>
         </Link>
