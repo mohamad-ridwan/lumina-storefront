@@ -6,7 +6,7 @@ import { OrdersResponse } from "@/types/order";
 
 interface GetOrdersRequest {
   userId: string;
-  status: "pending";
+  status?: "pending";
 }
 
 export async function getOrders({
@@ -18,7 +18,9 @@ export async function getOrders({
       throw new Error("Invalid parameters for get orders");
     }
 
-    const url = `${clientAPI}/order/orders?userId=${userId}&status=${status}`;
+    const url = `${clientAPI}/order/orders?userId=${userId}&status=${
+      status ?? ""
+    }`;
 
     const responseData = await fetchData<OrdersResponse>(url, "GET");
 
