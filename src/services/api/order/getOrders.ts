@@ -7,11 +7,15 @@ import { OrdersResponse } from "@/types/order";
 interface GetOrdersRequest {
   userId: string;
   status?: "pending";
+  page?: number;
+  limit?: number;
 }
 
 export async function getOrders({
   userId,
   status,
+  page = 1,
+  limit = 10,
 }: GetOrdersRequest): Promise<OrdersResponse> {
   try {
     if (!userId) {
@@ -20,7 +24,7 @@ export async function getOrders({
 
     const url = `${clientAPI}/order/orders?userId=${userId}&status=${
       status ?? ""
-    }`;
+    }&page=${page}&limit=${limit}`;
 
     const responseData = await fetchData<OrdersResponse>(url, "GET");
 
