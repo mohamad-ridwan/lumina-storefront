@@ -245,12 +245,6 @@ const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
 
           {/* Bagian Kanan: Ikon Keranjang, Ikon Avatar (Desktop) & Tombol Toggle Menu Mobile */}
           <div className="flex items-center space-x-4">
-            {/* Ikon Search (Hanya Tampil di Mobile) */}
-            {/* Tombol ini bisa membuka modal pencarian di mobile */}
-            <Button variant="ghost" size="icon" className="md:hidden">
-              <Search className="h-5 w-5" />
-            </Button>
-
             {/* Ikon Keranjang Belanja */}
             {/* Menggunakan Shadcn Button dengan size 'icon' untuk bentuk lingkaran */}
             <Link href="/cart">
@@ -294,7 +288,7 @@ const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
       {/* Ditampilkan/disembunyikan berdasarkan state 'isMobileMenuOpen' */}
       {/* Menggunakan transisi untuk efek slide in/out yang halus */}
       <div
-        className={`md:hidden absolute top-full left-0 w-full bg-card shadow-lg transition-all duration-300 ease-in-out ${
+        className={`lg:hidden absolute top-full left-0 w-full bg-card shadow-lg transition-all duration-300 ease-in-out ${
           isMobileMenuOpen ? "block" : "hidden"
         }`}
       >

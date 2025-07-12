@@ -126,7 +126,7 @@ export default function UserDropdown({ isMobile = false }: UserDropdownProps) {
 
   // Desktop version - render as dropdown
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="hidden lg:block relative" ref={dropdownRef}>
       <Button
         variant="ghost"
         size="icon"
