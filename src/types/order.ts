@@ -77,3 +77,9 @@ export interface CreateOrderResponse {
   message: string; // Pesan status dari API (contoh: "Order created successfully.")
   order: Order; // Objek pesanan yang dibuat, sesuai dengan interface Order
 }
+
+export interface OrdersResponse {
+  success: boolean;
+  message: string;
+  data: Order[];
+}
