@@ -44,7 +44,7 @@ const OrdersPage = async ({
     }
     const ordersResponse: OrdersResponse = await getOrders({
       userId: user._id,
-      status: status ? "pending" : undefined,
+      status: status ? (status as "pending") : undefined,
       limit: Number(limit) ? Number(limit) : 10,
       page: Number(page) ? Number(page) : 1,
     });

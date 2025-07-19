@@ -99,7 +99,7 @@ export default function CartItem({
     if (item.selectedVariantId) {
       return `/product/${item.slug}?variant=${item.selectedVariantId}&quantity=${item.quantity}`;
     } else {
-      return `/product/${item.slug}&quantity=${item.quantity}`;
+      return `/product/${item.slug}?quantity=${item.quantity}`;
     }
   }, [item]);
 
@@ -196,7 +196,9 @@ export default function CartItem({
                 )
               }
               disabled={
-                isLoading || isUpdatingQuantity || localQuantity >= item.availableStock
+                isLoading ||
+                isUpdatingQuantity ||
+                localQuantity >= item.availableStock
               }
               className="w-8 h-8 p-0"
             >

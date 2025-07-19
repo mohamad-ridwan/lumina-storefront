@@ -66,17 +66,21 @@ const OrdersContent: React.FC<OrdersContentProps> = ({
         displayName = "Menunggu Pembayaran";
         colorClass = "text-yellow-600";
         break;
-      case "completed":
-        displayName = "Selesai";
+      case "processing":
+        displayName = "Diproses";
+        colorClass = "text-blue-600";
+        break;
+      case "shipped":
+        displayName = "Dikirim";
+        colorClass = "text-gray-700";
+        break;
+      case "delivered": // Contoh status lain yang mungkin ada
+        displayName = "Terkirim";
         colorClass = "text-green-600";
         break;
       case "cancelled":
         displayName = "Dibatalkan";
         colorClass = "text-red-600";
-        break;
-      case "processing": // Contoh status lain yang mungkin ada
-        displayName = "Diproses";
-        colorClass = "text-blue-600";
         break;
       default:
         displayName = status.charAt(0).toUpperCase() + status.slice(1);
@@ -110,6 +114,33 @@ const OrdersContent: React.FC<OrdersContentProps> = ({
 
   const ordersToDisplay = filterOrders(currentTab);
 
+  const tabs: { value: string; label: string }[] = [
+    {
+      value: "all",
+      label: "Semua Pesanan",
+    },
+    {
+      value: "pending",
+      label: "Menunggu Pembayaran",
+    },
+    {
+      value: "processing",
+      label: "Sedang Diproses",
+    },
+    {
+      value: "shipped",
+      label: "Dikirim",
+    },
+    {
+      value: "delivered",
+      label: "Terkirim",
+    },
+    {
+      value: "cancelled",
+      label: "Dibatalkan",
+    },
+  ];
+
   return (
     <div className="container mx-auto p-4 md:p-6 lg:p-8">
       <h1 className="text-3xl font-bold text-foreground mb-6">Pesanan Saya</h1>
@@ -134,11 +165,11 @@ const OrdersContent: React.FC<OrdersContentProps> = ({
         >
           {/* Daftar Tab Trigger */}
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-5 h-auto">
-            <TabsTrigger value="all">Semua Pesanan</TabsTrigger>
-            <TabsTrigger value="pending">Menunggu Pembayaran</TabsTrigger>
-            <TabsTrigger value="completed">Selesai</TabsTrigger>
-            <TabsTrigger value="cancelled">Dibatalkan</TabsTrigger>
-            {/* Tambahkan trigger lain jika ada status pesanan tambahan (misalnya 'processing', 'shipped') */}
+            {tabs.map((tab, i) => (
+              <TabsTrigger key={i} value={tab.value}>
+                {tab.label}
+              </TabsTrigger>
+            ))}
           </TabsList>
 
           {/* Konten untuk Tab yang dipilih */}
