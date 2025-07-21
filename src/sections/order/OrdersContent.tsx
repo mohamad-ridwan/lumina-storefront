@@ -72,10 +72,10 @@ const OrdersContent: React.FC<OrdersContentProps> = ({
         break;
       case "shipped":
         displayName = "Dikirim";
-        colorClass = "text-gray-700";
+        colorClass = "text-indigo-800";
         break;
       case "delivered": // Contoh status lain yang mungkin ada
-        displayName = "Terkirim";
+        displayName = "Selesai";
         colorClass = "text-green-600";
         break;
       case "cancelled":
@@ -125,7 +125,7 @@ const OrdersContent: React.FC<OrdersContentProps> = ({
     },
     {
       value: "processing",
-      label: "Sedang Diproses",
+      label: "Diproses",
     },
     {
       value: "shipped",
@@ -133,7 +133,7 @@ const OrdersContent: React.FC<OrdersContentProps> = ({
     },
     {
       value: "delivered",
-      label: "Terkirim",
+      label: "Selesai",
     },
     {
       value: "cancelled",
