@@ -267,10 +267,7 @@ const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
           ) => (
             <BaseCard
               key={item._id}
-              image={
-                item.variant?.imageUrl ||
-                "https://placehold.co/64x64/E0E0E0/666666?text=No+Image"
-              }
+              image={item.variant?.imageUrl || "/no-image.jpg"}
               imgHeight={64}
               imgWidth={64}
               wrapperCard="w-16 h-16 flex-shrink-0" // Jadikan kartu itu sendiri kecil

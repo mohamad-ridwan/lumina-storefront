@@ -115,8 +115,7 @@ const ProductImageDesktop: React.FC<ProductImageDesktopProps> = ({
             priority // Prioritaskan gambar utama
             onError={(e) => {
               e.currentTarget.onerror = null;
-              e.currentTarget.src =
-                "https://placehold.co/800x800/E0E0E0/666666?text=Gambar+Tidak+Tersedia";
+              e.currentTarget.src = "/no-image.jpg";
             }}
           />
         ) : (
@@ -160,8 +159,7 @@ const ProductImageDesktop: React.FC<ProductImageDesktopProps> = ({
                     className="object-cover"
                     onError={(e) => {
                       e.currentTarget.onerror = null;
-                      e.currentTarget.src =
-                        "https://placehold.co/100x100/E0E0E0/666666?text=X";
+                      e.currentTarget.src = "/no-image.jpg";
                     }}
                   />
                 </div>

@@ -168,10 +168,7 @@ const OrderDetailContent: React.FC<OrderDetailContentProps> = ({ order }) => {
                 return (
                   <BaseCard
                     key={item._id} // Gunakan _id sebagai key
-                    image={
-                      item.variant?.imageUrl ||
-                      "https://placehold.co/64x64/E0E0E0/666666?text=No+Image"
-                    }
+                    image={item.variant?.imageUrl || "/no-image.jpg"}
                     title={item.name}
                     description={descriptionText}
                     imgHeight={64} // Ukuran gambar lebih kecil

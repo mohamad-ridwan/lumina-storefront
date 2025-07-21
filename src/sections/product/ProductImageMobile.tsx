@@ -100,8 +100,7 @@ const ProductImageMobile: React.FC<ProductImageMobileProps> = ({ images }) => {
                     priority={index === 0} // Prioritaskan gambar pertama untuk LCP
                     onError={(e) => {
                       e.currentTarget.onerror = null;
-                      e.currentTarget.src =
-                        "https://placehold.co/800x800/E0E0E0/666666?text=Gambar+Tidak+Tersedia";
+                      e.currentTarget.src = "/no-image.jpg";
                     }}
                   />
                 </div>
