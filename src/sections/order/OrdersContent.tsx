@@ -82,6 +82,10 @@ const OrdersContent: React.FC<OrdersContentProps> = ({
         displayName = "Dibatalkan";
         colorClass = "text-red-600";
         break;
+      case "cancel-requested":
+        displayName = "Permintaan Pembatalan";
+        colorClass = "text-rose-500";
+        break;
       default:
         displayName = status.charAt(0).toUpperCase() + status.slice(1);
         break;
