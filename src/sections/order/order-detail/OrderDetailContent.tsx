@@ -2,6 +2,7 @@ import React from "react";
 import { Order, OrderItem } from "@/types/order"; // Impor tipe Order dan turunannya
 import BaseCard from "@/components/card/BaseCard"; // Impor komponen BaseCard
 import WrapperSection from "@/sections/WrapperSection";
+import PaymentOrder from "./PaymentOrder";
 
 /**
  * @fileoverview Order Detail Content Component (React Server Component)
@@ -126,13 +127,18 @@ const OrderDetailContent: React.FC<OrderDetailContentProps> = ({ order }) => {
           </div>
 
           {/* Metode Pembayaran */}
-          <div className="bg-card p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">
+          <div className="bg-card p-6 rounded-lg shadow-md gap-2 flex flex-col">
+            <h2 className="text-2xl font-semibold text-foreground">
               Metode Pembayaran
             </h2>
-            <p className="text-muted-foreground">{order.paymentMethod}</p>
+            <div className="flex items-center justify-between w-full gap-2">
+              <p className="text-muted-foreground">{order.paymentMethod}</p>
+              {order.status === "pending" && (
+                <PaymentOrder orderId={order.orderId} />
+              )}
+            </div>
             {order.notes && (
-              <div className="mt-4">
+              <div>
                 <h3 className="font-semibold text-foreground mb-2">Catatan:</h3>
                 <p className="text-muted-foreground italic">{order.notes}</p>
               </div>

@@ -86,3 +86,9 @@ export interface OrdersResponse {
   data: Order[];
   pagination: Pagination;
 }
+
+export interface PayOrderResponse {
+  success: boolean;
+  message: string;
+  data: Order;
+}
