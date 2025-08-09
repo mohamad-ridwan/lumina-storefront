@@ -321,7 +321,10 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
           <h3 className="text-lg font-semibold text-foreground">
             Deskripsi Produk
           </h3>
-          <p className="leading-relaxed">{shoe.description}</p>
+          <div
+            className="leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: shoe.description }}
+          ></div>
         </div>
       </div>
 
