@@ -32,7 +32,7 @@ export interface ProductCategory {
  */
 export interface VariantAttribute {
   name: string;
-  options: string[]; // Array dari string untuk opsi (misalnya, "30", "Hitam")
+  options: string[];
   _id: string;
 }
 
