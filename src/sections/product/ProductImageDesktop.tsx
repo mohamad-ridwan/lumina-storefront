@@ -105,7 +105,7 @@ const ProductImageDesktop: React.FC<ProductImageDesktopProps> = ({
     <div className="w-full hidden lg:block">
       {/* Gambar Besar Tunggal */}
       <div className="relative w-full aspect-square rounded-lg overflow-hidden mb-4">
-        {selectedImage ? (
+        {selectedImage && selectedImage.imageUrl ? (
           <Image
             src={selectedImage.imageUrl}
             alt="Product main image"
