@@ -8,6 +8,7 @@ import BaseCard from "@/components/card/BaseCard"; // Pastikan path ini benar
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 import * as z from "zod";
 import {
   Form,
@@ -125,7 +126,9 @@ const CheckoutClient: React.FC<CheckoutClientProps> = ({
       });
 
       if (response.success) {
-        alert("Pesanan berhasil dibuat!");
+        toast.success(
+          "Pesanan berhasil dibuat!, silahkan lakukan pembayaran Anda."
+        );
         router.push(`/order/${response.order.orderId}`); // Redirect ke halaman detail order
         // TODO: Anda mungkin ingin melakukan dispatch Redux action untuk mengosongkan keranjang di sini
       } else {
