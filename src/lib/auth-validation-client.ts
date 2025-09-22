@@ -3,13 +3,14 @@
 import { getUserProfile } from "@/services/api/auth/profile";
 import { getClientSessionCookie, removeClientSessionCookie } from "./cookies";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { logout, UserState } from "@/store/user/userSlice";
+import { logout } from "@/store/user/userSlice";
 import { Dispatch, ThunkDispatch, UnknownAction } from "@reduxjs/toolkit";
 import { CartState, resetCart } from "@/store/cart/cartSlice";
 import {
   ProductState,
   resetActiveProductImg,
 } from "@/store/product/productSlice";
+import { UserStore } from "@/types/user";
 
 export async function authValidationClient(
   router: AppRouterInstance,
@@ -17,7 +18,7 @@ export async function authValidationClient(
     {
       product: ProductState;
       cart: CartState;
-      user: UserState;
+      user: UserStore;
     },
     undefined,
     UnknownAction
