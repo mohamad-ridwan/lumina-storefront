@@ -92,3 +92,26 @@ export interface PayOrderResponse {
   message: string;
   data: Order;
 }
+
+export interface OrderStore {
+  order: null;
+  isLoadingCreateOrder: boolean;
+  submitOrderError: string | null;
+}
+
+export interface ShippingAddressRequest {
+  fullName: string;
+  street: string;
+  city: string;
+  province: string;
+  postalCode: string;
+  phoneNumber: string;
+  email: string;
+}
+
+export interface CreateOrderRequest {
+  userId: string;
+  shippingAddress: ShippingAddressRequest;
+  paymentMethod: string;
+  notes: string;
+}

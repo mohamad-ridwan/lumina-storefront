@@ -1,9 +1,10 @@
-import { createSelector } from 'reselect';
-import { RootState } from './index';
+import { createSelector } from "reselect";
+import { RootState } from "./index";
 
 // Base selectors
 const selectUserState = (state: RootState) => state.user;
 const selectCartState = (state: RootState) => state.cart;
+const selectOrderState = (state: RootState) => state.order;
 
 // User selectors with memoization
 export const selectUser = createSelector(
@@ -94,6 +95,16 @@ export const selectUserAuthStatus = createSelector(
     user,
     isAuthenticated,
     token,
-    hasValidSession: isAuthenticated && !!user && !!token
+    hasValidSession: isAuthenticated && !!user && !!token,
   })
+);
+
+export const selectIsLoadingCreateOrder = createSelector(
+  [selectOrderState],
+  (order) => order.isLoadingCreateOrder
+);
+
+export const selectSubmitOrderError = createSelector(
+  [selectOrderState],
+  (order) => order.submitOrderError
 );

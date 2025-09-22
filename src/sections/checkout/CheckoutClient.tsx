@@ -1,15 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation"; // Import useRouter untuk redirect
 import { CartItem } from "@/types/cart"; // Pastikan path ini benar
 import BaseCard from "@/components/card/BaseCard"; // Pastikan path ini benar
 import { Button } from "@/components/ui/button";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
-import * as z from "zod";
 import {
   Form,
   FormControl,
@@ -19,12 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  createOrder,
-  ShippingAddressRequest,
-} from "@/services/api/order/createOrder";
-import { useSelector } from "react-redux";
-import { selectUserAuthStatus } from "@/store/selectors";
+import { useReduxOrder } from "@/hooks/useOrder";
 
 // Import Server Action dan Tipe dari API // Sesuaikan path ini sesuai lokasi file server action Anda
 
@@ -43,114 +32,18 @@ interface CheckoutClientProps {
   totalProduct: number; // Total jumlah produk (sum of all quantities)
 }
 
-// Skema validasi menggunakan Zod, disesuaikan dengan ShippingAddressRequest API
-const formSchema = z.object({
-  fullName: z.string().min(1, { message: "Nama lengkap wajib diisi." }),
-  street: z.string().min(1, {
-    message: "Alamat lengkap (jalan, nomor rumah, RT/RW) wajib diisi.",
-  }), // Disesuaikan dari 'address'
-  city: z.string().min(1, { message: "Kota/Kabupaten wajib diisi." }),
-  province: z.string().min(1, { message: "Provinsi wajib diisi." }), // Baru, sesuai API
-  postalCode: z.string().min(1, { message: "Kode pos wajib diisi." }), // Disesuaikan dari 'postCode'
-  phoneNumber: z
-    .string()
-    .min(10, { message: "Nomor telepon tidak valid (min. 10 digit)." })
-    .max(15, { message: "Nomor telepon tidak valid (max. 15 digit)." }),
-  email: z
-    .string()
-    .email({ message: "Format email tidak valid." })
-    .min(1, { message: "Email wajib diisi." }), // Baru, sesuai API
-  notes: z.string().optional().nullable(), // Opsional dan bisa null
-});
-
 const CheckoutClient: React.FC<CheckoutClientProps> = ({
   cartItems,
   cartTotalPrice,
   totalProduct,
 }) => {
-  const router = useRouter();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
-
-  const { user } = useSelector(selectUserAuthStatus);
-
-  // Inisialisasi form dengan react-hook-form dan zodResolver
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      fullName: "",
-      street: "",
-      city: "",
-      province: "",
-      postalCode: "",
-      phoneNumber: "",
-      email: "",
-      notes: null, // Default untuk opsional/nullable
-    },
-  });
-
-  // Handler saat form disubmit
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsSubmitting(true);
-    setSubmitError(null);
-
-    // Validasi sederhana untuk userId (penting!)
-    if (!user?._id || cartItems.length === 0) {
-      setSubmitError(
-        "Informasi pengguna atau keranjang tidak valid. Mohon periksa kembali."
-      );
-      setIsSubmitting(false);
-      return;
-    }
-
-    try {
-      // Siapkan objek shippingAddress sesuai dengan tipe ShippingAddressRequest
-      const shippingAddress: ShippingAddressRequest = {
-        fullName: values.fullName,
-        street: values.street,
-        city: values.city,
-        province: values.province,
-        postalCode: values.postalCode,
-        phoneNumber: values.phoneNumber,
-        email: values.email,
-      };
-
-      // Metode pembayaran bisa dipilih dari UI, untuk contoh ini kita hardcode
-      const paymentMethod = "Bank Transfer (Simulasi)";
-
-      const response = await createOrder({
-        userId: user?._id as string,
-        shippingAddress,
-        paymentMethod,
-        notes: values.notes || "", // Pastikan mengirim string kosong jika notes null/undefined
-      });
-
-      if (response.success) {
-        toast.success(
-          "Pesanan berhasil dibuat!, silahkan lakukan pembayaran Anda."
-        );
-        router.push(`/order/${response.order.orderId}`); // Redirect ke halaman detail order
-        // TODO: Anda mungkin ingin melakukan dispatch Redux action untuk mengosongkan keranjang di sini
-      } else {
-        setSubmitError(response.message || "Gagal membuat pesanan.");
-      }
-    } catch (error) {
-      console.error("Error submitting order:", error);
-      setSubmitError(
-        "Terjadi kesalahan saat memproses pesanan Anda. Silakan coba lagi."
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
-
-  // Helper function untuk memformat harga
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
-    }).format(price);
-  };
+  const {
+    formCheckout,
+    onSubmitCheckout,
+    submitOrderError,
+    isLoadingCreateOrder,
+    formatPrice,
+  } = useReduxOrder({ cartItems });
 
   return (
     <>
@@ -162,15 +55,15 @@ const CheckoutClient: React.FC<CheckoutClientProps> = ({
           <h2 className="text-lg font-semibold text-foreground mb-4">
             Detail Pengiriman
           </h2>
-          <Form {...form}>
+          <Form {...formCheckout}>
             {/* Beri ID pada form agar tombol submit di luar form bisa terhubung */}
             <form
-              onSubmit={form.handleSubmit(onSubmit)}
+              onSubmit={formCheckout.handleSubmit(onSubmitCheckout)}
               className="space-y-4"
               id="checkout-form"
             >
               <FormField
-                control={form.control}
+                control={formCheckout.control}
                 name="fullName"
                 render={({ field }) => (
                   <FormItem>
@@ -186,7 +79,7 @@ const CheckoutClient: React.FC<CheckoutClientProps> = ({
                 )}
               />
               <FormField
-                control={form.control}
+                control={formCheckout.control}
                 name="email" // Field Email baru
                 render={({ field }) => (
                   <FormItem>
@@ -203,7 +96,7 @@ const CheckoutClient: React.FC<CheckoutClientProps> = ({
                 )}
               />
               <FormField
-                control={form.control}
+                control={formCheckout.control}
                 name="phoneNumber"
                 render={({ field }) => (
                   <FormItem>
@@ -220,7 +113,7 @@ const CheckoutClient: React.FC<CheckoutClientProps> = ({
                 )}
               />
               <FormField
-                control={form.control}
+                control={formCheckout.control}
                 name="street" // Disesuaikan menjadi 'street'
                 render={({ field }) => (
                   <FormItem>
@@ -239,7 +132,7 @@ const CheckoutClient: React.FC<CheckoutClientProps> = ({
               />
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
-                  control={form.control}
+                  control={formCheckout.control}
                   name="city"
                   render={({ field }) => (
                     <FormItem>
@@ -252,7 +145,7 @@ const CheckoutClient: React.FC<CheckoutClientProps> = ({
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={formCheckout.control}
                   name="province" // Field Provinsi baru
                   render={({ field }) => (
                     <FormItem>
@@ -266,7 +159,7 @@ const CheckoutClient: React.FC<CheckoutClientProps> = ({
                 />
               </div>
               <FormField
-                control={form.control}
+                control={formCheckout.control}
                 name="postalCode" // Disesuaikan menjadi 'postalCode'
                 render={({ field }) => (
                   <FormItem>
@@ -283,7 +176,7 @@ const CheckoutClient: React.FC<CheckoutClientProps> = ({
                 )}
               />
               <FormField
-                control={form.control}
+                control={formCheckout.control}
                 name="notes" // Field Catatan opsional
                 render={({ field }) => (
                   <FormItem>
@@ -379,14 +272,14 @@ const CheckoutClient: React.FC<CheckoutClientProps> = ({
             type="submit" // Tipe submit agar terhubung dengan form
             form="checkout-form" // ID form yang akan disubmit
             className="w-full mt-6 text-white py-3 rounded-md font-semibold cursor-pointer"
-            onClick={form.handleSubmit(onSubmit)} // Panggil handleSubmit dari form
-            disabled={isSubmitting || cartItems.length === 0} // Nonaktifkan saat submit atau keranjang kosong
+            onClick={formCheckout.handleSubmit(onSubmitCheckout)} // Panggil handleSubmit dari form
+            disabled={isLoadingCreateOrder || cartItems.length === 0} // Nonaktifkan saat submit atau keranjang kosong
           >
-            {isSubmitting ? "Memproses Order..." : "Order Sekarang"}
+            {isLoadingCreateOrder ? "Memproses Order..." : "Order Sekarang"}
           </Button>
-          {submitError && (
+          {submitOrderError && (
             <p className="text-red-500 text-sm mt-2 text-center">
-              {submitError}
+              {submitOrderError}
             </p>
           )}
           <p className="text-xs text-gray-500 mt-4 text-center">
