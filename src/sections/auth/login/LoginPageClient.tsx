@@ -1,74 +1,15 @@
 "use client";
 
-import { useState, Suspense, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { toast } from "sonner";
+import { Suspense } from "react";
 import Link from "next/link";
-import { AppDispatch } from "@/store";
-import { loginAsync, logout } from "@/store/user/userSlice";
-import {
-  removeClientSessionCookie,
-  setClientSessionCookie,
-} from "@/lib/cookies";
 import AuthLayout from "@/components/auth/AuthLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { resetCart } from "@/store/cart/cartSlice";
-import { resetActiveProductImg } from "@/store/product/productSlice";
+import { useLogin } from "@/hooks/useLogin";
 
 function LoginForm() {
-  const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-    phoneNumber: "",
-  });
-  const [isLoading, setIsLoading] = useState(false);
-
-  const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirect") || "/";
-
-  useEffect(() => {
-    dispatch(resetCart());
-    dispatch(logout());
-    dispatch(resetActiveProductImg());
-    removeClientSessionCookie();
-  }, []);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!formData.username || !formData.password || !formData.phoneNumber) {
-      toast.error("Semua field harus diisi");
-      return;
-    }
-
-    setIsLoading(true);
-
-    try {
-      const result = await dispatch(loginAsync(formData)).unwrap();
-
-      // Save token to cookie
-      setClientSessionCookie(result.token);
-
-      toast.success("Login berhasil!");
-      router.push(redirectTo);
-    } catch (error: unknown) {
-      toast.error((error as Error)?.message || "Login gagal");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { isLoading, handleChange, handleSubmit, formData } = useLogin();
 
   return (
     <AuthLayout

@@ -33,3 +33,11 @@ export interface LoginResponse {
   data: User; // The user data conforming to the User interface
   token: string; // The authentication token
 }
+
+export interface UserStore {
+  user: User | null;
+  token: string | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  error: string | null;
+}
