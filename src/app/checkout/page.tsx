@@ -1,34 +1,26 @@
-import CustomBreadcrumb from "@/components/breadcrumbs/CustomBreadcrumb";
-import ContainerPage from "@/container/ContainerPage";
-import { requireAuth } from "@/lib/auth-validation";
-import CheckoutClient from "@/sections/checkout/CheckoutClient";
-import WrapperSection from "@/sections/WrapperSection";
-import { fetchCart } from "@/services/api/cart/getCart";
-import { GetCartResponse } from "@/types/cart";
+/**
+ * @fileoverview Checkout Page
+ * Clean architecture implementation of checkout page
+ */
 
-export const dynamic = "force-dynamic";
+import { Metadata } from 'next';
+import ContainerPage from '@/container/ContainerPage';
+import CheckoutPageContent from '@/sections/checkout/CheckoutPageContent';
 
-const CheckoutPage = async () => {
-  const { user } = await requireAuth("/checkout");
-  const breadcrumbItems = [
-    { href: "/", label: "Beranda" },
-    { href: "/checkout", label: "Checkout", isCurrent: true },
-  ];
-
-  const cart: GetCartResponse = await fetchCart({ userId: user._id });
-
-  return (
-    <ContainerPage>
-      <CustomBreadcrumb items={breadcrumbItems} />
-      <WrapperSection title="Checkout">
-        <CheckoutClient
-          cartItems={cart.cartItems}
-          totalProduct={cart.totalProduct}
-          cartTotalPrice={cart.cartTotalPrice}
-        />
-      </WrapperSection>
-    </ContainerPage>
-  );
+export const metadata: Metadata = {
+  title: 'Checkout - Lumina Storefront',
+  description: 'Complete your purchase securely',
 };
 
-export default CheckoutPage;
+export default function CheckoutPage() {
+  return (
+    <ContainerPage>
+      <div className="py-8">
+        <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-8">
+          Checkout
+        </h1>
+        <CheckoutPageContent />
+      </div>
+    </ContainerPage>
+  );
+}

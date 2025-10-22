@@ -25,7 +25,6 @@ export default function UserDropdown({ isMobile = false }: UserDropdownProps) {
 
   const { user, isAuthenticated } = useSelector(selectUserAuthStatus);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -43,15 +42,12 @@ export default function UserDropdown({ isMobile = false }: UserDropdownProps) {
   }, []);
 
   const handleLogout = () => {
-    // Clear user session
     dispatch(logout());
     dispatch(resetCart());
     removeClientSessionCookie();
 
     toast.success("Logout berhasil");
     setIsOpen(false);
-
-    // Redirect to home page
     router.push("/");
   };
 
@@ -64,7 +60,6 @@ export default function UserDropdown({ isMobile = false }: UserDropdownProps) {
   };
 
   if (isMobile) {
-    // Mobile version - render as list items
     return (
       <div className="w-full border-t border-border pt-4 mt-4">
         <h3 className="text-lg font-semibold text-foreground mb-2">
@@ -124,7 +119,6 @@ export default function UserDropdown({ isMobile = false }: UserDropdownProps) {
     );
   }
 
-  // Desktop version - render as dropdown
   return (
     <div className="hidden lg:block relative" ref={dropdownRef}>
       <Button
