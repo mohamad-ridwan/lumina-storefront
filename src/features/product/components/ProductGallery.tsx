@@ -1,13 +1,15 @@
+"use client";
+
 /**
  * @fileoverview Product Gallery Component
  * Image gallery for product detail pages
  */
 
-import { useState } from 'react';
-import Image from 'next/image';
-import { cn } from '@/shared/lib/utils';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Button } from '@/shared/components/ui/button';
+import { useState } from "react";
+import Image from "next/image";
+import { cn } from "@/shared/lib/utils";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/shared/components/ui/button";
 
 export interface ProductGalleryProps {
   images: string[];
@@ -15,24 +17,24 @@ export interface ProductGalleryProps {
   className?: string;
 }
 
-export const ProductGallery = ({ 
-  images, 
-  productName, 
-  className 
+export const ProductGallery = ({
+  images,
+  productName,
+  className,
 }: ProductGalleryProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  
+
   // Ensure we have at least one image
-  const galleryImages = images.length > 0 ? images : ['/no-image.jpg'];
+  const galleryImages = images.length > 0 ? images : ["/no-image.jpg"];
 
   const goToPrevious = () => {
-    setCurrentIndex((prev) => 
+    setCurrentIndex((prev) =>
       prev === 0 ? galleryImages.length - 1 : prev - 1
     );
   };
 
   const goToNext = () => {
-    setCurrentIndex((prev) => 
+    setCurrentIndex((prev) =>
       prev === galleryImages.length - 1 ? 0 : prev + 1
     );
   };
@@ -42,7 +44,7 @@ export const ProductGallery = ({
   };
 
   return (
-    <div className={cn('space-y-4', className)}>
+    <div className={cn("space-y-4", className)}>
       {/* Main Image */}
       <div className="relative aspect-square bg-muted rounded-lg overflow-hidden">
         <Image
@@ -53,7 +55,7 @@ export const ProductGallery = ({
           sizes="(max-width: 768px) 100vw, 50vw"
           priority
         />
-        
+
         {/* Navigation Arrows - Only show if more than one image */}
         {galleryImages.length > 1 && (
           <>
@@ -66,7 +68,7 @@ export const ProductGallery = ({
             >
               <ChevronLeft className="h-4 w-4" />
             </Button>
-            
+
             <Button
               variant="ghost"
               size="icon"
@@ -95,10 +97,10 @@ export const ProductGallery = ({
               key={index}
               onClick={() => goToSlide(index)}
               className={cn(
-                'relative flex-shrink-0 w-16 h-16 rounded-md overflow-hidden border-2 transition-all',
-                index === currentIndex 
-                  ? 'border-primary ring-2 ring-primary/20' 
-                  : 'border-border hover:border-primary/50'
+                "relative flex-shrink-0 w-16 h-16 rounded-md overflow-hidden border-2 transition-all",
+                index === currentIndex
+                  ? "border-primary ring-2 ring-primary/20"
+                  : "border-border hover:border-primary/50"
               )}
               aria-label={`View image ${index + 1}`}
             >

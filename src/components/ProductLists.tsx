@@ -10,7 +10,7 @@ const ProductLists = ({ shoes }: ProductListsProps) => {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       {shoes.map((shoe, key) => (
-        <Link key={key} href={`/product/${shoe.slug}`} className="w-fit h-fit">
+        <Link key={key} href={`/products/${shoe.slug}`} className="w-fit h-fit">
           <BaseCard
             wrapperCard="justify-start items-start"
             image={shoe.image}

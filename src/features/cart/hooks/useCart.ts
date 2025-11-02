@@ -30,7 +30,11 @@ import {
   selectCartAddingItem,
 } from "@/store/selectors";
 import { authValidationClient } from "@/shared/lib/auth-validation-client";
-import { AddToCartCommand, UpdateCartQuantityCommand, RemoveFromCartCommand } from "@/shared/types/cart";
+import {
+  AddToCartCommand,
+  UpdateCartQuantityCommand,
+  RemoveFromCartCommand,
+} from "@/shared/types/cart";
 
 export interface UseCartReturn {
   // State
@@ -46,9 +50,13 @@ export interface UseCartReturn {
   user: any;
 
   // Actions
-  addToCart: (params: Omit<AddToCartCommand, 'userId'>) => Promise<void>;
+  addToCart: (params: Omit<AddToCartCommand, "userId">) => Promise<void>;
   getCart: (userId?: string) => Promise<void>;
-  updateQuantity: (params: Omit<UpdateCartQuantityCommand, 'userId'> & { availableStock?: number }) => Promise<void>;
+  updateQuantity: (
+    params: Omit<UpdateCartQuantityCommand, "userId"> & {
+      availableStock?: number;
+    }
+  ) => Promise<void>;
   removeItem: (cartId: string) => Promise<void>;
   clearError: () => void;
   resetCartState: () => void;
@@ -70,7 +78,7 @@ export const useCart = (): UseCartReturn => {
   const router = useRouter();
 
   const addToCart = useCallback(
-    async (params: Omit<AddToCartCommand, 'userId'>) => {
+    async (params: Omit<AddToCartCommand, "userId">) => {
       if (!user?._id) {
         toast.error("Silakan login terlebih dahulu");
         router.push("/auth/login");
@@ -115,7 +123,11 @@ export const useCart = (): UseCartReturn => {
   );
 
   const updateQuantity = useCallback(
-    async (params: Omit<UpdateCartQuantityCommand, 'userId'> & { availableStock?: number }) => {
+    async (
+      params: Omit<UpdateCartQuantityCommand, "userId"> & {
+        availableStock?: number;
+      }
+    ) => {
       if (!user?._id) {
         toast.error("Silakan login terlebih dahulu");
         return;

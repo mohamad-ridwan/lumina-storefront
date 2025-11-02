@@ -3,50 +3,55 @@
  * Reusable product card for displaying product information
  */
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { Product } from '@/shared/types/product';
-import { formatPrice } from '@/shared/lib/formatPrice';
-import { cn } from '@/shared/lib/utils';
-import { Badge } from '@/shared/components/ui/badge';
+import Image from "next/image";
+import Link from "next/link";
+import { Product } from "@/shared/types/product";
+import { formatPrice } from "@/shared/lib/formatPrice";
+import { cn } from "@/shared/lib/utils";
+import { Badge } from "@/shared/components/ui/badge";
 
 export interface ProductCardProps {
   product: Product;
   className?: string;
   showBadges?: boolean;
-  imageSize?: 'sm' | 'md' | 'lg';
+  imageSize?: "sm" | "md" | "lg";
 }
 
 const imageSizes = {
-  sm: 'h-48',
-  md: 'h-64',
-  lg: 'h-80',
+  sm: "h-48",
+  md: "h-64",
+  lg: "h-80",
 };
 
-export const ProductCard = ({ 
-  product, 
+export const ProductCard = ({
+  product,
   className,
   showBadges = true,
-  imageSize = 'md'
+  imageSize = "md",
 }: ProductCardProps) => {
   return (
-    <Link href={`/product/${product.slug}`}>
+    <Link href={`/products/${product.slug}`}>
       <div
         className={cn(
-          'group bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer',
+          "group bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer",
           className
         )}
       >
         {/* Product Image */}
-        <div className={cn('relative overflow-hidden bg-muted', imageSizes[imageSize])}>
+        <div
+          className={cn(
+            "relative overflow-hidden bg-muted",
+            imageSizes[imageSize]
+          )}
+        >
           <Image
-            src={product.image || '/no-image.jpg'}
+            src={product.image || "/no-image.jpg"}
             alt={product.name}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-300"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
-          
+
           {/* Badges */}
           {showBadges && (
             <div className="absolute top-2 left-2 flex flex-col gap-1">
@@ -66,9 +71,7 @@ export const ProductCard = ({
           {/* Stock indicator */}
           {product.stock === 0 && (
             <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-              <Badge variant="destructive">
-                Out of Stock
-              </Badge>
+              <Badge variant="destructive">Out of Stock</Badge>
             </div>
           )}
         </div>
@@ -92,10 +95,10 @@ export const ProductCard = ({
             <p className="text-lg font-bold text-primary">
               {formatPrice(product.price)}
             </p>
-            
+
             {/* Stock count */}
             <p className="text-xs text-muted-foreground">
-              {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
+              {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
             </p>
           </div>
 
