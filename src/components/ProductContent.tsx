@@ -1,6 +1,6 @@
 import { Shoe } from "@/types/shoes";
 import WrapperSection from "../sections/WrapperSection";
-import ProductLists from "@/components/ProductLists";
+import ProductLists from "@/features/product/components/ProductLists";
 import BasePagination from "@/components/pagination/BasePagination";
 import { Pagination } from "@/types/pagination";
 import { Selects } from "@/types/selects";

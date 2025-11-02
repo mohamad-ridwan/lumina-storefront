@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Order } from "@/types/order"; // Impor tipe Order, OrderItem, dan Pagination
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"; // Impor komponen Tabs dari Shadcn UI
 import { Button } from "@/components/ui/button"; // Impor Button untuk "Lihat Detail"
-import BaseCard from "@/components/card/BaseCard"; // Impor komponen BaseCard
+import BaseCard from "@/shared/components/card/BaseCard"; // Impor komponen BaseCard
 import { useRouter, useSearchParams, usePathname } from "next/navigation"; // Impor hooks dari next/navigation
 import BasePagination from "@/components/pagination/BasePagination"; // Impor komponen BasePagination
 import { Pagination } from "@/types/pagination";

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { CartItem } from "@/types/cart"; // Pastikan path ini benar
-import BaseCard from "@/components/card/BaseCard"; // Pastikan path ini benar
+import BaseCard from "@/shared/components/card/BaseCard"; // Pastikan path ini benar
 import { Button } from "@/components/ui/button";
 import {
   Form,

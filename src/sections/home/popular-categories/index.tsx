@@ -1,4 +1,4 @@
-import BaseCard from "@/components/card/BaseCard";
+import BaseCard from "@/shared/components/card/BaseCard";
 import RightHeaderSingleBtnNav from "@/components/sections/RightHeaderSingleBtnNav";
 import WrapperSection from "@/sections/WrapperSection";
 import { fetchCategories } from "@/services/api/categories/getCategories";

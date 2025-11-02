@@ -1,5 +1,5 @@
-import BaseBannerCard from "@/components/card/BaseBannerCard";
-import ProductLists from "@/components/ProductLists";
+import BaseBannerCard from "@/shared/components/card/BaseBannerCard";
+import ProductLists from "@/features/product/components/ProductLists";
 import RightHeaderSingleBtnNav from "@/components/sections/RightHeaderSingleBtnNav";
 import WrapperSection from "@/sections/WrapperSection";
 import { getLatestOffers } from "@/services/api/latestOffers/getLatestOffers";
