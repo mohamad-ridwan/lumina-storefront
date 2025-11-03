@@ -19,11 +19,13 @@ import { shallowEqual, useSelector } from "react-redux";
  * maintaining previous UI styling for image padding and rounding.
  */
 
-interface ProductImageMobileProps {
+interface ProductGalleryMobileProps {
   images: ActiveProductImg[];
 }
 
-const ProductImageMobile: React.FC<ProductImageMobileProps> = ({ images }) => {
+const ProductGalleryMobile: React.FC<ProductGalleryMobileProps> = ({
+  images,
+}) => {
   const [api, setApi] = useState<CarouselApi>(); // State untuk menyimpan instance CarouselApi
   const [current, setCurrent] = useState(0); // State untuk menyimpan indeks gambar saat ini (1-based)
   const [count, setCount] = useState(images.length); // State untuk menyimpan total jumlah gambar
@@ -120,4 +122,4 @@ const ProductImageMobile: React.FC<ProductImageMobileProps> = ({ images }) => {
   );
 };
 
-export default ProductImageMobile;
+export default ProductGalleryMobile;

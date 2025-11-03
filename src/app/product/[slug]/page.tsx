@@ -1,8 +1,6 @@
 import CustomBreadcrumb from "@/components/breadcrumbs/CustomBreadcrumb"; // Pastikan path ini benar
 import ContainerPage from "@/container/ContainerPage"; // Pastikan path ini benar
-import ProductImageDesktop from "@/sections/product/ProductImageDesktop";
-import ProductImageMobile from "@/sections/product/ProductImageMobile";
-import ProductInfo from "@/sections/product/ProductInfo";
+import { ProductDetails } from "@/features/product/components/ProductDetails";
 import { getShoe } from "@/services/api/shoes/getShoe"; // Pastikan path ini benar
 import { Shoe, ShoesResponse } from "@/types/shoes"; // Impor tipe Shoe dan ShoesResponse
 import { ActiveProductImg } from "@/types/store/product";
@@ -15,7 +13,7 @@ import Link from "next/link";
  */
 
 // Komponen ProductDetail (Server Component)
-const ProductDetail = async ({
+const ProductPage = async ({
   params,
   searchParams,
 }: {
@@ -145,30 +143,14 @@ const ProductDetail = async ({
     <ContainerPage>
       <CustomBreadcrumb items={breadcrumbItems} />
 
-      <div className="mt-8 grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
-        {/* Sisi Kiri: Gambar Produk (2/5 lebar di desktop) */}
-        <div className="lg:col-span-2">
-          {/* Tampilan Mobile: Carousel */}
-          <div className="lg:hidden">
-            <ProductImageMobile images={allProductImages} />
-          </div>
-          {/* Tampilan Desktop: Single Image + Thumbnail Carousel */}
-          <div className="hidden lg:block">
-            <ProductImageDesktop images={allProductImages} />
-          </div>
-        </div>
-
-        {/* Sisi Kanan: Informasi Produk (3/5 lebar di desktop) */}
-        <div className="lg:col-span-3">
-          <ProductInfo
-            shoe={shoe}
-            quantityParams={quantityParams}
-            selectedOptionsParams={selectedOptions}
-          />
-        </div>
-      </div>
+      <ProductDetails
+        allProductImages={allProductImages}
+        shoe={shoe}
+        quantityParams={quantityParams}
+        selectedOptions={selectedOptions}
+      />
     </ContainerPage>
   );
 };
 
-export default ProductDetail;
+export default ProductPage;

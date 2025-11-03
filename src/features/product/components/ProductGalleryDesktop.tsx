@@ -21,11 +21,11 @@ import { shallowEqual, useSelector } from "react-redux";
  * Displays a single large product image with a synchronized thumbnail carousel below.
  */
 
-interface ProductImageDesktopProps {
+interface ProductGalleryDesktopProps {
   images: ActiveProductImg[];
 }
 
-const ProductImageDesktop: React.FC<ProductImageDesktopProps> = ({
+const ProductGalleryDesktop: React.FC<ProductGalleryDesktopProps> = ({
   images,
 }) => {
   const [selectedImage, setSelectedImage] = useState<ActiveProductImg>(
@@ -175,4 +175,4 @@ const ProductImageDesktop: React.FC<ProductImageDesktopProps> = ({
   );
 };
 
-export default ProductImageDesktop;
+export default ProductGalleryDesktop;

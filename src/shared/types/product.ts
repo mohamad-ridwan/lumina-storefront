@@ -4,11 +4,11 @@
  */
 
 export type {
-  Product,
-  Category,
-  SubCategory,
+  Shoe,
+  ProductCategory,
+  SubCategoryInProduct,
   Variant,
   VariantAttribute,
   ProductCollection,
   ProductSearchCriteria,
-} from '@/core/domain/product';
+} from "@/core/domain/product";

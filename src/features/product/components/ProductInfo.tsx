@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Shoe, Variant, VariantAttribute } from "@/types/shoes"; // Impor tipe Shoe dan turunannya
+import { Variant, VariantAttribute } from "@/types/shoes"; // Impor tipe Shoe dan turunannya
 import { Button } from "@/components/ui/button"; // Impor Button Shadcn
 import { Label } from "@/components/ui/label"; // Impor Label Shadcn
 import { Input } from "@/components/ui/input"; // Impor Input Shadcn untuk kuantitas
@@ -12,6 +12,7 @@ import { useAppDispatch } from "@/hooks/redux";
 import { setActiveProductImg } from "@/store/product/productSlice";
 import { useReduxCart } from "@/hooks/useCart";
 import MobileBottomBar from "@/components/product/MobileBottomBar";
+import { Shoe } from "@/shared/types/product";
 
 /**
  * @fileoverview Product Info Component

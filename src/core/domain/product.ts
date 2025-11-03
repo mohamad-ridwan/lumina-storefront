@@ -6,31 +6,31 @@
 /**
  * Value object for sub-category within a product
  */
-export interface SubCategory {
-  readonly _id: string;
-  readonly name: string;
-  readonly slug: string;
-  readonly level: number;
+export interface SubCategoryInProduct {
+  _id: string;
+  name: string;
+  slug: string;
+  level: number;
 }
 
 /**
  * Value object for product category
  */
-export interface Category {
-  readonly _id: string;
-  readonly name: string;
-  readonly slug: string;
-  readonly level: number;
-  readonly subCategories: SubCategory[];
+export interface ProductCategory {
+  _id: string;
+  name: string;
+  slug: string;
+  level: number;
+  subCategories: SubCategoryInProduct[];
 }
 
 /**
  * Value object for variant attribute (e.g., Size, Color)
  */
 export interface VariantAttribute {
-  readonly name: string;
-  readonly options: readonly string[];
-  readonly _id: string;
+  name: string;
+  options: string[];
+  _id: string;
 }
 
 /**
@@ -48,22 +48,22 @@ export interface Variant {
 /**
  * Product aggregate root
  */
-export interface Product {
-  readonly _id: string;
-  readonly name: string;
-  readonly brand: string;
-  readonly label: string;
-  readonly newArrival: boolean;
-  readonly description: string;
-  readonly category: readonly Category[];
-  readonly slug: string;
-  readonly image: string;
-  readonly price: number;
-  readonly stock: number;
-  readonly variantAttributes: readonly VariantAttribute[];
-  readonly variants: readonly Variant[];
-  readonly createdAt: string;
-  readonly updatedAt: string;
+export interface Shoe {
+  _id: string;
+  name: string;
+  brand: string;
+  label: string;
+  newArrival: boolean;
+  description: string;
+  category: ProductCategory[]; // Array dari ProductCategory
+  slug: string;
+  image: string; // URL gambar utama produk
+  price: number;
+  stock: number;
+  variantAttributes: VariantAttribute[];
+  variants: Variant[];
+  createdAt: string; // Tanggal dalam format ISO string
+  updatedAt: string; // Tanggal dalam format ISO string
 }
 
 /**
@@ -75,7 +75,7 @@ export interface ProductSearchCriteria {
   readonly minPrice?: number;
   readonly maxPrice?: number;
   readonly brand?: string;
-  readonly sort?: 'termurah' | 'termahal' | 'terbaru';
+  readonly sort?: "termurah" | "termahal" | "terbaru";
   readonly page?: number;
   readonly limit?: number;
 }
@@ -84,10 +84,10 @@ export interface ProductSearchCriteria {
  * Product collection with pagination
  */
 export interface ProductCollection {
-  readonly products: readonly Product[];
+  readonly products: readonly Shoe[];
   readonly total: number;
   readonly limit: number;
   readonly currentPage: number;
   readonly totalPages: number;
-  readonly sort?: 'termurah' | 'termahal' | 'terbaru';
+  readonly sort?: "termurah" | "termahal" | "terbaru";
 }
