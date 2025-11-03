@@ -1,11 +1,11 @@
-import CustomBreadcrumb from "@/components/breadcrumbs/CustomBreadcrumb"; // Pastikan path ini benar
-import ContainerPage from "@/container/ContainerPage"; // Pastikan path ini benar
-import ProductImageDesktop from "@/sections/product/ProductImageDesktop";
-import ProductImageMobile from "@/sections/product/ProductImageMobile";
-import ProductInfo from "@/sections/product/ProductInfo";
-import { getShoe } from "@/services/api/shoes/getShoe"; // Pastikan path ini benar
-import { Shoe, ShoesResponse } from "@/types/shoes"; // Impor tipe Shoe dan ShoesResponse
-import { ActiveProductImg } from "@/types/store/product";
+import CustomBreadcrumb from "@/shared/components/breadcrumbs/CustomBreadcrumb";
+import ContainerPage from "@/shared/components/ContainerPage";
+import ProductImageDesktop from "@/features/product/components/ProductImageDesktop";
+import ProductImageMobile from "@/features/product/components/ProductImageMobile";
+import ProductInfo from "@/features/product/components/ProductInfo";
+import { getShoe } from "@/core/infrastructure/repositories/product/getShoe";
+import { Shoe, ShoesResponse } from "@/core/domain/product";
+import { ActiveProductImg } from "@/shared/types/product";
 import Link from "next/link";
 
 /**

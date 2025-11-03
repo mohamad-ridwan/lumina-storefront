@@ -1,5 +1,5 @@
-import { requireAuth } from "@/lib/auth-validation";
-import CartPageClient from "@/sections/cart/CartPageClient";
+import { requireAuth } from "@/shared/lib/auth-validation";
+import CartPageClient from "@/features/cart/components/CartPageClient";
 
 // Force dynamic rendering for auth validation
 export const dynamic = "force-dynamic";

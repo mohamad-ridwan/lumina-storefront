@@ -1,10 +1,10 @@
-import CustomBreadcrumb from "@/components/breadcrumbs/CustomBreadcrumb";
-import ContainerPage from "@/container/ContainerPage";
-import { requireAuth } from "@/lib/auth-validation";
-import CheckoutClient from "@/sections/checkout/CheckoutClient";
-import WrapperSection from "@/sections/WrapperSection";
-import { fetchCart } from "@/services/api/cart/getCart";
-import { GetCartResponse } from "@/types/cart";
+import CustomBreadcrumb from "@/shared/components/breadcrumbs/CustomBreadcrumb";
+import ContainerPage from "@/shared/components/ContainerPage";
+import { requireAuth } from "@/shared/lib/auth-validation";
+import CheckoutClient from "@/features/order/components/CheckoutClient";
+import WrapperSection from "@/shared/components/WrapperSection";
+import { fetchCart } from "@/core/infrastructure/repositories/cart/getCart";
+import { GetCartResponse } from "@/core/domain/cart";
 
 export const dynamic = "force-dynamic";
 

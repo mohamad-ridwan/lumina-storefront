@@ -1,5 +1,5 @@
-import { checkAuthAndRedirectIfLoggedIn } from "@/lib/auth-validation";
-import LoginPageClient from "@/sections/auth/login/LoginPageClient";
+import { checkAuthAndRedirectIfLoggedIn } from "@/shared/lib/auth-validation";
+import LoginPageClient from "@/features/auth/components/login/LoginPageClient";
 
 // Force dynamic rendering for auth validation
 export const dynamic = 'force-dynamic';

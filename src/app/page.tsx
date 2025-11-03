@@ -1,8 +1,8 @@
-import BannerCarousel from "@/components/banner";
-import ContainerPage from "@/container/ContainerPage";
-import LatestOffers from "@/sections/home/latest-offers";
-import PopularCategories from "@/sections/home/popular-categories";
-import { Banner } from "@/types/banner";
+import BannerCarousel from "@/shared/components/banner";
+import ContainerPage from "@/shared/components/ContainerPage";
+import LatestOffers from "@/shared/components/home/latest-offers";
+import PopularCategories from "@/shared/components/home/popular-categories";
+import { Banner } from "@/shared/types/banner";
 
 // Main App component for the storefront application
 const Home = () => {
