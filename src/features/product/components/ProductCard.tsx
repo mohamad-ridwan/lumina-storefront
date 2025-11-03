@@ -2,16 +2,15 @@ import BaseCard from "@/shared/components/card/BaseCard";
 import Link from "next/link";
 
 interface Props {
-  key: number;
   slug: string;
   image: string;
   name: string;
   price: number;
 }
 
-const ProductCard: React.FC<Props> = ({ key, slug, image, name, price }) => {
+const ProductCard: React.FC<Props> = ({ slug, image, name, price }) => {
   return (
-    <Link key={key} href={`/product/${slug}`} className="w-fit h-fit">
+    <Link href={`/product/${slug}`} className="w-fit h-fit">
       <BaseCard
         wrapperCard="justify-start items-start"
         image={image}
