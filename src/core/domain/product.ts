@@ -4,6 +4,19 @@
  * including nested categories and variants, fetched from the API.
  */
 
+// interface untuk request query getShoe API
+export interface ShoeQuery {
+  newArrival?: boolean;
+  limit?: number;
+  id?: number;
+  slug?: string;
+  offerId?: string;
+  categoryId?: string;
+  page?: number;
+  sort?: "terbaru" | "termahal" | "termurah";
+  search?: string;
+}
+
 /**
  * Interface untuk sub-kategori yang ada di dalam objek produk sepatu.
  * Ini lebih sederhana daripada SubCategory global karena hanya berisi ID dan nama/slug.

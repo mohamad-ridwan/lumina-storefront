@@ -1,6 +1,6 @@
 import { LatestOffer, LatestOffersResponse } from "@/shared/types/latestOffers";
-import fetchData from "../fetchData";
-import { clientAPI } from "../clientAPI";
+import fetchData from "../../services/api/fetchData";
+import { clientAPI } from "../../services/api/clientAPI";
 
 interface ReqLatestOffers {
   limit?: number;

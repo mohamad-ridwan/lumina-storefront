@@ -1,8 +1,8 @@
 "use server";
 
 import { GetCartResponse } from "@/core/domain/cart";
-import fetchData from "../fetchData";
-import { clientAPI } from "../clientAPI";
+import fetchData from "../../services/api/fetchData";
+import { clientAPI } from "../../services/api/clientAPI";
 
 // Interface untuk query parameter fungsi fetchCart
 interface CartQuery {

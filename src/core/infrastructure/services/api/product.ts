@@ -1,20 +1,8 @@
 "use server";
 
-import { ShoesResponse } from "@/types/shoes";
-import fetchData from "../fetchData";
-import { clientAPI } from "../clientAPI";
-
-interface ShoeQuery {
-  newArrival?: boolean;
-  limit?: number;
-  id?: number;
-  slug?: string;
-  offerId?: string;
-  categoryId?: string;
-  page?: number;
-  sort?: "terbaru" | "termahal" | "termurah";
-  search?: string;
-}
+import { ShoeQuery, ShoesResponse } from "@/core/domain/product";
+import fetchData from "./fetchData";
+import { clientAPI } from "./clientAPI";
 
 export async function getShoe({
   newArrival,

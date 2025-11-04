@@ -1,8 +1,8 @@
 "use server";
 
-import fetchData from "../fetchData";
-import { clientAPI } from "../clientAPI";
 import { LoginResponse } from "@/core/domain/user";
+import { clientAPI } from "../clientAPI";
+import fetchData from "../fetchData";
 
 interface LoginRequest {
   username: string;

@@ -3,10 +3,10 @@ import ContainerPage from "@/shared/components/ContainerPage";
 import ProductImageDesktop from "@/features/product/components/ProductImageDesktop";
 import ProductImageMobile from "@/features/product/components/ProductImageMobile";
 import ProductInfo from "@/features/product/components/ProductInfo";
-import { getShoe } from "@/core/infrastructure/repositories/product/getShoe";
 import { Shoe, ShoesResponse } from "@/core/domain/product";
 import { ActiveProductImg } from "@/shared/types/product";
 import Link from "next/link";
+import { getShoe } from "@/core/usecases/product";
 
 /**
  * @fileoverview Product Detail Page

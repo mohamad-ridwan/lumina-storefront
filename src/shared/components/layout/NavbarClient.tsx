@@ -18,7 +18,7 @@ import {
   ShoppingBag, // Ikon untuk keranjang belanja
 } from "lucide-react"; // Menggunakan Lucide React untuk ikon
 import { cn } from "@/shared/lib/utils";
-import { Category } from "@/shared/types/categories";
+import { Category } from "@/core/domain/categories";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useCartCount } from "@/core/usecases/cart/useCart";

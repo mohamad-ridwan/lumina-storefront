@@ -3,7 +3,6 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
-import { AppDispatch } from "@/core/infrastructure/services";
 import {
   addToCartAsync,
   getCartAsync,
@@ -11,7 +10,7 @@ import {
   removeFromCartAsync,
   clearCartError,
   resetCart,
-} from "@/core/infrastructure/services/cart/cartSlice";
+} from "@/store/cart/cartSlice";
 import {
   selectCartItems,
   selectCartTotalPrice,
@@ -24,9 +23,10 @@ import {
   selectCartUpdatingQuantity,
   selectCartRemovingItem,
   selectCartAddingItem,
-} from "@/core/infrastructure/services/selectors";
+} from "@/store/selectors";
 import { useRouter } from "next/navigation";
 import { authValidationClient } from "@/shared/lib/auth-validation-client";
+import { AppDispatch } from "@/store";
 
 // Redux-based cart hook for global state management
 export const useReduxCart = () => {

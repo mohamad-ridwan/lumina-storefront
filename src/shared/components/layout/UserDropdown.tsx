@@ -6,12 +6,12 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/shared/components/ui/button";
 import { UserCircle, LogOut, User, LogIn, UserPlus, Truck } from "lucide-react";
-import { selectUserAuthStatus } from "@/core/infrastructure/services/selectors";
-import { logout } from "@/core/infrastructure/services/user/userSlice";
-import { resetCart } from "@/core/infrastructure/services/cart/cartSlice";
+import { selectUserAuthStatus } from "@/store/selectors";
+import { logout } from "@/store/user/userSlice";
+import { resetCart } from "@/store/cart/cartSlice";
 import { removeClientSessionCookie } from "@/shared/lib/cookies";
-import { AppDispatch } from "@/core/infrastructure/services";
 import { toast } from "sonner";
+import { AppDispatch } from "@/store";
 
 interface UserDropdownProps {
   isMobile?: boolean;

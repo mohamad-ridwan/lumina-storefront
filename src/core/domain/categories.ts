@@ -6,6 +6,13 @@ export interface Collections {
   imageUrl: string;
 }
 
+export interface CategoryQuery {
+  limit?: number;
+  slug?: string;
+  level?: "0" | "1";
+  isPopular?: boolean;
+}
+
 /**
  * Interface untuk Kategori Utama.
  * Kategori utama dapat memiliki array sub-kategori.

@@ -1,9 +1,9 @@
 import BaseBannerCard from "@/components/card/BaseBannerCard";
 import ProductLists from "@/components/ProductLists";
 import RightHeaderSingleBtnNav from "@/components/sections/RightHeaderSingleBtnNav";
+import { getShoe } from "@/core/usecases/product";
 import WrapperSection from "@/sections/WrapperSection";
 import { getLatestOffers } from "@/services/api/latestOffers/getLatestOffers";
-import { getShoe } from "@/services/api/shoes/getShoe";
 import { LatestOffer } from "@/types/latestOffers";
 import { Shoe, ShoesResponse } from "@/types/shoes";
 

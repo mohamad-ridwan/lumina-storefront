@@ -1,7 +1,7 @@
 "use server";
 
-import fetchData from "../fetchData";
-import { clientAPI } from "../clientAPI";
+import fetchData from "../../services/api/fetchData";
+import { clientAPI } from "../../services/api/clientAPI";
 import { PayOrderResponse } from "@/shared/types/order";
 
 interface PayOrderRequest {

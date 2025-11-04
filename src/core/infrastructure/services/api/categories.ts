@@ -1,13 +1,10 @@
-import { Category, CategoryResponse } from "@/shared/types/categories";
-import fetchData from "../fetchData";
-import { clientAPI } from "../clientAPI";
-
-interface CategoryQuery {
-  limit?: number;
-  slug?: string;
-  level?: "0" | "1";
-  isPopular?: boolean;
-}
+import {
+  Category,
+  CategoryQuery,
+  CategoryResponse,
+} from "@/core/domain/categories";
+import fetchData from "./fetchData";
+import { clientAPI } from "./clientAPI";
 
 export async function fetchCategories({
   limit = 0,
