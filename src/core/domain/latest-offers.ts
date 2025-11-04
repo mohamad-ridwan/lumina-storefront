@@ -29,3 +29,8 @@ export interface LatestOffersResponse {
   data: LatestOffer[]; // Array dari objek LatestOffer
   message: string;
 }
+
+export interface ReqLatestOffers {
+  limit?: number;
+  slug?: string;
+}

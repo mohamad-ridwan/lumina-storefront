@@ -4,6 +4,5 @@ import { productRepositoryImpl } from "@/core/infrastructure/repositories/impl/p
 const { getShoe: getShoeRepo } = productRepositoryImpl;
 
 export const getShoe = async (query: ShoeQuery): Promise<ShoesResponse> => {
-  const response = await getShoeRepo(query);
-  return response;
+  return await getShoeRepo(query);
 };

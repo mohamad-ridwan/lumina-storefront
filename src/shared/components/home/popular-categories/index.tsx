@@ -1,12 +1,12 @@
 import BaseCard from "@/components/card/BaseCard";
 import RightHeaderSingleBtnNav from "@/components/sections/RightHeaderSingleBtnNav";
+import { getCategories } from "@/core/usecases/categories";
 import WrapperSection from "@/sections/WrapperSection";
-import { fetchCategories } from "@/services/api/categories/getCategories";
 import { Category } from "@/types/categories";
 import Link from "next/link";
 
 const PopularCategories = async () => {
-  const categories: Category[] = (await fetchCategories({
+  const categories: Category[] = (await getCategories({
     limit: 6,
     isPopular: true,
   })) as Category[];

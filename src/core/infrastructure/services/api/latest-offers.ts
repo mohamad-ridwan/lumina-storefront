@@ -1,4 +1,4 @@
-import { LatestOffer, LatestOffersResponse } from "@/shared/types/latestOffers";
+import { LatestOffer, LatestOffersResponse } from "@/core/domain/latest-offers";
 import fetchData from "../../services/api/fetchData";
 import { clientAPI } from "../../services/api/clientAPI";
 
