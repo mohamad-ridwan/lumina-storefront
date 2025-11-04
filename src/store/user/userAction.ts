@@ -1,5 +1,5 @@
 import { loginUser } from "@/services/api/auth/login";
-import { getUserProfile } from "@/services/api/auth/profile";
+import { getUserProfile } from "@/core/usecases/user";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 // Async thunk untuk login

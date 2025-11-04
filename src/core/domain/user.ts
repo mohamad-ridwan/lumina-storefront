@@ -41,3 +41,12 @@ export interface UserStore {
   isLoading: boolean;
   error: string | null;
 }
+
+export interface ProfileRequest {
+  token: string;
+}
+
+export interface ProfileResponse {
+  data: User;
+  message: string;
+}
