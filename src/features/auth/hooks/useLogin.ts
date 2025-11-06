@@ -1,12 +1,12 @@
 import {
   removeClientSessionCookie,
   setClientSessionCookie,
-} from "@/shared/lib/cookies";
-import { AppDispatch } from "@/core/infrastructure/services";
-import { resetCart } from "@/core/infrastructure/services/cart/cartSlice";
-import { resetActiveProductImg } from "@/core/infrastructure/services/product/productSlice";
-import { loginAsync } from "@/core/infrastructure/services/user/userAction";
-import { logout } from "@/core/infrastructure/services/user/userSlice";
+} from "@/lib/cookies";
+import { AppDispatch } from "@/store";
+import { resetCart } from "@/store/cart/cartSlice";
+import { resetActiveProductImg } from "@/store/product/productSlice";
+import { loginAsync } from "@/store/user/userAction";
+import { logout } from "@/store/user/userSlice";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";

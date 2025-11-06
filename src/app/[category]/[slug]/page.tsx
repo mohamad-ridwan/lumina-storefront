@@ -1,8 +1,8 @@
 import CustomBreadcrumb from "@/components/breadcrumbs/CustomBreadcrumb";
 import ProductContent from "@/components/ProductContent";
 import ContainerPage from "@/container/ContainerPage";
-import { fetchCategories } from "@/services/api/categories/getCategories";
-import { getShoe } from "@/services/api/shoes/getShoe";
+import { getCategories } from "@/core/usecases/categories";
+import { getShoe } from "@/core/usecases/product";
 import { Category, ParentCategory } from "@/types/categories";
 import { Shoe, ShoesResponse } from "@/types/shoes";
 
@@ -26,7 +26,7 @@ const CategoryPage = async ({
     levelCategory = "1";
   }
 
-  const categoryData = (await fetchCategories({
+  const categoryData = (await getCategories({
     slug,
     level: levelCategory,
   })) as Category;

@@ -1,5 +1,8 @@
 import { UserRepository } from "../user";
-import { getUserProfile } from "@/core/infrastructure/services/api/user";
+import {
+  loginUser as loginUserAPI,
+  getUserProfile,
+} from "../../services/api/user";
 import {
   getClientSessionCookie,
   removeClientSessionCookie,
@@ -7,6 +10,9 @@ import {
 } from "../../services/storage/user-session";
 
 export const userRepositoryImpl: UserRepository = {
+  async loginUser(credentials) {
+    return await loginUserAPI(credentials);
+  },
   async getUserProfile(token: string) {
     return await getUserProfile(token);
   },

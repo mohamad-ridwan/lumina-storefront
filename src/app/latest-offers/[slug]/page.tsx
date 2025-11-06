@@ -1,8 +1,8 @@
 import ContainerPage from "@/container/ContainerPage";
 import Header from "@/sections/latest-offers/Header";
 import ProductContent from "@/components/ProductContent";
-import { getLatestOffers } from "@/services/api/latestOffers/getLatestOffers";
-import { getShoe } from "@/services/api/shoes/getShoe";
+import { getLatestOffers } from "@/core/usecases/latest-offers";
+import { getShoe } from "@/core/usecases/product";
 import { LatestOffer } from "@/types/latestOffers";
 import { Shoe, ShoesResponse } from "@/types/shoes";
 

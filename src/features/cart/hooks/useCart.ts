@@ -3,6 +3,7 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
+import { AppDispatch } from "@/store";
 import {
   addToCartAsync,
   getCartAsync,
@@ -25,8 +26,7 @@ import {
   selectCartAddingItem,
 } from "@/store/selectors";
 import { useRouter } from "next/navigation";
-import { authValidationClient } from "@/shared/lib/auth-validation-client";
-import { AppDispatch } from "@/store";
+import { authValidationClient } from "@/lib/auth-validation-client";
 
 // Redux-based cart hook for global state management
 export const useReduxCart = () => {
@@ -213,3 +213,8 @@ export const useCartCount = () => {
 
 // Legacy export for backwards compatibility (will be deprecated)
 export const useCart = useReduxCart;
+
+
+
+
+

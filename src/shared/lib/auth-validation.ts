@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { getUserProfile } from "@/services/api/auth/profile";
+import { getUserProfile } from "@/core/usecases/user";
 import { User } from "@/types/user";
 
 const COOKIE_NAME = "user-session-lumina-storefront";

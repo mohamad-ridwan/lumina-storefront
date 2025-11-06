@@ -21,7 +21,7 @@ import { cn } from "@/shared/lib/utils";
 import { Category } from "@/core/domain/categories";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useCartCount } from "@/core/usecases/cart/useCart";
+import { useCartCount } from "@/hooks/useCart";
 import UserDropdown from "./UserDropdown";
 
 type Props = {

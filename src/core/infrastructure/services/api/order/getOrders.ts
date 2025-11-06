@@ -1,8 +1,8 @@
 "use server";
 
-import fetchData from "../../services/api/fetchData";
-import { clientAPI } from "../../services/api/clientAPI";
-import { OrdersResponse } from "@/shared/types/order";
+import fetchData from "../fetchData";
+import { clientAPI } from "../clientAPI";
+import { OrdersResponse } from "@/core/domain/order";
 
 interface GetOrdersRequest {
   userId: string;

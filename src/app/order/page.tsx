@@ -3,8 +3,8 @@ import CustomBreadcrumb from "@/components/breadcrumbs/CustomBreadcrumb";
 import { Button } from "@/components/ui/button";
 import ContainerPage from "@/container/ContainerPage"; // Asumsi path ini benar
 import OrdersContent from "@/sections/order/OrdersContent";
-import { getUserProfile } from "@/services/api/auth/profile"; // Asumsi path ini benar
-import { getOrders } from "@/services/api/order/getOrders"; // Asumsi path ini benar
+import { getUserProfile } from "@/core/usecases/user";
+import { getOrders } from "@/core/usecases/order";
 import { OrdersResponse, Order } from "@/types/order"; // Impor OrdersResponse dan Order
 import { Pagination } from "@/types/pagination";
 import { User } from "@/types/user"; // Impor User

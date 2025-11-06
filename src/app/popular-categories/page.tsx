@@ -2,12 +2,12 @@ import CustomBreadcrumb from "@/components/breadcrumbs/CustomBreadcrumb";
 import BaseCard from "@/components/card/BaseCard";
 import ContainerPage from "@/container/ContainerPage";
 import WrapperSection from "@/sections/WrapperSection";
-import { fetchCategories } from "@/services/api/categories/getCategories";
+import { getCategories } from "@/core/usecases/categories";
 import { Category } from "@/types/categories";
 import Link from "next/link";
 
 const PopularCategories = async () => {
-  const categories: Category[] = (await fetchCategories({
+  const categories: Category[] = (await getCategories({
     isPopular: true,
   })) as Category[];
 

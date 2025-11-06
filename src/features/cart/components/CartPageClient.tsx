@@ -5,10 +5,10 @@ import { useDispatch } from "react-redux";
 import CustomBreadcrumb from "@/shared/components/breadcrumbs/CustomBreadcrumb";
 import ContainerPage from "@/shared/components/ContainerPage";
 import CartContent from "@/features/cart/components/CartContent";
-import { AppDispatch } from "@/core/infrastructure/services";
-import { setUserFromCookie } from "@/core/infrastructure/services/user/userSlice";
-import { useReduxCart } from "@/core/usecases/cart/useCart";
 import { User } from "@/core/domain/user";
+import { AppDispatch } from "@/store";
+import { useReduxCart } from "@/hooks/useCart";
+import { setUserFromCookie } from "@/store/user/userSlice";
 
 interface CartPageClientProps {
   user: User;

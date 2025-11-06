@@ -1,12 +1,12 @@
 import CustomBreadcrumb from "@/components/breadcrumbs/CustomBreadcrumb";
 import ContainerPage from "@/container/ContainerPage";
 import WrapperSection from "@/sections/WrapperSection";
-import { fetchCategories } from "@/services/api/categories/getCategories"; // Pastikan path ini benar
+import { getCategories } from "@/core/usecases/categories";
 import { Category } from "@/types/categories";
 import Link from "next/link";
 
 const CategoriesPage = async () => {
-  const categories: Category[] = (await fetchCategories({
+  const categories: Category[] = (await getCategories({
     level: "0",
   })) as Category[];
 

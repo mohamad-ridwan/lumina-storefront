@@ -3,8 +3,8 @@ import ContainerPage from "@/shared/components/ContainerPage";
 import { requireAuth } from "@/shared/lib/auth-validation";
 import CheckoutClient from "@/features/order/components/CheckoutClient";
 import WrapperSection from "@/shared/components/WrapperSection";
-import { fetchCart } from "@/core/infrastructure/repositories/cart/getCart";
 import { GetCartResponse } from "@/core/domain/cart";
+import { getCart } from "@/core/usecases/cart";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +15,7 @@ const CheckoutPage = async () => {
     { href: "/checkout", label: "Checkout", isCurrent: true },
   ];
 
-  const cart: GetCartResponse = await fetchCart({ userId: user._id });
+  const cart: GetCartResponse = await getCart(user._id);
 
   return (
     <ContainerPage>

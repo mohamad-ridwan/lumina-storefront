@@ -5,10 +5,12 @@ import {
   ActionReducerMapBuilder,
 } from "@reduxjs/toolkit";
 import { GetCartResponse, CartItem } from "@/types/cart";
-import { addCart } from "@/services/api/cart/addCart";
-import { fetchCart } from "@/services/api/cart/getCart";
-import { updateCartQuantity } from "@/services/api/cart/updateCartQuantity";
-import { removeFromCart } from "@/services/api/cart/removeFromCart";
+import {
+  getCart,
+  addCart,
+  updateCartQuantity,
+  removeFromCart,
+} from "@/core/usecases/cart";
 
 // Types untuk cart state
 export interface CartState {
@@ -41,7 +43,7 @@ export const getCartAsync = createAsyncThunk(
   "cart/getCart",
   async (userId: string, { rejectWithValue }) => {
     try {
-      const response = await fetchCart({ userId });
+      const response = await getCart(userId);
       return response;
     } catch (error: unknown) {
       return rejectWithValue((error as Error).message || "Failed to get cart");

@@ -1,9 +1,9 @@
 import { Category } from "@/types/categories";
 import NavbarClient from "./NavbarClient";
-import { fetchCategories } from "@/services/api/categories/getCategories";
+import { getCategories } from "@/core/usecases/categories";
 
 const Navbar = async () => {
-  const categories: Category[] = (await fetchCategories({
+  const categories: Category[] = (await getCategories({
     level: "0",
   })) as Category[];
   return <NavbarClient categories={categories} />;

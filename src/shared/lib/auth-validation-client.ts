@@ -1,6 +1,6 @@
 "use client";
 
-import { getUserProfile } from "@/services/api/auth/profile";
+import { getUserProfile } from "@/core/usecases/user";
 import { getClientSessionCookie, removeClientSessionCookie } from "./cookies";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { logout } from "@/store/user/userSlice";

@@ -1,7 +1,7 @@
 import CustomBreadcrumb from "@/components/breadcrumbs/CustomBreadcrumb";
 import ContainerPage from "@/container/ContainerPage";
 import OrderDetailContent from "@/sections/order/order-detail/OrderDetailContent";
-import { getOrderDetail } from "@/services/api/order/getOrderDetail";
+import { getOrderDetail } from "@/core/usecases/order";
 import { CreateOrderResponse } from "@/types/order";
 
 export const dynamic = "force-dynamic";
