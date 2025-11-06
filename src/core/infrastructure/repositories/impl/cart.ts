@@ -1,9 +1,11 @@
 import { CartRepository } from "../cart";
 import { GetCartResponse } from "@/core/domain/cart";
-import { fetchCart } from "../../services/api/cart/getCart";
-import { addCart } from "../../services/api/cart/addCart";
-import { updateCartQuantity } from "../../services/api/cart/updateCartQuantity";
-import { removeFromCart } from "../../services/api/cart/removeFromCart";
+import {
+  addCart,
+  fetchCart,
+  removeFromCart,
+  updateCartQuantity,
+} from "../../services/api/cart";
 
 export const cartRepositoryImpl: CartRepository = {
   async getCart(userId: string): Promise<GetCartResponse> {

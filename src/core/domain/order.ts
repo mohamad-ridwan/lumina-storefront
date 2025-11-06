@@ -1,3 +1,18 @@
+export interface PayOrderRequest {
+  orderId: string;
+}
+
+export interface GetOrdersRequest {
+  userId: string;
+  status?: "pending";
+  page?: number;
+  limit?: number;
+}
+
+export interface GetOrderDetailRequest {
+  orderId: string;
+}
+
 /**
  * @fileoverview Type Definitions for Order Domain
  * These interfaces define the structure for order-related data
@@ -120,8 +135,3 @@ export interface GetOrderDetailRequest {
 export interface PayOrderRequest {
   orderId: string;
 }
-
-
-
-
-

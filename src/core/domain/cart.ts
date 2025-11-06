@@ -1,3 +1,10 @@
+export interface UpdateCartQuantityRequest {
+  userId: string;
+  shoeId: string;
+  selectedVariantId: string | null;
+  quantity: number;
+}
+
 // --- Untuk single item di dalam array cartItems ---
 interface VariantOptionValues {
   [key: string]: string; // Contoh: { "Ukuran": "38", "Warna": "Putih" }
@@ -35,3 +42,19 @@ export interface GetCartResponse {
 // console.log(responseData.cartItems[0].name);
 // console.log(responseData.cartTotalPrice);
 // console.log(responseData.totalProduct);
+
+export interface AddCartQuantityRequest {
+  userId: string;
+  shoeId: string;
+  selectedVariantId: string | null;
+  quantity: number;
+}
+
+export interface CartQuery {
+  userId: string; // userId wajib ada untuk mengambil data keranjang
+}
+
+export interface RemoveFromCartRequest {
+  userId: string;
+  cartId: string;
+}

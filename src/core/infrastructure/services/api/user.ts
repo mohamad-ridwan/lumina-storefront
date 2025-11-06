@@ -1,6 +1,7 @@
 "use server";
 
 import {
+  LoginRequest,
   LoginResponse,
   ProfileRequest,
   ProfileResponse,
@@ -8,12 +9,6 @@ import {
 } from "@/core/domain/user";
 import { clientAPI } from "./clientAPI";
 import fetchData from "./fetchData";
-
-interface LoginRequest {
-  username: string;
-  password: string;
-  phoneNumber: string;
-}
 
 export async function loginUser({
   username,

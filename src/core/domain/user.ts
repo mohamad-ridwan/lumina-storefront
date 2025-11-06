@@ -50,3 +50,9 @@ export interface ProfileResponse {
   data: User;
   message: string;
 }
+
+export interface LoginRequest {
+  username: string;
+  password: string;
+  phoneNumber: string;
+}
