@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"; // Impor Input Shadcn untuk kuant
 import { Minus, Plus } from "lucide-react"; // Ikon untuk tombol kuantitas
 import Image from "next/image"; // Menggunakan next/image untuk optimasi gambar
 import { cn } from "@/lib/utils"; // Impor cn untuk menggabungkan classNames
-import { useAppDispatch } from "@/hooks/redux";
+import { useAppDispatch } from "@/shared/hooks/redux";
 import { setActiveProductImg } from "@/store/product/productSlice";
 import { useReduxCart } from "@/hooks/useCart";
 import MobileBottomBar from "@/components/product/MobileBottomBar";
