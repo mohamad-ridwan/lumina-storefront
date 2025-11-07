@@ -1,10 +1,10 @@
 import ContainerPage from "@/container/ContainerPage";
-import Header from "@/sections/latest-offers/Header";
-import ProductContent from "@/components/ProductContent";
 import { getLatestOffers } from "@/core/usecases/latest-offers";
 import { getShoe } from "@/core/usecases/product";
 import { LatestOffer } from "@/types/latestOffers";
 import { Shoe, ShoesResponse } from "@/types/shoes";
+import ProductContent from "@/features/product/components/ProductContent";
+import Header from "@/components/latest-offers/Header";
 
 const LatestOffers = async ({
   params,

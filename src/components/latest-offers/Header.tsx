@@ -1,7 +1,7 @@
 import { LatestOffer } from "@/types/latestOffers";
-import WrapperSection from "../WrapperSection";
-import CustomBreadcrumb from "@/components/breadcrumbs/CustomBreadcrumb";
+import WrapperSection from "../../shared/components/WrapperSection";
 import Image from "next/image";
+import CustomBreadcrumb from "@/shared/components/breadcrumbs/CustomBreadcrumb";
 
 interface HeaderProps {
   offers: LatestOffer;

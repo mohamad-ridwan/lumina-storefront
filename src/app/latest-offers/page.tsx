@@ -1,7 +1,7 @@
-import CustomBreadcrumb from "@/components/breadcrumbs/CustomBreadcrumb";
 import ContainerPage from "@/container/ContainerPage";
-import ProductContent from "@/components/ProductContent";
 import { getShoe } from "@/core/usecases/product";
+import ProductContent from "@/features/product/components/ProductContent";
+import CustomBreadcrumb from "@/shared/components/breadcrumbs/CustomBreadcrumb";
 import { Shoe, ShoesResponse } from "@/types/shoes";
 
 const LatestOffers = async ({

@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils"; // Impor cn untuk menggabungkan classNames
 import { useAppDispatch } from "@/shared/hooks/redux";
 import { setActiveProductImg } from "@/store/product/productSlice";
 import { useReduxCart } from "@/hooks/useCart";
-import MobileBottomBar from "@/components/product/MobileBottomBar";
+import MobileBottomBar from "@/features/product/components/MobileBottomBar";
 
 /**
  * @fileoverview Product Info Component

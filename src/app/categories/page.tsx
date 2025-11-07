@@ -1,7 +1,7 @@
-import CustomBreadcrumb from "@/components/breadcrumbs/CustomBreadcrumb";
 import ContainerPage from "@/container/ContainerPage";
-import WrapperSection from "@/sections/WrapperSection";
 import { getCategories } from "@/core/usecases/categories";
+import CustomBreadcrumb from "@/shared/components/breadcrumbs/CustomBreadcrumb";
+import WrapperSection from "@/shared/components/WrapperSection";
 import { Category } from "@/types/categories";
 import Link from "next/link";
 

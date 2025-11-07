@@ -1,7 +1,7 @@
 import BannerCarousel from "@/shared/components/banner";
 import ContainerPage from "@/shared/components/ContainerPage";
-import LatestOffers from "@/shared/components/home/latest-offers";
-import PopularCategories from "@/shared/components/home/popular-categories";
+import LatestOffers from "@/components/home/latest-offers";
+import PopularCategories from "@/components/home/popular-categories";
 import { Banner } from "@/shared/types/banner";
 
 // Main App component for the storefront application

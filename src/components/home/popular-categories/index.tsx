@@ -1,7 +1,7 @@
-import BaseCard from "@/components/card/BaseCard";
-import RightHeaderSingleBtnNav from "@/components/sections/RightHeaderSingleBtnNav";
 import { getCategories } from "@/core/usecases/categories";
-import WrapperSection from "@/sections/WrapperSection";
+import BaseCard from "@/shared/components/card/BaseCard";
+import RightHeaderSingleBtnNav from "@/shared/components/sections/RightHeaderSingleBtnNav";
+import WrapperSection from "@/shared/components/WrapperSection";
 import { Category } from "@/types/categories";
 import Link from "next/link";
 

@@ -1,10 +1,10 @@
 import { Shoe } from "@/types/shoes";
-import ProductLists from "@/components/ProductLists";
-import BasePagination from "@/components/pagination/BasePagination";
+import ProductLists from "@/features/product/components/ProductLists";
+import BasePagination from "@/shared/components/pagination/BasePagination";
 import { Pagination } from "@/types/pagination";
 import { Selects } from "@/types/selects";
-import { BaseSelect } from "@/components/selects/BaseSelect";
-import WrapperSection from "./WrapperSection";
+import { BaseSelect } from "@/shared/components/selects/BaseSelect";
+import WrapperSection from "../../../shared/components/WrapperSection";
 
 interface ProductListsProps {
   shoes: Shoe[];

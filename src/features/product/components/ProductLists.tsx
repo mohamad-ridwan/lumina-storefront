@@ -1,5 +1,5 @@
 import { Shoe } from "@/types/shoes";
-import BaseCard from "./card/BaseCard";
+import BaseCard from "../../../shared/components/card/BaseCard";
 import Link from "next/link";
 
 interface ProductListsProps {

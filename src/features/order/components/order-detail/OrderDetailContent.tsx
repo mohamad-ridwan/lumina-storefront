@@ -1,8 +1,8 @@
 import React from "react";
 import { Order, OrderItem } from "@/types/order"; // Impor tipe Order dan turunannya
-import BaseCard from "@/components/card/BaseCard"; // Impor komponen BaseCard
-import WrapperSection from "@/sections/WrapperSection";
 import PaymentOrder from "./PaymentOrder";
+import WrapperSection from "@/shared/components/WrapperSection";
+import BaseCard from "@/shared/components/card/BaseCard";
 
 /**
  * @fileoverview Order Detail Content Component (React Server Component)

@@ -1,8 +1,5 @@
-// app/order/page.tsx
-import CustomBreadcrumb from "@/components/breadcrumbs/CustomBreadcrumb";
 import { Button } from "@/components/ui/button";
 import ContainerPage from "@/container/ContainerPage"; // Asumsi path ini benar
-import OrdersContent from "@/sections/order/OrdersContent";
 import { getUserProfile } from "@/core/usecases/user";
 import { getOrders } from "@/core/usecases/order";
 import { OrdersResponse, Order } from "@/types/order"; // Impor OrdersResponse dan Order
@@ -10,6 +7,8 @@ import { Pagination } from "@/types/pagination";
 import { User } from "@/types/user"; // Impor User
 import { cookies } from "next/headers"; // Impor komponen OrdersContent yang baru
 import Link from "next/link";
+import OrdersContent from "@/features/order/components/OrdersContent";
+import CustomBreadcrumb from "@/shared/components/breadcrumbs/CustomBreadcrumb";
 
 const COOKIE_NAME = "user-session-lumina-storefront";
 

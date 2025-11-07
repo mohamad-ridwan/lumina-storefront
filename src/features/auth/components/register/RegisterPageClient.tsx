@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import AuthLayout from "@/components/auth/AuthLayout";
+import AuthLayout from "@/features/auth/components/AuthLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
