@@ -135,3 +135,4 @@ export interface GetOrderDetailRequest {
 export interface PayOrderRequest {
   orderId: string;
 }
+

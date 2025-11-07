@@ -3,8 +3,8 @@
 import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import { CartItem as CartItemType } from "@/types/cart";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
 import { Trash2, Plus, Minus } from "lucide-react";
 import Link from "next/link";
 

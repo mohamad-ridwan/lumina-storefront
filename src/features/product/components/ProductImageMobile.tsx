@@ -6,7 +6,7 @@ import {
   CarouselContent,
   CarouselItem,
   type CarouselApi, // Impor tipe CarouselApi
-} from "@/components/ui/carousel";
+} from "@/shared/components/ui/carousel";
 import Image from "next/image";
 import { ActiveProductImg } from "@/types/store/product";
 import { createSelector } from "reselect";

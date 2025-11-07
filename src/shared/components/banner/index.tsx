@@ -7,7 +7,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel"; // Impor komponen Carousel dari Shadcn UI
+} from "@/shared/components/ui/carousel"; // Impor komponen Carousel dari Shadcn UI
 import Image from "next/image";
 import Autoplay from "embla-carousel-autoplay";
 

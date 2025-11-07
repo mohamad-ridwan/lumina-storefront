@@ -7,8 +7,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+} from "@/shared/components/ui/dialog";
+import { Button } from "@/shared/components/ui/button";
 import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
 

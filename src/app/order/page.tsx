@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import ContainerPage from "@/container/ContainerPage"; // Asumsi path ini benar
 import { getUserProfile } from "@/core/usecases/user";
 import { getOrders } from "@/core/usecases/order";

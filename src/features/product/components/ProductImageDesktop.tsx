@@ -8,7 +8,7 @@ import {
   CarouselNext,
   CarouselPrevious,
   type CarouselApi,
-} from "@/components/ui/carousel";
+} from "@/shared/components/ui/carousel";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { ActiveProductImg } from "@/types/store/product";

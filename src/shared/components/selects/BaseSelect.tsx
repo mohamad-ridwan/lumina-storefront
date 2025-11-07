@@ -10,7 +10,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/shared/components/ui/select";
 import { Selects } from "@/types/selects";
 import { usePathname, useRouter } from "next/navigation";
 

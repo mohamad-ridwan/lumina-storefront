@@ -7,7 +7,7 @@ import {
   BreadcrumbItem,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"; // Asumsi path komponen Breadcrumb Shadcn
+} from "@/shared/components/ui/breadcrumb"; // Asumsi path komponen Breadcrumb Shadcn
 import { FiChevronRight } from "react-icons/fi"; // Menggunakan ikon chevron kanan dari react-icons/fi
 import { BsThreeDots } from "react-icons/bs"; // Menggunakan ikon tiga titik untuk dropdown
 import Link from "next/link";
@@ -16,7 +16,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"; // Impor komponen DropdownMenu dari Shadcn
+} from "@/shared/components/ui/dropdown-menu"; // Impor komponen DropdownMenu dari Shadcn
 
 /**
  * @fileoverview Shadcn Breadcrumb Component

@@ -9,7 +9,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination"; // Asumsi path komponen Pagination Shadcn
+} from "@/shared/components/ui/pagination"; // Asumsi path komponen Pagination Shadcn
 import { Pagination } from "@/types/pagination";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 

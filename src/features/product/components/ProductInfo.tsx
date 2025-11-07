@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import { Shoe, Variant, VariantAttribute } from "@/types/shoes"; // Impor tipe Shoe dan turunannya
-import { Button } from "@/components/ui/button"; // Impor Button Shadcn
-import { Label } from "@/components/ui/label"; // Impor Label Shadcn
-import { Input } from "@/components/ui/input"; // Impor Input Shadcn untuk kuantitas
+import { Button } from "@/shared/components/ui/button"; // Impor Button Shadcn
+import { Label } from "@/shared/components/ui/label"; // Impor Label Shadcn
+import { Input } from "@/shared/components/ui/input"; // Impor Input Shadcn untuk kuantitas
 import { Minus, Plus } from "lucide-react"; // Ikon untuk tombol kuantitas
 import Image from "next/image"; // Menggunakan next/image untuk optimasi gambar
 import { cn } from "@/lib/utils"; // Impor cn untuk menggabungkan classNames
