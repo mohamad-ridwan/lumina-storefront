@@ -1,0 +1,6 @@
+@reference 'tailwindcss';
+@import '../utilities.css';
+
+.nav{
+  @apply bg-purple-500;
+}

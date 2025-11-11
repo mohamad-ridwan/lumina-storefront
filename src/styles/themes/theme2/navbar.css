@@ -1,0 +1,5 @@
+@reference "tailwindcss";
+
+.nav{
+   @apply bg-blue-500;
+}

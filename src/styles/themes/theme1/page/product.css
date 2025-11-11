@@ -1,0 +1,5 @@
+@reference "tailwindcss";
+
+.product{
+  @apply text-2xl font-bold text-red-500 bg-purple-500;
+}

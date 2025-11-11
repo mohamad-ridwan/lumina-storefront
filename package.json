@@ -6,6 +6,9 @@
     "dev": "next dev -p 3008 --turbopack",
     "build": "next build",
     "start": "next start -p 3009",
+    "watch:themes": "npm-run-all --parallel watch:navbar watch:globals",
+    "watch:navbar": "tailwindcss -i ./src/styles/themes/theme1/navbar.css -o ./public/styles/themes/theme1/navbar.css --watch",
+    "watch:globals": "tailwindcss -i ./src/app/globals.css -o ./public/styles/themes/globals.css --watch",
     "lint": "next lint"
   },
   "dependencies": {
@@ -38,12 +41,14 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@tailwindcss/cli": "^4.1.17",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.3.4",
+    "npm-run-all": "^4.1.5",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.4",
     "typescript": "^5"
