@@ -5,10 +5,12 @@ export default function ProductLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <link rel="stylesheet" href="/styles/themes/globals.css" />
-        <link rel="stylesheet" href="/styles/themes/theme1/navbar.css" />
-      </head>
+      {process.env.NODE_ENV === "production" && (
+        <head>
+          <link rel="stylesheet" href="/styles/themes/globals.css" />
+          <link rel="stylesheet" href="/styles/themes/theme1/navbar.css" />
+        </head>
+      )}
       <body>{children}</body>
     </html>
   );
