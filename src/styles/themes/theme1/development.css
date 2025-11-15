@@ -1,1 +1,3 @@
-@import './navbar.css';
+@import './components/navbar.css';
+@import './components/wrapper-section.css';
+@import './page/product.css';

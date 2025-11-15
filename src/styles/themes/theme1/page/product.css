@@ -1,5 +1,6 @@
 @reference "tailwindcss";
 
-.product{
-  @apply text-2xl font-bold text-red-500 bg-purple-500;
+/* wrapper */
+.pd-wrapper{
+  @apply mt-8 grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12;
 }

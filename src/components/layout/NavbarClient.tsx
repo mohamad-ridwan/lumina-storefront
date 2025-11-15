@@ -101,7 +101,7 @@ const NavbarClient = ({ categories: initialCategories = [] }: Props) => {
     // Shadow-md memberikan sedikit bayangan di bawah navbar
     // Sticky top-0 dan z-50 agar navbar selalu terlihat di bagian atas saat di-scroll
     <nav
-      className={`nav text-foreground ${
+      className={`bg-card text-foreground ${
         hasShadow ? "shadow-xs" : "shadow-none"
       } sticky top-0 z-50 transition-shadow duration-300`}
     >

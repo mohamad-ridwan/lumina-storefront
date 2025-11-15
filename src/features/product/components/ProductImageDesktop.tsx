@@ -21,7 +21,7 @@ import { shallowEqual, useSelector } from "react-redux";
  * Displays a single large product image with a synchronized thumbnail carousel below.
  */
 
-interface ProductImageDesktopProps {
+export interface ProductImageDesktopProps {
   images: ActiveProductImg[];
 }
 

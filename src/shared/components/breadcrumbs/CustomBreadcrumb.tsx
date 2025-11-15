@@ -27,7 +27,7 @@ import {
 /**
  * Interface untuk setiap item dalam breadcrumb.
  */
-interface CustomBreadcrumbItem {
+export interface CustomBreadcrumbItem {
   href: string; // URL tujuan item breadcrumb
   label: string; // Teks yang ditampilkan untuk item
   isCurrent?: boolean; // Menandakan apakah ini adalah halaman saat ini (opsional)
