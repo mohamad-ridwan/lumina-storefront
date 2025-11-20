@@ -4,6 +4,23 @@
  * including nested categories and variants, fetched from the API.
  */
 
+import { CustomBreadcrumbItem } from "@/shared/components/breadcrumbs/CustomBreadcrumb";
+import { ActiveProductImg } from "@/shared/types/product";
+
+// product detail usecases
+export interface ProductDetailParams {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export type AppProductProps = {
+  breadcrumbItems: CustomBreadcrumbItem[];
+  allProductImages: ActiveProductImg[];
+  shoe: Shoe | null;
+  quantityParams: number | null;
+  selectedOptions: Record<string, string>;
+};
+
 // interface untuk request query getShoe API
 export interface ShoeQuery {
   newArrival?: boolean;

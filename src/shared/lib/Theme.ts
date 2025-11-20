@@ -10,7 +10,7 @@ import dynamic from "next/dynamic";
 //   ) as unknown as ComponentType<T>;
 // };
 
-export const themeMap = {
+const themeMap = {
   theme1: {
     Product: dynamic(() => import("@/themes/theme1/app/Product")),
   },

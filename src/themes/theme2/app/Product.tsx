@@ -1,4 +1,4 @@
-import { AppProductProps } from "@/app/product/[slug]/ProductWrapper";
+import { AppProductProps, Shoe } from "@/core/domain/product";
 import ProductImageDesktop from "@/features/product/components/ProductImageDesktop";
 import ProductImageMobile from "@/features/product/components/ProductImageMobile";
 import ProductInfo from "@/features/product/components/ProductInfo";
@@ -31,7 +31,7 @@ const Product = ({
         {/* Sisi Kanan: Informasi Produk (3/5 lebar di desktop) */}
         <div className="lg:col-span-3">
           <ProductInfo
-            shoe={shoe}
+            shoe={shoe as Shoe}
             quantityParams={quantityParams}
             selectedOptionsParams={selectedOptions}
           />
