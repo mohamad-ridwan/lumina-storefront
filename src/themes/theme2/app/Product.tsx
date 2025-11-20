@@ -1,7 +1,7 @@
 import { AppProductProps, Shoe } from "@/core/domain/product";
 import ProductImageDesktop from "@/features/product/components/ProductImageDesktop";
 import ProductImageMobile from "@/features/product/components/ProductImageMobile";
-import ProductInfo from "@/features/product/components/ProductInfo";
+import ProductInfo from "@/features/product/components/product-info/ProductInfo";
 import CustomBreadcrumb from "@/shared/components/breadcrumbs/CustomBreadcrumb";
 
 const Product = ({
