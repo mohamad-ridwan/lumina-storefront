@@ -18,12 +18,6 @@ const themeMap = {
       () => import("@/themes/theme1/components/product/ProductInfo")
     ),
   },
-  theme2: {
-    Product: dynamic(() => import("@/themes/theme2/app/Product")),
-    ProductInfo: dynamic(
-      () => import("@/themes/theme2/components/product/ProductInfo")
-    ),
-  },
 };
 
 export async function ThemeComponent<T extends object>(
