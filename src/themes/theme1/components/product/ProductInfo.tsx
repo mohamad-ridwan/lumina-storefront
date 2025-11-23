@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Shoe, Variant, VariantAttribute } from "@/types/shoes"; // Impor tipe Shoe dan turunannya
+import { Variant, VariantAttribute } from "@/types/shoes"; // Impor tipe Shoe dan turunannya
 import { Button } from "@/shared/components/ui/button"; // Impor Button Shadcn
 import { Label } from "@/shared/components/ui/label"; // Impor Label Shadcn
 import { Input } from "@/shared/components/ui/input"; // Impor Input Shadcn untuk kuantitas
@@ -12,21 +12,13 @@ import { useAppDispatch } from "@/shared/hooks/redux";
 import { setActiveProductImg } from "@/store/product/productSlice";
 import { useReduxCart } from "@/hooks/useCart";
 import MobileBottomBar from "@/features/product/components/MobileBottomBar";
+import { ProductInfoProps } from "@/core/domain/product";
 
 /**
  * @fileoverview Product Info Component
  * This component displays detailed product information including name, price,
  * description, variant selection (using buttons), quantity input, and fixed action buttons.
  */
-
-/**
- * Props untuk komponen ProductInfo.
- */
-interface ProductInfoProps {
-  shoe: Shoe; // Objek sepatu lengkap
-  selectedOptionsParams?: Record<string, string>;
-  quantityParams?: number | null;
-}
 
 const ProductInfo: React.FC<ProductInfoProps> = ({
   shoe,

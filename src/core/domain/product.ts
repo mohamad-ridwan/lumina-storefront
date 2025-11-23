@@ -13,6 +13,12 @@ export interface ProductDetailParams {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
+export interface ProductInfoProps {
+  shoe: Shoe; // Objek sepatu lengkap
+  selectedOptionsParams?: Record<string, string>;
+  quantityParams?: number | null;
+}
+
 export type AppProductProps = {
   breadcrumbItems: CustomBreadcrumbItem[];
   allProductImages: ActiveProductImg[];

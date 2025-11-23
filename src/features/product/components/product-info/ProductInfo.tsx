@@ -1,5 +1,5 @@
-import { Shoe } from "@/types/shoes";
 import { ProductInfoWrapper } from "./ProductInfoWrapper";
+import { ProductInfoProps } from "@/core/domain/product";
 
 /**
  * @fileoverview Product Info Component
@@ -10,11 +10,6 @@ import { ProductInfoWrapper } from "./ProductInfoWrapper";
 /**
  * Props untuk komponen ProductInfo.
  */
-export interface ProductInfoProps {
-  shoe: Shoe; // Objek sepatu lengkap
-  selectedOptionsParams?: Record<string, string>;
-  quantityParams?: number | null;
-}
 
 const ProductInfo: React.FC<ProductInfoProps> = ({
   shoe,
