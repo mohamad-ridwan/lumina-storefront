@@ -1,6 +1,6 @@
 import { AppProductProps, Shoe } from "@/core/domain/product";
-import ProductImageDesktop from "@/features/product/components/ProductImageDesktop";
-import ProductImageMobile from "@/features/product/components/ProductImageMobile";
+import ProductImageDesktop from "@/themes/theme1/features/product/ProductImageDesktop";
+import ProductImageMobile from "@/themes/theme1/features/product/ProductImageMobile";
 import ProductInfo from "@/features/product/components/product-info/ProductInfo";
 import CustomBreadcrumb from "@/shared/components/breadcrumbs/CustomBreadcrumb";
 

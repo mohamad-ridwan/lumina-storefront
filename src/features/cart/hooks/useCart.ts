@@ -68,8 +68,7 @@ export const useReduxCart = () => {
         toast.success("Produk berhasil ditambahkan ke keranjang");
       } catch (error: unknown) {
         toast.error(
-          (error as Error)?.message ||
-            "Gagal menambahkan ke keranjang. Mohon coba lagi"
+          (error as string) || "Gagal menambahkan ke keranjang. Mohon coba lagi"
         );
         throw error;
       }
@@ -213,15 +212,3 @@ export const useCartCount = () => {
 
 // Legacy export for backwards compatibility (will be deprecated)
 export const useCart = useReduxCart;
-
-
-
-
-
-
-
-
-
-
-
-

@@ -17,6 +17,36 @@ const themeMap = {
     ProductInfo: dynamic(
       () => import("@/themes/theme1/features/product/ProductInfo")
     ),
+    AuthLayout: dynamic(
+      () => import("@/themes/theme1/features/auth/AuthLayout")
+    ),
+    LoginPageClient: dynamic(
+      () => import("@/themes/theme1/features/auth/LoginPageClient")
+    ),
+    RegisterPageClient: dynamic(
+      () => import("@/themes/theme1/features/auth/RegisterPageClient")
+    ),
+    ProfilePageClient: dynamic(
+      () => import("@/themes/theme1/features/auth/ProfilePageClient")
+    ),
+    CartContent: dynamic(
+      () => import("@/themes/theme1/features/cart/CartContent")
+    ),
+    CartPageClient: dynamic(
+      () => import("@/themes/theme1/features/cart/CartPageClient")
+    ),
+    CheckoutClient: dynamic(
+      () => import("@/themes/theme1/features/order/CheckoutClient")
+    ),
+    OrdersContent: dynamic(
+      () => import("@/themes/theme1/features/order/OrdersContent")
+    ),
+    OrderDetailContent: dynamic(
+      () => import("@/themes/theme1/features/order/OrderDetailContent")
+    ),
+    ProductContent: dynamic(
+      () => import("@/themes/theme1/features/product/ProductContent")
+    ),
   },
   theme2: {
     Product: dynamic(() => import("@/themes/theme2/app/Product")),
@@ -27,10 +57,8 @@ const themeMap = {
 };
 
 export async function ThemeComponent<T extends object>(
-  component:
-    | keyof (typeof themeMap)["theme1"]
-    | keyof (typeof themeMap)["theme2"]
+  component: keyof (typeof themeMap)["theme1"]
 ) {
   const theme = (await getTheme()) as "theme1" | "theme2";
-  return themeMap[theme][component] as React.ComponentType<T>;
+  return (themeMap[theme] as typeof themeMap["theme1"])[component] as React.ComponentType<T>;
 }

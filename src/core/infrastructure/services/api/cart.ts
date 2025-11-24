@@ -8,7 +8,7 @@ import {
   UpdateCartQuantityRequest,
 } from "@/core/domain/cart";
 import { clientAPI } from "./clientAPI";
-import fetchData from "./fetchData";
+import fetchData, { ApiError } from "./fetchData";
 
 export async function updateCartQuantity({
   userId,
@@ -80,7 +80,9 @@ export async function addCart({
     }
   } catch (error) {
     console.error("Error added cart quantity:", error);
-    throw error;
+    throw new Error(
+      (error as ApiError)?.data?.message || "Failed to added cart quantity."
+    );
   }
 }
 

@@ -18,7 +18,7 @@ interface ApiErrorResponse {
  * Custom Error Class untuk menangani error API.
  * Ini memungkinkan kita untuk membedakan error jaringan dari error respons API.
  */
-class ApiError extends Error {
+export class ApiError extends Error {
   public status: number;
   public data: ApiErrorResponse | null;
 
