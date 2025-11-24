@@ -15,19 +15,21 @@ const themeMap = {
   theme1: {
     Product: dynamic(() => import("@/themes/theme1/app/Product")),
     ProductInfo: dynamic(
-      () => import("@/themes/theme1/components/product/ProductInfo")
+      () => import("@/themes/theme1/features/product/ProductInfo")
     ),
   },
   theme2: {
     Product: dynamic(() => import("@/themes/theme2/app/Product")),
     ProductInfo: dynamic(
-      () => import("@/themes/theme2/components/product/ProductInfo")
+      () => import("@/themes/theme2/features/product/ProductInfo")
     ),
   },
 };
 
 export async function ThemeComponent<T extends object>(
-  component: keyof (typeof themeMap)["theme1"] | keyof (typeof themeMap)["theme2"]
+  component:
+    | keyof (typeof themeMap)["theme1"]
+    | keyof (typeof themeMap)["theme2"]
 ) {
   const theme = (await getTheme()) as "theme1" | "theme2";
   return themeMap[theme][component] as React.ComponentType<T>;

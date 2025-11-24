@@ -1,7 +1,7 @@
 import { AppProductProps, Shoe } from "@/core/domain/product";
 import ProductImageDesktop from "@/features/product/components/ProductImageDesktop";
 import ProductImageMobile from "@/features/product/components/ProductImageMobile";
-import ProductInfo from "@/themes/theme2/components/product/ProductInfo";
+import ProductInfo from "@/themes/theme2/features/product/ProductInfo";
 import CustomBreadcrumb from "@/shared/components/breadcrumbs/CustomBreadcrumb";
 
 /**
@@ -47,6 +47,3 @@ const Product = ({
 };
 
 export default Product;
-
-
-
