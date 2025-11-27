@@ -40,31 +40,37 @@ export const themeMap: Record<string, ThemeDefinition> = {
       import("@/themes/theme1/features/product/ProductContent"),
   },
   theme2: {
+    CategoryPage: () => import("@/themes/theme2/app/Category"),
+    HomePage: () => import("@/themes/theme2/app/Home"),
     Product: () => import("@/themes/theme2/app/Product"),
     ProductInfo: () => import("@/themes/theme2/features/product/ProductInfo"),
+    AuthLayout: () => import("@/themes/theme2/features/auth/AuthLayout"),
+    LoginPageClient: () =>
+      import("@/themes/theme2/features/auth/LoginPageClient"),
+    RegisterPageClient: () =>
+      import("@/themes/theme2/features/auth/RegisterPageClient"),
+    ProfilePageClient: () =>
+      import("@/themes/theme2/features/auth/ProfilePageClient"),
+    CartContent: () => import("@/themes/theme2/features/cart/CartContent"),
+    CartPageClient: () =>
+      import("@/themes/theme2/features/cart/CartPageClient"),
+    CheckoutClient: () =>
+      import("@/themes/theme2/features/order/CheckoutClient"),
+    OrdersContent: () => import("@/themes/theme2/features/order/OrdersContent"),
+    OrderDetailContent: () =>
+      import("@/themes/theme2/features/order/OrderDetailContent"),
+    ProductContent: () =>
+      import("@/themes/theme2/features/product/ProductContent"),
   },
 };
 
 export type ThemeName = keyof typeof themeMap;
 
-// component keys per theme
 export type ThemeComponents<T extends ThemeName> = keyof (typeof themeMap)[T];
-
-// loader that infers the module type automatically
-// export async function loadThemeComponent<
-//   T extends ThemeName,
-//   C extends ThemeComponents<T>
-// >(theme: T, component: C): Promise<InferComponent<(typeof themeMap)[T][C]>> {
-//   const importer = themeMap[theme][component] as () => Promise<{
-//     default: never;
-//   }>;
-//   const mod = await importer();
-//   return mod.default;
-// }
 
 export async function loadThemeComponent<P>(
   theme: ThemeName,
-  component: string // bebas, tidak perlu strict
+  component: string
 ): Promise<React.ComponentType<P>> {
   const importer = themeMap[theme][component] as () => Promise<{
     default: React.ComponentType<P>;
