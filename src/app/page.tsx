@@ -1,11 +1,10 @@
-import BannerCarousel from "@/shared/components/banner";
-import ContainerPage from "@/shared/components/ContainerPage";
-import LatestOffers from "@/components/home/latest-offers";
-import PopularCategories from "@/components/home/popular-categories";
+import { getTheme } from "@/core/infrastructure/services/api/theme";
+import { loadThemeComponent } from "@/shared/lib/Theme";
 import { Banner } from "@/shared/types/banner";
+import { HomeProps } from "@/shared/types/home";
 
 // Main App component for the storefront application
-const Home = () => {
+const Home = async () => {
   // Mock banner data
   const bannerData: Banner[] = [
     {
@@ -22,16 +21,10 @@ const Home = () => {
     },
   ];
 
-  return (
-    <ContainerPage>
-      {/* Banner Carousel Section */}
-      <section>
-        <BannerCarousel banners={bannerData} />
-      </section>
-      <PopularCategories />
-      <LatestOffers />
-    </ContainerPage>
-  );
+  const theme = await getTheme();
+  const HomePage = await loadThemeComponent<HomeProps>(theme, "HomePage");
+
+  return <HomePage banners={bannerData} />;
 };
 
 export default Home;

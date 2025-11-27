@@ -1,10 +1,10 @@
-import ContainerPage from "@/container/ContainerPage";
 import { getCategories } from "@/core/usecases/categories";
 import { getShoe } from "@/core/usecases/product";
-import ProductContent from "@/features/product/components/ProductContent";
-import CustomBreadcrumb from "@/shared/components/breadcrumbs/CustomBreadcrumb";
 import { Category, ParentCategory } from "@/types/categories";
 import { Shoe, ShoesResponse } from "@/types/shoes";
+import { loadThemeComponent } from "@/shared/lib/Theme";
+import { getTheme } from "@/core/infrastructure/services/api/theme";
+import { AppCategoryProps } from "@/core/domain/categories";
 
 const CategoryPage = async ({
   params,
@@ -61,21 +61,26 @@ const CategoryPage = async ({
       label: (categoryData.parentCategory as ParentCategory).name,
     });
   }
+  const theme = await getTheme();
+  const CategoryPage = await loadThemeComponent<AppCategoryProps>(
+    theme,
+    "CategoryPage"
+  );
+
   return (
-    <ContainerPage>
-      <CustomBreadcrumb items={breadcrumbItems} />
-      <ProductContent
-        shoes={shoes}
-        label={categoryData.name}
-        sortParams={sort as string}
-        pagination={{
-          limit: shoeData.limit,
-          totalPages: shoeData.totalPages,
-          total: shoeData.total,
-          currentPage: shoeData.currentPage,
-        }}
-      />
-    </ContainerPage>
+    <CategoryPage
+      breadcrumbItems={breadcrumbItems}
+      shoes={shoes}
+      label={categoryData.name}
+      sortParams={sort as string}
+      pagination={{
+        limit: shoeData.limit,
+        totalPages: shoeData.totalPages,
+        total: shoeData.total,
+        currentPage: shoeData.currentPage,
+      }}
+      theme={theme}
+    />
   );
 };
 

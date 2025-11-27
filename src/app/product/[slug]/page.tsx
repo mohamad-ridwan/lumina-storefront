@@ -1,7 +1,9 @@
 import ContainerPage from "@/shared/components/ContainerPage";
 import Link from "next/link";
 import { getProductDetail } from "@/core/usecases/product";
-import { ProductWrapper } from "./ProductWrapper";
+import { loadThemeComponent } from "@/shared/lib/Theme";
+import { getTheme } from "@/core/infrastructure/services/api/theme";
+import { AppProductProps } from "@/core/domain/product";
 
 /**
  * @fileoverview Product Detail Page
@@ -43,16 +45,18 @@ const ProductDetail = async ({
     );
   }
 
+  const theme = await getTheme();
+  const Product = await loadThemeComponent<AppProductProps>(theme, "Product");
+
   return (
-    <ContainerPage>
-      <ProductWrapper
-        breadcrumbItems={breadcrumbItems}
-        allProductImages={allProductImages}
-        shoe={shoe}
-        quantityParams={quantityParams}
-        selectedOptions={selectedOptions}
-      />
-    </ContainerPage>
+    <Product
+      breadcrumbItems={breadcrumbItems}
+      allProductImages={allProductImages}
+      shoe={shoe}
+      quantityParams={quantityParams}
+      selectedOptions={selectedOptions}
+      theme={theme}
+    />
   );
 };
 

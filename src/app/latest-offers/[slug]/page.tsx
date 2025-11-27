@@ -5,6 +5,7 @@ import { LatestOffer } from "@/types/latestOffers";
 import { Shoe, ShoesResponse } from "@/types/shoes";
 import ProductContent from "@/features/product/components/ProductContent";
 import Header from "@/components/latest-offers/Header";
+import { getTheme } from "@/core/infrastructure/services/api/theme";
 
 const LatestOffers = async ({
   params,
@@ -26,6 +27,8 @@ const LatestOffers = async ({
   if (!latestOffers[0]?._id || shoes.length === 0) {
     return;
   }
+
+  const theme = await getTheme();
   return (
     <ContainerPage>
       <Header offers={latestOffers[0]} />
@@ -33,6 +36,7 @@ const LatestOffers = async ({
         shoes={shoes}
         label={latestOffers[0].label}
         sortParams={sort as string}
+        theme={theme}
         pagination={{
           limit: shoeData.limit,
           total: shoeData.total,

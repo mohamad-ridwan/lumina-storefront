@@ -17,6 +17,7 @@ export interface ProductInfoProps {
   shoe: Shoe; // Objek sepatu lengkap
   selectedOptionsParams?: Record<string, string>;
   quantityParams?: number | null;
+  theme?: string;
 }
 
 export type AppProductProps = {
@@ -25,6 +26,7 @@ export type AppProductProps = {
   shoe: Shoe | null;
   quantityParams: number | null;
   selectedOptions: Record<string, string>;
+  theme?: string;
 };
 
 // interface untuk request query getShoe API

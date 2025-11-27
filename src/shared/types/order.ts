@@ -4,7 +4,23 @@
  * and the complete API response upon successful order creation.
  */
 
+import { CartItem } from "@/core/domain/cart";
 import { Pagination } from "./pagination";
+
+export interface CheckoutClientProps {
+  cartItems: CartItem[]; // Array dari item keranjang yang akan ditampilkan
+  cartTotalPrice: number; // Total harga semua item di keranjang
+  totalProduct: number; // Total jumlah produk (sum of all quantities)
+}
+
+export interface OrderDetailContentProps {
+  order: Order; // Objek pesanan lengkap yang akan ditampilkan
+}
+
+export interface OrdersContentProps {
+  orders: Order[]; // Array objek pesanan yang akan ditampilkan
+  pagination: Pagination; // Data pagination dari API
+}
 
 /**
  * Interface untuk objek nilai opsi varian.

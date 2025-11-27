@@ -1,8 +1,9 @@
 import React from "react";
-import { Order, OrderItem } from "@/types/order"; // Impor tipe Order dan turunannya
+import { OrderItem } from "@/types/order"; // Impor tipe Order dan turunannya
 import PaymentOrder from "@/themes/theme1/features/order/PaymentOrder";
 import WrapperSection from "@/shared/components/WrapperSection";
 import BaseCard from "@/shared/components/card/BaseCard";
+import { OrderDetailContentProps } from "@/shared/types/order";
 
 /**
  * @fileoverview Order Detail Content Component (React Server Component)
@@ -14,9 +15,6 @@ import BaseCard from "@/shared/components/card/BaseCard";
 /**
  * Props untuk komponen OrderDetailContent.
  */
-interface OrderDetailContentProps {
-  order: Order; // Objek pesanan lengkap yang akan ditampilkan
-}
 
 // Komponen OrderDetailContent
 const OrderDetailContent: React.FC<OrderDetailContentProps> = ({ order }) => {
@@ -196,4 +194,3 @@ const OrderDetailContent: React.FC<OrderDetailContentProps> = ({ order }) => {
 };
 
 export default OrderDetailContent;
-

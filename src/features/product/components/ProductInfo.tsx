@@ -1,4 +1,4 @@
-import { ProductInfoWrapper } from "./ProductInfoWrapper";
+import { loadThemeComponent } from "@/shared/lib/Theme";
 import { ProductInfoProps } from "@/core/domain/product";
 
 /**
@@ -11,13 +11,18 @@ import { ProductInfoProps } from "@/core/domain/product";
  * Props untuk komponen ProductInfo.
  */
 
-const ProductInfo: React.FC<ProductInfoProps> = ({
+const ProductInfo: React.FC<ProductInfoProps> = async ({
   shoe,
   selectedOptionsParams,
   quantityParams,
+  theme,
 }) => {
+  const ProductInfo = await loadThemeComponent<ProductInfoProps>(
+    theme as string,
+    "ProductInfo"
+  );
   return (
-    <ProductInfoWrapper
+    <ProductInfo
       shoe={shoe}
       selectedOptionsParams={selectedOptionsParams}
       quantityParams={quantityParams}

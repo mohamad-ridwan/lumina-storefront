@@ -3,12 +3,17 @@
 import React from "react";
 import Link from "next/link";
 import { Order } from "@/types/order"; // Impor tipe Order, OrderItem, dan Pagination
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/components/ui/tabs"; // Impor komponen Tabs dari Shadcn UI
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/shared/components/ui/tabs"; // Impor komponen Tabs dari Shadcn UI
 import { Button } from "@/shared/components/ui/button"; // Impor Button untuk "Lihat Detail"
 import { useRouter, useSearchParams, usePathname } from "next/navigation"; // Impor hooks dari next/navigation
 import BasePagination from "@/shared/components/pagination/BasePagination"; // Impor komponen BasePagination
-import { Pagination } from "@/types/pagination";
 import BaseCard from "@/shared/components/card/BaseCard";
+import { OrdersContentProps } from "@/shared/types/order";
 
 /**
  * @fileoverview Orders Content Component
@@ -19,10 +24,6 @@ import BaseCard from "@/shared/components/card/BaseCard";
 /**
  * Props untuk komponen OrdersContent.
  */
-interface OrdersContentProps {
-  orders: Order[]; // Array objek pesanan yang akan ditampilkan
-  pagination: Pagination; // Data pagination dari API
-}
 
 const OrdersContent: React.FC<OrdersContentProps> = ({
   orders,
@@ -301,5 +302,3 @@ const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
     </div>
   );
 };
-
-

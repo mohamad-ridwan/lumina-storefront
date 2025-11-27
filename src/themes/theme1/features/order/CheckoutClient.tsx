@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { CartItem } from "@/core/domain/cart";
 import BaseCard from "@/shared/components/card/BaseCard";
 import { Button } from "@/shared/components/ui/button";
 import {
@@ -14,6 +13,7 @@ import {
 } from "@/shared/components/ui/form";
 import { Input } from "@/shared/components/ui/input";
 import { useReduxOrder } from "@/hooks/useOrder";
+import { CheckoutClientProps } from "@/shared/types/order";
 
 // Import Server Action dan Tipe dari API // Sesuaikan path ini sesuai lokasi file server action Anda
 
@@ -26,11 +26,6 @@ import { useReduxOrder } from "@/hooks/useOrder";
 /**
  * Props untuk komponen CheckoutClient.
  */
-interface CheckoutClientProps {
-  cartItems: CartItem[]; // Array dari item keranjang yang akan ditampilkan
-  cartTotalPrice: number; // Total harga semua item di keranjang
-  totalProduct: number; // Total jumlah produk (sum of all quantities)
-}
 
 const CheckoutClient: React.FC<CheckoutClientProps> = ({
   cartItems,
@@ -293,5 +288,3 @@ const CheckoutClient: React.FC<CheckoutClientProps> = ({
 };
 
 export default CheckoutClient;
-
-

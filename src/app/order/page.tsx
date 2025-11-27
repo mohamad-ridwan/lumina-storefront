@@ -7,8 +7,10 @@ import { Pagination } from "@/types/pagination";
 import { User } from "@/types/user"; // Impor User
 import { cookies } from "next/headers"; // Impor komponen OrdersContent yang baru
 import Link from "next/link";
-import OrdersContent from "@/features/order/components/OrdersContent";
 import CustomBreadcrumb from "@/shared/components/breadcrumbs/CustomBreadcrumb";
+import { getTheme } from "@/core/infrastructure/services/api/theme";
+import { loadThemeComponent } from "@/shared/lib/Theme";
+import { OrdersContentProps } from "@/shared/types/order";
 
 const COOKIE_NAME = "user-session-lumina-storefront";
 
@@ -62,6 +64,12 @@ const OrdersPage = async ({
         : "Terjadi kesalahan saat memuat pesanan.";
     console.error("Error loading orders page:", error);
   }
+
+  const theme = await getTheme();
+  const OrdersContent = await loadThemeComponent<OrdersContentProps>(
+    theme,
+    "OrdersContent"
+  );
 
   return (
     <ContainerPage>

@@ -1,8 +1,9 @@
 import { AppProductProps, Shoe } from "@/core/domain/product";
 import ProductImageDesktop from "@/themes/theme1/features/product/ProductImageDesktop";
 import ProductImageMobile from "@/themes/theme1/features/product/ProductImageMobile";
-import ProductInfo from "@/features/product/components/product-info/ProductInfo";
+import ProductInfo from "@/features/product/components/ProductInfo";
 import CustomBreadcrumb from "@/shared/components/breadcrumbs/CustomBreadcrumb";
+import ContainerPage from "@/shared/components/ContainerPage";
 
 const Product = ({
   breadcrumbItems,
@@ -10,9 +11,10 @@ const Product = ({
   shoe,
   quantityParams,
   selectedOptions,
+  theme,
 }: AppProductProps) => {
   return (
-    <>
+    <ContainerPage>
       <CustomBreadcrumb items={breadcrumbItems} />
 
       <div className="mt-8 grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
@@ -34,10 +36,11 @@ const Product = ({
             shoe={shoe as Shoe}
             quantityParams={quantityParams}
             selectedOptionsParams={selectedOptions}
+            theme={theme}
           />
         </div>
       </div>
-    </>
+    </ContainerPage>
   );
 };
 

@@ -1,5 +1,3 @@
-import { getTheme } from "@/core/infrastructure/services/api/theme";
-import dynamic from "next/dynamic";
 // import { ComponentType } from "react";
 
 // export const ThemeComponent = <T extends object = Record<string, unknown>>(
@@ -11,54 +9,96 @@ import dynamic from "next/dynamic";
 //   ) as unknown as ComponentType<T>;
 // };
 
-const themeMap = {
+type ThemeImporter = () => Promise<{ default: React.ComponentType<never> }>;
+
+type ThemeDefinition = {
+  [key: string]: ThemeImporter;
+};
+
+export const themeMap: Record<string, ThemeDefinition> = {
   theme1: {
-    Product: dynamic(() => import("@/themes/theme1/app/Product")),
-    ProductInfo: dynamic(
-      () => import("@/themes/theme1/features/product/ProductInfo")
-    ),
-    AuthLayout: dynamic(
-      () => import("@/themes/theme1/features/auth/AuthLayout")
-    ),
-    LoginPageClient: dynamic(
-      () => import("@/themes/theme1/features/auth/LoginPageClient")
-    ),
-    RegisterPageClient: dynamic(
-      () => import("@/themes/theme1/features/auth/RegisterPageClient")
-    ),
-    ProfilePageClient: dynamic(
-      () => import("@/themes/theme1/features/auth/ProfilePageClient")
-    ),
-    CartContent: dynamic(
-      () => import("@/themes/theme1/features/cart/CartContent")
-    ),
-    CartPageClient: dynamic(
-      () => import("@/themes/theme1/features/cart/CartPageClient")
-    ),
-    CheckoutClient: dynamic(
-      () => import("@/themes/theme1/features/order/CheckoutClient")
-    ),
-    OrdersContent: dynamic(
-      () => import("@/themes/theme1/features/order/OrdersContent")
-    ),
-    OrderDetailContent: dynamic(
-      () => import("@/themes/theme1/features/order/OrderDetailContent")
-    ),
-    ProductContent: dynamic(
-      () => import("@/themes/theme1/features/product/ProductContent")
-    ),
+    CategoryPage: () => import("@/themes/theme1/app/Category"),
+    HomePage: () => import("@/themes/theme1/app/Home"),
+    Product: () => import("@/themes/theme1/app/Product"),
+    ProductInfo: () => import("@/themes/theme1/features/product/ProductInfo"),
+    AuthLayout: () => import("@/themes/theme1/features/auth/AuthLayout"),
+    LoginPageClient: () =>
+      import("@/themes/theme1/features/auth/LoginPageClient"),
+    RegisterPageClient: () =>
+      import("@/themes/theme1/features/auth/RegisterPageClient"),
+    ProfilePageClient: () =>
+      import("@/themes/theme1/features/auth/ProfilePageClient"),
+    CartContent: () => import("@/themes/theme1/features/cart/CartContent"),
+    CartPageClient: () =>
+      import("@/themes/theme1/features/cart/CartPageClient"),
+    CheckoutClient: () =>
+      import("@/themes/theme1/features/order/CheckoutClient"),
+    OrdersContent: () => import("@/themes/theme1/features/order/OrdersContent"),
+    OrderDetailContent: () =>
+      import("@/themes/theme1/features/order/OrderDetailContent"),
+    ProductContent: () =>
+      import("@/themes/theme1/features/product/ProductContent"),
   },
   theme2: {
-    Product: dynamic(() => import("@/themes/theme2/app/Product")),
-    ProductInfo: dynamic(
-      () => import("@/themes/theme2/features/product/ProductInfo")
-    ),
+    Product: () => import("@/themes/theme2/app/Product"),
+    ProductInfo: () => import("@/themes/theme2/features/product/ProductInfo"),
   },
 };
 
-export async function ThemeComponent<T extends object>(
-  component: keyof (typeof themeMap)["theme1"]
-) {
-  const theme = (await getTheme()) as "theme1" | "theme2";
-  return (themeMap[theme] as typeof themeMap["theme1"])[component] as React.ComponentType<T>;
+export type ThemeName = keyof typeof themeMap;
+
+// component keys per theme
+export type ThemeComponents<T extends ThemeName> = keyof (typeof themeMap)[T];
+
+// loader that infers the module type automatically
+// export async function loadThemeComponent<
+//   T extends ThemeName,
+//   C extends ThemeComponents<T>
+// >(theme: T, component: C): Promise<InferComponent<(typeof themeMap)[T][C]>> {
+//   const importer = themeMap[theme][component] as () => Promise<{
+//     default: never;
+//   }>;
+//   const mod = await importer();
+//   return mod.default;
+// }
+
+export async function loadThemeComponent<P>(
+  theme: ThemeName,
+  component: string // bebas, tidak perlu strict
+): Promise<React.ComponentType<P>> {
+  const importer = themeMap[theme][component] as () => Promise<{
+    default: React.ComponentType<P>;
+  }>;
+
+  const mod = await importer();
+  return mod.default;
 }
+
+// export async function loadThemeComponent(theme: string, component: string) {
+//   const themeObj = themeMap["theme1"];
+
+//   if (!themeObj) {
+//     throw new Error(`Theme "${theme}" tidak ditemukan`);
+//   }
+
+//   const importer = themeObj["Product"];
+
+//   if (!importer) {
+//     throw new Error(
+//       `Component "${component}" tidak ditemukan di theme "${theme}"`
+//     );
+//   }
+
+//   const moduleComponent = await importer(); // ini baru module import()
+//   return moduleComponent; // return komponen React
+// }
+
+// export async function ThemeComponent<T extends object>(
+//   component: keyof (typeof themeMap)["theme1"]
+// ) {
+//   const theme = (await getTheme()) as "theme1" | "theme2";
+//   // return (themeMap[theme] as (typeof themeMap)["theme1"])[
+//   //   component
+//   // ] as React.ComponentType<T>;
+//   return themeMap[theme]?.();
+// }

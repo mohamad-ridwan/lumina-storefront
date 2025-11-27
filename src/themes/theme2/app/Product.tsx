@@ -3,6 +3,7 @@ import ProductImageDesktop from "@/features/product/components/ProductImageDeskt
 import ProductImageMobile from "@/features/product/components/ProductImageMobile";
 import ProductInfo from "@/themes/theme2/features/product/ProductInfo";
 import CustomBreadcrumb from "@/shared/components/breadcrumbs/CustomBreadcrumb";
+import ContainerPage from "@/shared/components/ContainerPage";
 
 /**
  * @fileoverview Product Container Component - Sportie Theme
@@ -17,7 +18,7 @@ const Product = ({
   selectedOptions,
 }: AppProductProps) => {
   return (
-    <>
+    <ContainerPage>
       <CustomBreadcrumb items={breadcrumbItems} />
 
       <div className="mt-8 grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
@@ -42,9 +43,8 @@ const Product = ({
           />
         </div>
       </div>
-    </>
+    </ContainerPage>
   );
 };
 
 export default Product;
-

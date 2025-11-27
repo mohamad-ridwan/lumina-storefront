@@ -1,3 +1,16 @@
+import { CustomBreadcrumbItem } from "@/shared/components/breadcrumbs/CustomBreadcrumb";
+import { Shoe } from "./product";
+import { Pagination } from "@/shared/types/pagination";
+
+export interface AppCategoryProps {
+  breadcrumbItems: CustomBreadcrumbItem[];
+  shoes: Shoe[];
+  label: string;
+  sortParams?: string | undefined;
+  pagination: Pagination;
+  theme?: string;
+}
+
 export interface Collections {
   _id: string;
   name: string;

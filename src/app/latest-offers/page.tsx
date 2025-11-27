@@ -1,4 +1,5 @@
 import ContainerPage from "@/container/ContainerPage";
+import { getTheme } from "@/core/infrastructure/services/api/theme";
 import { getShoe } from "@/core/usecases/product";
 import ProductContent from "@/features/product/components/ProductContent";
 import CustomBreadcrumb from "@/shared/components/breadcrumbs/CustomBreadcrumb";
@@ -22,6 +23,8 @@ const LatestOffers = async ({
   });
   const shoes: Shoe[] = shoeData.shoes;
 
+  const theme = await getTheme();
+
   return (
     <ContainerPage>
       <CustomBreadcrumb items={breadcrumbItems} />
@@ -29,6 +32,7 @@ const LatestOffers = async ({
         shoes={shoes}
         label={breadcrumbItems[1].label}
         sortParams={sort as string}
+        theme={theme}
         pagination={{
           limit: shoeData.limit,
           totalPages: shoeData.totalPages,
